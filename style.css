@@ -2776,6 +2776,18 @@ nav .admin-update-btn{
     }
 }
 
+/* Keep the hero gradient on the title letters only, never on its box. */
+.hero h1{
+    background:transparent;
+    background-image:linear-gradient(100deg, #ff00c8, #8d27ff 42%, #00eaff 78%, #ff00c8);
+    background-size:240% 100%;
+    background-clip:text;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:transparent;
+    text-shadow:0 0 28px rgba(141,39,255,.18);
+}
+
 @media(max-width:820px){
     nav{
         height:72px;
@@ -3094,8 +3106,13 @@ nav .admin-update-btn{
     }
 
     .hero h1{
-        background:linear-gradient(100deg, #ff00c8, #8d27ff 42%, #00eaff 78%, #ff00c8);
+        background:transparent;
+        background-image:linear-gradient(100deg, #ff00c8, #8d27ff 42%, #00eaff 78%, #ff00c8);
         background-size:240% 100%;
+        background-clip:text;
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        color:transparent;
         text-shadow:0 0 28px rgba(141,39,255,.18);
         animation:textGradient 8s ease-in-out infinite;
     }
@@ -3208,6 +3225,30 @@ nav .admin-update-btn{
         .hero h1{
             animation:none;
         }
+    }
+
+    /* Final title-only gradient correction. */
+    .hero h1{
+        background:transparent;
+        background-image:linear-gradient(100deg, #ff00c8, #8d27ff 42%, #00eaff 78%, #ff00c8);
+        background-size:240% 100%;
+        background-clip:text;
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        color:transparent;
+        text-shadow:0 0 28px rgba(141,39,255,.18);
+    }
+
+    /* Keep the hero gradient on the title letters only, never on its box. */
+    .hero h1{
+        background:transparent;
+        background-image:linear-gradient(100deg, #ff00c8, #8d27ff 42%, #00eaff 78%, #ff00c8);
+        background-size:240% 100%;
+        background-clip:text;
+        -webkit-background-clip:text;
+        -webkit-text-fill-color:transparent;
+        color:transparent;
+        text-shadow:0 0 28px rgba(141,39,255,.18);
     }
 
     nav::before,
@@ -3401,8 +3442,13 @@ nav{
 }
 
 .hero h1{
-    background:linear-gradient(100deg, #ff00c8, #8d27ff 42%, #00eaff 78%, #ff00c8);
+    background:transparent;
+    background-image:linear-gradient(100deg, #ff00c8, #8d27ff 42%, #00eaff 78%, #ff00c8);
     background-size:240% 100%;
+    background-clip:text;
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:transparent;
     text-shadow:0 0 28px rgba(141,39,255,.18);
     animation:textGradient 8s ease-in-out infinite;
 }
