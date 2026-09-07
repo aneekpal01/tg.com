@@ -129,6 +129,16 @@ nav{
     z-index:1000;
 }
 
+.navbar{
+    transform:translateY(0);
+    transition:transform .35s ease;
+    will-change:transform;
+}
+
+.navbar.nav-hidden{
+    transform:translateY(-100%);
+}
+
 nav::before{
     content:"";
     position:absolute;

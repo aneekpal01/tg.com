@@ -199,10 +199,34 @@ document.getElementById("postsContainer");
 const adminUpdatesContainer =
 document.getElementById("adminUpdatesContainer");
 
+const navbar =
+document.querySelector(".navbar");
+
 
 /* ==================================================
    MENU
 ================================================== */
+
+let lastScrollY = window.scrollY;
+
+window.addEventListener(
+    "scroll",
+    () => {
+
+        const currentScrollY = window.scrollY;
+
+        if(currentScrollY <= 20 || currentScrollY < lastScrollY){
+            navbar.classList.remove("nav-hidden");
+        }
+        else if(currentScrollY > lastScrollY){
+            navbar.classList.add("nav-hidden");
+        }
+
+        lastScrollY = currentScrollY;
+
+    },
+    { passive:true }
+);
 
 menuBtn.addEventListener(
     "click",
