@@ -147,6 +147,8 @@ document.getElementById("menuPanel");
 const adminUpdatesBtn =
 document.getElementById("adminUpdatesBtn");
 
+const adminLoginBtn =
+document.getElementById("adminLoginBtn");
 
 const updatesModal =
 document.getElementById("updatesModal");
@@ -207,6 +209,10 @@ menuBtn.addEventListener(
     () => {
 
         menuPanel.classList.toggle("show");
+        menuBtn.setAttribute(
+            "aria-expanded",
+            menuPanel.classList.contains("show") ? "true" : "false"
+        );
 
     }
 );
@@ -223,6 +229,7 @@ document.querySelectorAll(
             menuPanel.classList.remove(
                 "show"
             );
+            menuBtn.setAttribute("aria-expanded", "false");
 
         }
     );
@@ -240,6 +247,17 @@ adminUpdatesBtn.addEventListener(
 
         updatesModal.classList.add(
             "show"
+        );
+
+        adminLoginBtn.addEventListener(
+            "click",
+            () => {
+
+                menuPanel.classList.remove("show");
+                menuBtn.setAttribute("aria-expanded", "false");
+                loginModal.classList.add("show");
+
+            }
         );
 
     }
@@ -1042,6 +1060,22 @@ updatesModal.addEventListener(
 
             updatesModal.classList.remove(
                 "show"
+            );
+
+            document.addEventListener(
+                "keydown",
+                event => {
+
+                    if(event.key !== "Escape"){
+                        return;
+                    }
+
+                    menuPanel.classList.remove("show");
+                    menuBtn.setAttribute("aria-expanded", "false");
+                    closeLogin();
+                    updatesModal.classList.remove("show");
+
+                }
             );
 
         }

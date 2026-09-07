@@ -14,9 +14,10 @@ html{
 
 body{
     font-family:"Poppins",sans-serif;
-    background:#050510;
+    background:#070812;
     color:white;
     overflow-x:hidden;
+    line-height:1.5;
 }
 
 
@@ -94,7 +95,7 @@ nav{
     left:0;
 
     width:100%;
-    height:75px;
+    height:80px;
 
     display:flex;
 
@@ -102,16 +103,16 @@ nav{
 
     justify-content:space-between;
 
-    padding:0 7%;
+    padding:0 max(5vw, 32px);
 
     background:
-    rgba(5,5,16,.75);
+    linear-gradient(180deg, rgba(7,8,18,.94), rgba(7,8,18,.72));
 
     backdrop-filter:blur(15px);
 
     border-bottom:
     1px solid
-    rgba(255,255,255,.1);
+    rgba(0,234,255,.12);
 
     z-index:1000;
 }
@@ -385,6 +386,24 @@ nav{
     color:#00eaff;
 }
 
+.menu-login-btn{
+    width:100%;
+    padding:12px;
+    border:0;
+    border-radius:10px;
+    color:#b7c2dc;
+    background:rgba(255,255,255,.04);
+    font:600 14px "Poppins",sans-serif;
+    text-align:left;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.menu-login-btn:hover{
+    color:#00eaff;
+    background:rgba(0,234,255,.12);
+}
+
 
 /* =========================
    HERO
@@ -402,12 +421,24 @@ nav{
 
     text-align:center;
 
-    padding:
-    100px
-    20px
-    60px;
+    padding:140px 20px 90px;
 
     position:relative;
+    isolation:isolate;
+}
+
+.hero::before{
+    content:"";
+    position:absolute;
+    width:min(700px, 90vw);
+    height:320px;
+    left:50%;
+    bottom:5%;
+    transform:translateX(-50%);
+    background:radial-gradient(ellipse, rgba(0,234,255,.16), transparent 68%);
+    filter:blur(10px);
+    z-index:-1;
+    pointer-events:none;
 }
 
 .hero-content{
@@ -420,11 +451,23 @@ nav{
 
     letter-spacing:6px;
 
-    color:#00eaff;
+    color:#a8b6d8;
 
     margin-bottom:20px;
 
     text-transform:uppercase;
+    font-weight:600;
+}
+
+.status-dot{
+    display:inline-block;
+    width:8px;
+    height:8px;
+    margin-right:8px;
+    border-radius:50%;
+    background:#2dff9b;
+    box-shadow:0 0 14px #2dff9b;
+    vertical-align:1px;
 }
 
 .hero h1{
@@ -479,9 +522,10 @@ nav{
 
     margin-top:25px;
 
-    color:#c7c7d8;
+    color:#aeb8d0;
 
-    font-size:17px;
+    font-size:16px;
+    line-height:1.8;
 
     max-width:700px;
 
@@ -517,6 +561,7 @@ nav{
     );
 
     transition:.3s;
+    box-shadow:0 14px 35px rgba(0,119,255,.22);
 }
 
 .hero-button:hover{
@@ -526,6 +571,68 @@ nav{
     scale(1.03);
 }
 
+.hero-secondary-button{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    margin:35px 0 0 12px;
+    padding:13px 22px;
+    border:1px solid rgba(255,255,255,.18);
+    border-radius:50px;
+    color:#dce5ff;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:600;
+    transition:.3s;
+}
+
+.hero-secondary-button:hover{
+    border-color:#00eaff;
+    color:#00eaff;
+    transform:translateY(-3px);
+}
+
+.hero-secondary-button span{
+    color:#00eaff;
+    font-size:18px;
+}
+
+.hero-stats{
+    display:flex;
+    justify-content:center;
+    gap:0;
+    margin:70px auto 0;
+    max-width:620px;
+    padding:18px 0;
+    border-top:1px solid rgba(255,255,255,.12);
+    border-bottom:1px solid rgba(255,255,255,.12);
+}
+
+.hero-stat{
+    min-width:190px;
+    padding:0 30px;
+    border-right:1px solid rgba(255,255,255,.12);
+}
+
+.hero-stat:last-child{
+    border-right:0;
+}
+
+.hero-stat strong{
+    display:block;
+    color:#fff;
+    font:700 25px "Orbitron",sans-serif;
+}
+
+.hero-stat span{
+    display:block;
+    margin-top:5px;
+    color:#8995b4;
+    font-size:11px;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
+
 
 /* =========================
    COMMON SECTION
@@ -533,15 +640,15 @@ nav{
 
 section{
 
-    padding:
-    100px 7%;
+    padding:120px 7%;
+    position:relative;
 }
 
 .section-title{
 
     text-align:center;
 
-    margin-bottom:60px;
+    margin-bottom:65px;
 }
 
 .section-title span{
@@ -582,6 +689,11 @@ section{
     color:transparent;
 }
 
+#players,
+#gallery{
+    background:linear-gradient(180deg, transparent, rgba(12,17,39,.42), transparent);
+}
+
 
 /* =========================
    PLAYERS
@@ -609,13 +721,7 @@ section{
 
     border-radius:22px;
 
-    background:
-
-    linear-gradient(
-        145deg,
-        rgba(255,255,255,.09),
-        rgba(255,255,255,.025)
-    );
+    background:linear-gradient(145deg, rgba(20,30,62,.74), rgba(10,13,29,.82));
 
     border:
     1px solid
@@ -623,7 +729,7 @@ section{
 
     backdrop-filter:blur(15px);
 
-    transition:.4s;
+    transition:.4s cubic-bezier(.2,.8,.2,1);
 
     box-shadow:
     0 15px 40px
@@ -676,7 +782,7 @@ section{
 
 .player-info{
 
-    padding:25px;
+    padding:27px;
 }
 
 .player-number{
@@ -854,7 +960,7 @@ section{
 
     position:relative;
 
-    height:300px;
+    height:320px;
 
     overflow:hidden;
 
@@ -1109,8 +1215,7 @@ section{
 
     border-radius:25px;
 
-    background:
-    rgba(255,255,255,.05);
+    background:linear-gradient(145deg, rgba(18,27,56,.7), rgba(10,13,29,.8));
 
     border:
     1px solid
@@ -1776,8 +1881,7 @@ footer{
     1px solid
     rgba(255,255,255,.1);
 
-    background:
-    rgba(0,0,0,.3);
+    background:linear-gradient(180deg, rgba(7,8,18,.2), #03040b);
 }
 
 footer h2{
@@ -1973,6 +2077,31 @@ footer p{
     .hero h1{
 
         font-size:45px;
+
+    }
+
+    .hero-secondary-button{
+        margin-left:4px;
+        padding:13px 16px;
+    }
+
+    .hero-stats{
+        margin-top:50px;
+    }
+
+    .hero-stat{
+        min-width:0;
+        flex:1;
+        padding:0 8px;
+    }
+
+    .hero-stat strong{
+        font-size:18px;
+    }
+
+    .hero-stat span{
+        font-size:9px;
+        letter-spacing:.5px;
     }
 
     .updates-box{
@@ -2029,7 +2158,7 @@ a:focus-visible{
 @supports (padding: env(safe-area-inset-top)){
     nav{
         padding-top:env(safe-area-inset-top);
-        height:calc(75px + env(safe-area-inset-top));
+        height:calc(80px + env(safe-area-inset-top));
     }
 }
 
