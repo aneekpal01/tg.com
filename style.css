@@ -4217,3 +4217,51 @@ body.light-theme nav .menu-btn:hover{
         color:#5a6680;
     }
 }
+
+    @media (max-width:768px){
+        .menu-panel{
+            position:fixed;
+            top:90px;
+            right:16px;
+            z-index:9999;
+            width:min(330px, calc(100vw - 32px));
+            max-height:none;
+            padding:12px;
+            overflow:visible;
+            background:
+                linear-gradient(rgba(5,8,25,.985), rgba(8,10,30,.985)) padding-box,
+                linear-gradient(135deg, rgba(0,234,255,.44), rgba(124,40,197,.34), rgba(255,0,200,.28)) border-box;
+        }
+
+        .menu-panel a{
+            min-height:43px;
+            margin-bottom:3px;
+            padding-top:9px;
+            padding-bottom:9px;
+        }
+
+        .menu-panel .admin-update-btn,
+        .menu-panel .menu-login-btn{
+            min-height:38px;
+            margin-top:3px;
+            padding-top:8px;
+            padding-bottom:8px;
+        }
+
+        .menu-panel .admin-update-btn{
+            margin-top:8px;
+            padding-top:10px;
+        }
+
+        body.light-theme .menu-panel{
+            background:
+                linear-gradient(rgba(235,239,251,.985), rgba(228,234,249,.985)) padding-box,
+                linear-gradient(135deg, rgba(0,148,194,.42), rgba(112,74,220,.36), rgba(190,70,185,.26)) border-box;
+        }
+    }
+
+    @media (max-width:650px){
+        .menu-panel{
+            top:75px;
+        }
+    }
