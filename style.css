@@ -2167,6 +2167,42 @@ footer p{
         display:none;
     }
 
+    /* Final edge-to-edge header reset. Keep the header flat, never card-shaped. */
+    .navbar{
+        position:fixed !important;
+        top:0 !important;
+        left:0 !important;
+        right:0 !important;
+        width:100% !important;
+        max-width:none !important;
+        margin:0 !important;
+        border:0 !important;
+        border-radius:0 !important;
+        box-shadow:none !important;
+        background:rgba(5,7,20,.75) !important;
+        transform:translateY(0);
+        transition:transform .35s ease;
+    }
+
+    .navbar::before{
+        inset:0 !important;
+        border:0 !important;
+        border-radius:0 !important;
+        background:transparent !important;
+        box-shadow:none !important;
+    }
+
+    .navbar::after{
+        left:0 !important;
+        right:0 !important;
+        bottom:0 !important;
+        border-radius:0 !important;
+    }
+
+    .navbar.nav-hidden{
+        transform:translateY(-100%);
+    }
+
     .admin-update-btn{
 
         font-size:8px;
