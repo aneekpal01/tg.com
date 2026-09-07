@@ -574,11 +574,19 @@ nav::before{
     margin-right:auto;
 }
 
+.hero-actions{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:18px;
+    margin-top:36px;
+}
+
 .hero-button{
 
     display:inline-block;
 
-    margin-top:35px;
+    margin-top:0;
 
     padding:
     14px
@@ -615,7 +623,7 @@ nav::before{
     display:inline-flex;
     align-items:center;
     gap:8px;
-    margin:35px 0 0 12px;
+    margin:0;
     padding:13px 22px;
     border:1px solid rgba(255,255,255,.18);
     border-radius:50px;
@@ -3214,6 +3222,12 @@ nav .admin-update-btn{
         .hero-stats{
             margin-top:50px;
             padding:13px 2px;
+        }
+
+        .hero-actions{
+            flex-wrap:wrap;
+            gap:14px;
+            margin-top:32px;
         }
     }
 
