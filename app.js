@@ -202,6 +202,37 @@ document.getElementById("adminUpdatesContainer");
 const navbar =
 document.querySelector(".navbar");
 
+const themeToggle =
+document.getElementById("themeToggle");
+
+const savedTheme =
+localStorage.getItem("tg-theme");
+
+if(savedTheme === "light"){
+    document.body.classList.add("light-theme");
+    themeToggle.setAttribute("aria-label", "Switch to dark mode");
+}
+
+themeToggle.addEventListener(
+    "click",
+    () => {
+
+        const isLight =
+        document.body.classList.toggle("light-theme");
+
+        localStorage.setItem(
+            "tg-theme",
+            isLight ? "light" : "dark"
+        );
+
+        themeToggle.setAttribute(
+            "aria-label",
+            isLight ? "Switch to dark mode" : "Switch to light mode"
+        );
+
+    }
+);
+
 
 /* ==================================================
    MENU

@@ -792,8 +792,7 @@ section{
 
     width:100%;
 
-    aspect-ratio:1 / 1;
-    height:auto;
+    height:250px;
     overflow:hidden;
 
     background:
@@ -809,8 +808,8 @@ section{
     width:100%;
     height:100%;
 
-    object-fit:contain;
-    object-position:center;
+    object-fit:cover;
+    object-position:center top;
     background:#030305;
     transition:.5s;
 }
@@ -823,7 +822,7 @@ section{
 
 .player-info{
 
-    padding:27px;
+    padding:19px 20px 20px;
 }
 
 .player-number{
@@ -841,17 +840,17 @@ section{
 
     font-family:"Orbitron",sans-serif;
 
-    font-size:23px;
+    font-size:19px;
 
     margin:
-    8px 0 20px;
+    7px 0 14px;
 }
 
 .player-details{
 
     display:grid;
 
-    gap:10px;
+    gap:8px;
 }
 
 .detail{
@@ -862,13 +861,13 @@ section{
 
     gap:10px;
 
-    padding-bottom:8px;
+    padding-bottom:7px;
 
     border-bottom:
     1px solid
     rgba(255,255,255,.08);
 
-    font-size:13px;
+    font-size:12px;
 }
 
 .detail strong{
@@ -891,7 +890,7 @@ section{
 
     gap:10px;
 
-    margin-top:20px;
+    margin-top:15px;
 }
 
 .social-links a{
@@ -900,7 +899,8 @@ section{
 
     text-align:center;
 
-    padding:9px;
+    min-height:42px;
+    padding:8px;
 
     border-radius:8px;
 
@@ -2478,8 +2478,13 @@ nav .admin-update-btn{
     }
 
     nav .nav-links,
-    nav .nav-tools{
+    nav .nav-tools .social-icon{
         display:none;
+    }
+
+    nav .nav-tools{
+        display:flex;
+        margin-left:auto;
     }
 
     nav .menu-btn{
@@ -2495,6 +2500,159 @@ nav .admin-update-btn{
         border-radius:50%;
         background:rgba(255,255,255,.08);
         color:#fff;
+    }
+
+    /* =========================
+       THEME TOGGLE
+    ========================= */
+
+    .theme-toggle{
+        display:grid;
+        width:28px;
+        height:28px;
+        place-items:center;
+        padding:0;
+        border:0;
+        border-radius:50%;
+        color:#cbd1e4;
+        background:transparent;
+        cursor:pointer;
+        transition:color .25s ease, background .25s ease, transform .25s ease;
+    }
+
+    .theme-toggle:hover{
+        color:#00eaff;
+        background:rgba(0,234,255,.1);
+        transform:rotate(12deg);
+    }
+
+    .theme-toggle .theme-icon{
+        width:17px;
+        height:17px;
+        fill:none;
+        stroke:currentColor;
+        stroke-width:1.8;
+        stroke-linecap:round;
+        stroke-linejoin:round;
+    }
+
+    .theme-toggle .theme-moon{
+        display:none;
+    }
+
+    body.light-theme{
+        background:#e9edf7;
+        color:#11182b;
+    }
+
+    body.light-theme::before{
+        opacity:.35;
+        background:
+        radial-gradient(circle at 20% 20%, #b9a7ff66, transparent 30%),
+        radial-gradient(circle at 80% 30%, #8ad9ff55, transparent 30%),
+        linear-gradient(135deg, #eef1fa, #e8e7f5, #e6f3fa);
+    }
+
+    body.light-theme .theme-sun{
+        display:none;
+    }
+
+    body.light-theme .theme-moon{
+        display:block;
+    }
+
+    body.light-theme nav{
+        background:rgba(237,241,250,.82) !important;
+    }
+
+    body.light-theme .nav-links a{
+        color:#34405b;
+    }
+
+    body.light-theme .nav-links a:first-child,
+    body.light-theme .nav-links a:hover{
+        color:#7d28d9;
+    }
+
+    body.light-theme .social-icon,
+    body.light-theme .theme-toggle{
+        color:#34405b;
+    }
+
+    body.light-theme .player-card,
+    body.light-theme .community-box,
+    body.light-theme .team-box,
+    body.light-theme .timeline-content{
+        background:linear-gradient(145deg, rgba(255,255,255,.86), rgba(225,231,248,.84));
+        border-color:rgba(84,71,159,.2);
+        box-shadow:0 15px 35px rgba(64,71,120,.12);
+    }
+
+    body.light-theme .player-name,
+    body.light-theme .detail span{
+        color:#17203a;
+    }
+
+    body.light-theme .detail{
+        border-color:rgba(53,64,105,.14);
+    }
+
+    body.light-theme .detail strong,
+    body.light-theme .team-box p{
+        color:#5d6680;
+    }
+
+    body,
+    body::before,
+    .player-card,
+    .community-box,
+    .team-box,
+    .timeline-content,
+    nav{
+        transition:background .35s ease, color .35s ease, border-color .35s ease, box-shadow .35s ease;
+    }
+
+    /* Final roster sizing overrides, kept after legacy responsive rules. */
+    .players-grid{
+        grid-template-columns:repeat(3, minmax(0, 1fr));
+        max-width:1240px;
+        gap:24px;
+    }
+
+    .player-card{
+        border-radius:16px;
+    }
+
+    .player-image{
+        height:clamp(220px, 20vw, 270px);
+    }
+
+    .player-info{
+        min-height:250px;
+        padding:19px 20px 20px;
+    }
+
+    @media(max-width:900px) and (min-width:651px){
+        .player-image{
+            height:230px;
+        }
+    }
+
+    @media(max-width:650px){
+        .players-grid{
+            grid-template-columns:1fr;
+            max-width:380px;
+            gap:22px;
+        }
+
+        .player-image{
+            height:220px;
+        }
+
+        .player-info{
+            min-height:0;
+            padding:17px 18px 18px;
+        }
     }
 
     nav .menu-btn span{
