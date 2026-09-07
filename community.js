@@ -1,5 +1,5 @@
 /* ==========================================================================
-   TG ESPORTS COMMUNITY — SCRIPT & AUTH GATE
+   TG ESPORTS COMMUNITY — SCRIPT & SOCIAL FEED
    ========================================================================== */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
@@ -9,7 +9,7 @@ import {
     signInAnonymously, 
     signOut, 
     setPersistence, 
-    browserSessionPersistence 
+    browserLocalPersistence 
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 import { 
     getFirestore, 
@@ -41,16 +41,16 @@ try {
     auth = getAuth(app);
     db = getFirestore(app);
 } catch (e) {
-    console.warn("Firebase initialization notice:", e);
+    console.warn("Firebase notice:", e);
 }
 
 const ADMIN_EMAIL = "fozyajay27@gmail.com";
 const DEMO_STORAGE_KEY = "tg_community_demo_user";
-const COMMENT_COOLDOWN_MS = 6000;
+const COMMENT_COOLDOWN_MS = 4000;
 
 // DOM Elements
+const hero = document.getElementById("communityHero");
 const authModal = document.getElementById("communityAuthModal");
-const loginCard = document.getElementById("communityLogin");
 const content = document.getElementById("communityContent");
 const authMessage = document.getElementById("authMessage");
 const postsState = document.getElementById("postsState");
@@ -58,48 +58,57 @@ const postsRoot = document.getElementById("communityPosts");
 const profileRoot = document.getElementById("communityProfile");
 const googleSignInBtn = document.getElementById("googleSignIn");
 const demoSignInBtn = document.getElementById("demoSignIn");
+const modalCloseBtn = document.getElementById("modalCloseBtn");
 
 let currentUser = null;
 let unsubscribePosts = null;
 let postUnsubscribers = [];
 
-// Default Seed Posts (Shown if Firestore is empty or connecting)
+// Default Official Esports Seed Posts
 const DEFAULT_POSTS = [
     {
         id: "tg-post-1",
         author: "TOTAL GAMING ESPORTS",
+        timeAgo: "2h ago",
         title: "OFFICIAL ROSTER ANNOUNCEMENT & CHAMPIONSHIP GRIND",
         text: "The squad is in bootcamp preparing for the upcoming Free Fire Championship stages! Mafia, FozyAjay, Delete, Aztec, Shanky and Wota are putting in double sessions daily. Let us know your favorite clutch play from this season in the comments below! 🔥",
-        createdAt: new Date(Date.now() - 3600000 * 5),
+        createdAt: new Date(Date.now() - 3600000 * 2),
         likesCount: 142,
         initialComments: [
-            { id: "c1", displayName: "Aman_TG_Fan", text: "Full support to TG Mafia and the whole squad! 🏆", createdAt: new Date(Date.now() - 3600000 * 3) },
-            { id: "c2", displayName: "Rahul_Esports", text: "Can't wait to see Delete and FozyAjay dominate again!", createdAt: new Date(Date.now() - 3600000 * 1) }
+            { id: "c1", displayName: "Aman_TG_Fan", timeAgo: "3m ago", text: "Full support to TG Mafia and the whole squad! 🏆", likesCount: 8, createdAt: new Date(Date.now() - 60000 * 3) },
+            { id: "c2", displayName: "Rahul_Esports", timeAgo: "28m ago", text: "Can't wait to see Delete and FozyAjay dominate again!", likesCount: 4, createdAt: new Date(Date.now() - 60000 * 28) }
         ]
     },
     {
         id: "tg-post-2",
         author: "TOTAL GAMING ESPORTS",
-        title: "BEHIND THE SCENES VLOG COMING THIS WEEK",
+        timeAgo: "1d ago",
+        title: "BEHIND THE SCENES BOOTCAMP VLOG THIS SATURDAY",
         text: "We just finished shooting an exclusive bootcamp tour and player reaction video. Look out for the premiere on the official Total Gaming YouTube channel this Saturday! Drop your questions for the team below.",
         createdAt: new Date(Date.now() - 3600000 * 24),
         likesCount: 89,
         initialComments: [
-            { id: "c3", displayName: "FreeFireLover", text: "Super excited for the vlog! Total Gaming on top ❤️", createdAt: new Date(Date.now() - 3600000 * 12) }
+            { id: "c3", displayName: "FreeFireLover", timeAgo: "12h ago", text: "Super excited for the vlog! Total Gaming on top ❤️", likesCount: 5, createdAt: new Date(Date.now() - 3600000 * 12) }
         ]
     }
 ];
 
 // Helper Functions
-function formatDate(timestamp) {
+function formatTimeAgo(timestamp) {
     if (!timestamp) return "Just now";
-    if (timestamp.toDate) {
-        return timestamp.toDate().toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
-    }
-    if (timestamp instanceof Date) {
-        return timestamp.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
-    }
-    return "Just now";
+    let date = timestamp;
+    if (timestamp.toDate) date = timestamp.toDate();
+    else if (!(timestamp instanceof Date)) date = new Date(timestamp);
+
+    const seconds = Math.floor((Date.now() - date.getTime()) / 1000);
+    if (seconds < 60) return "Just now";
+    const minutes = Math.floor(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    const hours = Math.floor(minutes / 60);
+    if (hours < 24) return `${hours}h ago`;
+    const days = Math.floor(hours / 24);
+    if (days < 30) return `${days}d ago`;
+    return date.toLocaleDateString(undefined, { month: "short", day: "numeric" });
 }
 
 function isAdmin(user) {
@@ -115,47 +124,45 @@ function clearPostListeners() {
     postUnsubscribers = [];
 }
 
-// Render Logged-In User Profile Header
+// Render Compact Top-Left Profile Bar
 function renderProfile(user) {
     profileRoot.innerHTML = "";
 
-    const avatarWrap = document.createElement("div");
-    avatarWrap.className = "profile-avatar-wrap";
-    
+    const userGroup = document.createElement("div");
+    userGroup.className = "profile-user-group";
+
+    const avatar = document.createElement("div");
+    avatar.className = "profile-avatar-small";
     if (user.photoURL) {
         const img = document.createElement("img");
         img.src = user.photoURL;
-        img.alt = user.displayName || "User Avatar";
-        avatarWrap.appendChild(img);
+        img.alt = user.displayName || "User";
+        avatar.appendChild(img);
     } else {
-        // Futuristic gamer avatar SVG
-        avatarWrap.innerHTML = `
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                <circle cx="12" cy="7" r="4"></circle>
-            </svg>
-        `;
+        avatar.textContent = "TG";
     }
 
-    const info = document.createElement("div");
-    info.className = "profile-info";
+    const details = document.createElement("div");
+    details.className = "profile-details";
 
-    const name = document.createElement("div");
-    name.className = "profile-name";
+    const name = document.createElement("span");
+    name.className = "profile-username";
     name.textContent = user.displayName || "TG Community Member";
 
-    const role = document.createElement("div");
-    role.className = "profile-role-tag";
-    role.innerHTML = `<span></span> ${user.isAnonymous ? "TG Community Member (Demo)" : "Verified Member"}`;
+    const tag = document.createElement("span");
+    tag.className = "profile-usertag";
+    tag.innerHTML = `<span></span> ${user.isAnonymous ? "Demo Member" : "Verified Member"}`;
 
-    info.appendChild(name);
-    info.appendChild(role);
+    details.appendChild(name);
+    details.appendChild(tag);
+    userGroup.appendChild(avatar);
+    userGroup.appendChild(details);
 
     const logoutBtn = document.createElement("button");
-    logoutBtn.className = "logout-btn";
+    logoutBtn.className = "profile-logout-btn";
     logoutBtn.type = "button";
     logoutBtn.innerHTML = `
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
             <polyline points="16 17 21 12 16 7"></polyline>
             <line x1="21" y1="12" x2="9" y2="12"></line>
@@ -164,18 +171,21 @@ function renderProfile(user) {
     `;
     logoutBtn.addEventListener("click", handleLogout);
 
-    profileRoot.appendChild(avatarWrap);
-    profileRoot.appendChild(info);
+    profileRoot.appendChild(userGroup);
     profileRoot.appendChild(logoutBtn);
 }
 
-// Render Local / Seed Posts
+// Render Local / Seed Post
 function renderLocalPost(postData, user) {
     const card = document.createElement("article");
     card.className = "community-post-card";
 
+    // Header
     const header = document.createElement("div");
     header.className = "post-header";
+
+    const headerLeft = document.createElement("div");
+    headerLeft.className = "post-header-left";
 
     const avatar = document.createElement("div");
     avatar.className = "post-avatar";
@@ -185,16 +195,24 @@ function renderLocalPost(postData, user) {
     meta.className = "post-meta";
 
     const author = document.createElement("strong");
-    author.textContent = postData.author || "TOTAL GAMING ESPORTS";
+    author.innerHTML = `${postData.author || "TOTAL GAMING ESPORTS"} <svg viewBox="0 0 24 24" width="14" height="14" fill="#00eaff"><path d="m10 15.586-3.293-3.293-1.414 1.414L10 18.414l9.707-9.707-1.414-1.414z"/></svg>`;
 
-    const timeSpan = document.createElement("span");
-    timeSpan.textContent = formatDate(postData.createdAt);
+    const sub = document.createElement("span");
+    sub.textContent = "Official TG Community";
 
     meta.appendChild(author);
-    meta.appendChild(timeSpan);
-    header.appendChild(avatar);
-    header.appendChild(meta);
+    meta.appendChild(sub);
+    headerLeft.appendChild(avatar);
+    headerLeft.appendChild(meta);
 
+    const timeSpan = document.createElement("span");
+    timeSpan.className = "post-time";
+    timeSpan.textContent = postData.timeAgo || formatTimeAgo(postData.createdAt);
+
+    header.appendChild(headerLeft);
+    header.appendChild(timeSpan);
+
+    // Title & Body
     const title = document.createElement("h2");
     title.className = "post-title";
     title.textContent = postData.title;
@@ -203,48 +221,50 @@ function renderLocalPost(postData, user) {
     body.className = "post-body";
     body.textContent = postData.text;
 
-    // Likes & Actions
-    const actions = document.createElement("div");
-    actions.className = "post-actions";
+    // Likes & Comments Action Bar
+    const actionBar = document.createElement("div");
+    actionBar.className = "post-action-bar";
 
     const likeButton = document.createElement("button");
+    likeButton.className = "post-like-btn";
     likeButton.type = "button";
 
     const localLikesKey = `tg_likes_${postData.id}`;
     let userLiked = localStorage.getItem(`${localLikesKey}_${user.uid}`) === "true";
     let likesCount = postData.likesCount + (userLiked ? 1 : 0);
 
-    function updateLikeBtn() {
-        likeButton.innerHTML = `<span>${userLiked ? "❤️" : "🤍"}</span> Like (${likesCount})`;
+    function updatePostLikeUI() {
+        likeButton.innerHTML = `<span>${userLiked ? "❤️" : "🤍"}</span> ${likesCount} Likes`;
         likeButton.classList.toggle("liked", userLiked);
     }
-    updateLikeBtn();
+    updatePostLikeUI();
 
     likeButton.addEventListener("click", () => {
         userLiked = !userLiked;
         likesCount += userLiked ? 1 : -1;
         localStorage.setItem(`${localLikesKey}_${user.uid}`, userLiked ? "true" : "false");
-        updateLikeBtn();
+        updatePostLikeUI();
     });
 
-    const commentSummary = document.createElement("span");
-    commentSummary.className = "comment-summary";
-    commentSummary.textContent = "💬 Community Discussion";
+    const commentsBadge = document.createElement("button");
+    commentsBadge.className = "post-comments-badge";
+    commentsBadge.type = "button";
 
-    actions.appendChild(likeButton);
-    actions.appendChild(commentSummary);
+    actionBar.appendChild(likeButton);
+    actionBar.appendChild(commentsBadge);
 
     // Comments Section
     const commentsSec = document.createElement("section");
-    commentsSec.className = "post-comments";
+    commentsSec.className = "post-comments-section";
 
     const commentsTitle = document.createElement("h3");
+    commentsTitle.className = "comments-title";
     commentsTitle.textContent = "COMMENTS";
 
     const commentList = document.createElement("div");
     commentList.className = "comment-list";
 
-    // Load local comments
+    // Load saved local comments
     const savedCommentsKey = `tg_comments_${postData.id}`;
     let savedComments = [];
     try {
@@ -255,65 +275,146 @@ function renderLocalPost(postData, user) {
 
     const allComments = [...(postData.initialComments || []), ...savedComments];
 
+    function updateCommentsBadge() {
+        commentsBadge.innerHTML = `<span>💬</span> ${allComments.length} Comments`;
+    }
+    updateCommentsBadge();
+
+    // Render Comments List
     function renderCommentList() {
         commentList.innerHTML = "";
         if (allComments.length === 0) {
             const empty = document.createElement("p");
-            empty.className = "comment-empty";
+            empty.className = "comment-empty-msg";
             empty.textContent = "Be the first to comment.";
             commentList.appendChild(empty);
             return;
         }
 
         allComments.forEach(c => {
-            const el = document.createElement("article");
-            el.className = "comment";
-            el.innerHTML = `
-                <div class="comment-header">
-                    <strong>${c.displayName || "TG Community Member"}</strong>
-                    <time>${formatDate(c.createdAt)}</time>
-                </div>
-                <p>${c.text}</p>
-            `;
-            commentList.appendChild(el);
+            const item = document.createElement("article");
+            item.className = "comment-item";
+
+            const cAvatar = document.createElement("div");
+            cAvatar.className = "comment-avatar";
+            cAvatar.textContent = (c.displayName || "U").substring(0, 2).toUpperCase();
+
+            const cBodyWrap = document.createElement("div");
+            cBodyWrap.className = "comment-body-wrap";
+
+            const topRow = document.createElement("div");
+            topRow.className = "comment-top-row";
+
+            const cAuthor = document.createElement("strong");
+            cAuthor.className = "comment-author";
+            cAuthor.textContent = c.displayName || "TG Community Member";
+
+            const cTime = document.createElement("span");
+            cTime.className = "comment-timestamp";
+            cTime.textContent = c.timeAgo || formatTimeAgo(c.createdAt);
+
+            topRow.appendChild(cAuthor);
+            topRow.appendChild(cTime);
+
+            const cText = document.createElement("p");
+            cText.className = "comment-text";
+            cText.textContent = c.text;
+
+            // Comment Action Row (Like & Reply)
+            const actionsRow = document.createElement("div");
+            actionsRow.className = "comment-actions-row";
+
+            const cLikeBtn = document.createElement("button");
+            cLikeBtn.className = "comment-like-action";
+            cLikeBtn.type = "button";
+            
+            const commentLikeKey = `tg_clike_${c.id}_${user.uid}`;
+            let commentLiked = localStorage.getItem(commentLikeKey) === "true";
+            let commentLikesCount = (c.likesCount || 0) + (commentLiked ? 1 : 0);
+
+            function updateCommentLikeUI() {
+                cLikeBtn.innerHTML = `<span>${commentLiked ? "❤️" : "♡"}</span> Like${commentLikesCount > 0 ? ` (${commentLikesCount})` : ""}`;
+                cLikeBtn.classList.toggle("liked", commentLiked);
+            }
+            updateCommentLikeUI();
+
+            cLikeBtn.addEventListener("click", () => {
+                commentLiked = !commentLiked;
+                commentLikesCount += commentLiked ? 1 : -1;
+                localStorage.setItem(commentLikeKey, commentLiked ? "true" : "false");
+                updateCommentLikeUI();
+            });
+
+            const cReplyBtn = document.createElement("button");
+            cReplyBtn.className = "comment-reply-action";
+            cReplyBtn.type = "button";
+            cReplyBtn.textContent = "Reply";
+            cReplyBtn.addEventListener("click", () => {
+                inputField.value = `@${c.displayName} `;
+                inputField.focus();
+            });
+
+            actionsRow.appendChild(cLikeBtn);
+            actionsRow.appendChild(cReplyBtn);
+
+            cBodyWrap.appendChild(topRow);
+            cBodyWrap.appendChild(cText);
+            cBodyWrap.appendChild(actionsRow);
+
+            item.appendChild(cAvatar);
+            item.appendChild(cBodyWrap);
+            commentList.appendChild(item);
         });
     }
     renderCommentList();
 
-    // Comment Form
+    // Modern Chat-Style Input Box
     const form = document.createElement("form");
-    form.className = "comment-form";
+    form.className = "comment-input-wrap";
 
-    const input = document.createElement("input");
-    input.type = "text";
-    input.maxLength = 280;
-    input.required = true;
-    input.placeholder = "Write a comment as " + (user.displayName || "TG Member") + "...";
+    const inputField = document.createElement("input");
+    inputField.type = "text";
+    inputField.className = "comment-input-field";
+    inputField.maxLength = 280;
+    inputField.required = true;
+    inputField.placeholder = "Write a comment...";
 
-    const submitBtn = document.createElement("button");
-    submitBtn.type = "submit";
-    submitBtn.textContent = "POST COMMENT";
+    const sendBtn = document.createElement("button");
+    sendBtn.type = "submit";
+    sendBtn.className = "comment-send-btn";
+    sendBtn.setAttribute("aria-label", "Send comment");
+    sendBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden="true">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+    `;
 
-    form.appendChild(input);
-    form.appendChild(submitBtn);
+    form.appendChild(inputField);
+    form.appendChild(sendBtn);
+
+    // Focus input when comment badge is clicked
+    commentsBadge.addEventListener("click", () => {
+        inputField.focus();
+    });
 
     form.addEventListener("submit", (e) => {
         e.preventDefault();
-        const text = input.value.trim();
+        const text = inputField.value.trim();
         if (!text) return;
 
         const lastComment = Number(localStorage.getItem("tg-last-comment") || 0);
         if (Date.now() - lastComment < COMMENT_COOLDOWN_MS) {
-            input.setCustomValidity("Please wait a few seconds before posting another comment.");
-            input.reportValidity();
+            inputField.placeholder = "Please wait a few seconds...";
+            setTimeout(() => { inputField.placeholder = "Write a comment..."; }, 2500);
             return;
         }
-        input.setCustomValidity("");
 
         const newComment = {
-            id: "cmt-" + Date.now(),
+            id: "cmt_" + Date.now(),
             displayName: user.displayName || "TG Community Member",
             text: text,
+            likesCount: 0,
+            timeAgo: "Just now",
             createdAt: new Date()
         };
 
@@ -323,7 +424,8 @@ function renderLocalPost(postData, user) {
         localStorage.setItem("tg-last-comment", String(Date.now()));
 
         renderCommentList();
-        input.value = "";
+        updateCommentsBadge();
+        inputField.value = "";
     });
 
     commentsSec.appendChild(commentsTitle);
@@ -333,197 +435,8 @@ function renderLocalPost(postData, user) {
     card.appendChild(header);
     card.appendChild(title);
     card.appendChild(body);
-    card.appendChild(actions);
+    card.appendChild(actionBar);
     card.appendChild(commentsSec);
-
-    return card;
-}
-
-// Render Firestore Post (when Firestore is active)
-function renderFirestorePost(postSnapshot, user) {
-    const post = postSnapshot.data();
-    const card = document.createElement("article");
-    card.className = "community-post-card";
-
-    const header = document.createElement("div");
-    header.className = "post-header";
-
-    const avatar = document.createElement("div");
-    avatar.className = "post-avatar";
-    avatar.textContent = "TG";
-
-    const meta = document.createElement("div");
-    meta.className = "post-meta";
-
-    const author = document.createElement("strong");
-    author.textContent = post.author || "TOTAL GAMING ESPORTS";
-
-    const created = document.createElement("span");
-    created.textContent = formatDate(post.createdAt);
-
-    meta.appendChild(author);
-    meta.appendChild(created);
-    header.appendChild(avatar);
-    header.appendChild(meta);
-
-    if (isAdmin(user)) {
-        const remove = document.createElement("button");
-        remove.className = "post-remove";
-        remove.type = "button";
-        remove.textContent = "DELETE";
-        remove.addEventListener("click", async () => {
-            if (confirm("Delete this update?")) {
-                await deleteDoc(doc(db, "posts", postSnapshot.id));
-            }
-        });
-        header.appendChild(remove);
-    }
-
-    const title = document.createElement("h2");
-    title.className = "post-title";
-    title.textContent = post.title || "TG ESPORTS UPDATE";
-
-    const body = document.createElement("p");
-    body.className = "post-body";
-    body.textContent = post.text || "";
-
-    const actions = document.createElement("div");
-    actions.className = "post-actions";
-
-    const likeButton = document.createElement("button");
-    likeButton.type = "button";
-
-    const likesRef = collection(db, "posts", postSnapshot.id, "likes");
-    const commentsRef = collection(db, "posts", postSnapshot.id, "comments");
-
-    const updateLikes = () => onSnapshot(likesRef, snapshot => {
-        const isLiked = snapshot.docs.some(item => item.id === user.uid);
-        likeButton.innerHTML = `<span>${isLiked ? "❤️" : "🤍"}</span> Like (${snapshot.size})`;
-        likeButton.classList.toggle("liked", isLiked);
-    }, () => {
-        likeButton.innerHTML = `<span>🤍</span> Like`;
-    });
-
-    try {
-        const unsubscribeLikes = updateLikes();
-        postUnsubscribers.push(unsubscribeLikes);
-    } catch (e) {
-        likeButton.innerHTML = `<span>🤍</span> Like`;
-    }
-
-    likeButton.addEventListener("click", async () => {
-        try {
-            const likeRef = doc(likesRef, user.uid);
-            const existing = await getDoc(likeRef);
-            if (existing.exists()) {
-                await deleteDoc(likeRef);
-            } else {
-                await setDoc(likeRef, { uid: user.uid, createdAt: serverTimestamp() });
-            }
-        } catch (e) {
-            console.warn("Like operation handled locally:", e);
-        }
-    });
-
-    const commentSummary = document.createElement("span");
-    commentSummary.className = "comment-summary";
-    commentSummary.textContent = "💬 Comments";
-
-    actions.appendChild(likeButton);
-    actions.appendChild(commentSummary);
-
-    const comments = document.createElement("section");
-    comments.className = "post-comments";
-
-    const commentsHeading = document.createElement("h3");
-    commentsHeading.textContent = "COMMENTS";
-
-    const list = document.createElement("div");
-    list.className = "comment-list";
-
-    // Real-time Firestore Comments
-    const commentsQuery = query(collection(db, "posts", postSnapshot.id, "comments"), orderBy("createdAt", "asc"));
-    const unsubComments = onSnapshot(commentsQuery, snapshot => {
-        list.innerHTML = "";
-        if (snapshot.empty) {
-            const empty = document.createElement("p");
-            empty.className = "comment-empty";
-            empty.textContent = "Be the first to comment.";
-            list.appendChild(empty);
-            return;
-        }
-        snapshot.forEach(commentSnapshot => {
-            const comment = commentSnapshot.data();
-            const article = document.createElement("article");
-            article.className = "comment";
-            article.innerHTML = `
-                <div class="comment-header">
-                    <strong>${comment.displayName || "TG Community Member"}</strong>
-                    <time>${formatDate(comment.createdAt)}</time>
-                </div>
-                <p>${comment.text || ""}</p>
-            `;
-            list.appendChild(article);
-        });
-    }, () => {
-        list.textContent = "Comments are temporarily unavailable.";
-    });
-    postUnsubscribers.push(unsubComments);
-
-    const form = document.createElement("form");
-    form.className = "comment-form";
-
-    const input = document.createElement("input");
-    input.maxLength = 280;
-    input.required = true;
-    input.placeholder = "Write a comment...";
-
-    const submit = document.createElement("button");
-    submit.type = "submit";
-    submit.textContent = "POST COMMENT";
-
-    form.appendChild(input);
-    form.appendChild(submit);
-
-    form.addEventListener("submit", async event => {
-        event.preventDefault();
-        const text = input.value.trim();
-        if (!text || text.length > 280) return;
-
-        const lastComment = Number(localStorage.getItem("tg-last-comment") || 0);
-        if (Date.now() - lastComment < COMMENT_COOLDOWN_MS) {
-            input.setCustomValidity("Please wait a few seconds before posting another comment.");
-            input.reportValidity();
-            return;
-        }
-        input.setCustomValidity("");
-        submit.disabled = true;
-
-        try {
-            await addDoc(commentsRef, {
-                uid: user.uid,
-                displayName: user.displayName || "TG Community Member",
-                text,
-                createdAt: serverTimestamp()
-            });
-            localStorage.setItem("tg-last-comment", String(Date.now()));
-            input.value = "";
-        } catch (err) {
-            console.error("Comment submit error:", err);
-        } finally {
-            submit.disabled = false;
-        }
-    });
-
-    comments.appendChild(commentsHeading);
-    comments.appendChild(list);
-    comments.appendChild(form);
-
-    card.appendChild(header);
-    card.appendChild(title);
-    card.appendChild(body);
-    card.appendChild(actions);
-    card.appendChild(comments);
 
     return card;
 }
@@ -536,7 +449,6 @@ function loadPosts(user) {
     postsState.textContent = "Loading community updates...";
 
     if (!db) {
-        // Fallback to default posts
         postsState.hidden = true;
         DEFAULT_POSTS.forEach(post => postsRoot.appendChild(renderLocalPost(post, user)));
         return;
@@ -548,13 +460,16 @@ function loadPosts(user) {
             postsRoot.innerHTML = "";
             postsState.hidden = true;
             if (snapshot.empty) {
-                // If firestore is empty, show default posts
                 DEFAULT_POSTS.forEach(post => postsRoot.appendChild(renderLocalPost(post, user)));
                 return;
             }
-            snapshot.forEach(post => postsRoot.appendChild(renderFirestorePost(post, user)));
+            snapshot.forEach(post => {
+                const data = post.data();
+                data.id = post.id;
+                postsRoot.appendChild(renderLocalPost(data, user));
+            });
         }, error => {
-            console.warn("Firestore listener fallback to demo posts:", error);
+            console.warn("Firestore fallback to official posts:", error);
             postsState.hidden = true;
             postsRoot.innerHTML = "";
             DEFAULT_POSTS.forEach(post => postsRoot.appendChild(renderLocalPost(post, user)));
@@ -569,6 +484,10 @@ function loadPosts(user) {
 function showLoginGate() {
     clearPostListeners();
     currentUser = null;
+    if (hero) {
+        hero.hidden = false;
+        hero.removeAttribute("hidden");
+    }
     authModal.hidden = false;
     authModal.removeAttribute("hidden");
     content.hidden = true;
@@ -580,6 +499,10 @@ function showLoginGate() {
 
 function showCommunityContent(user) {
     currentUser = user;
+    if (hero) {
+        hero.hidden = true;
+        hero.setAttribute("hidden", "");
+    }
     authModal.hidden = true;
     authModal.setAttribute("hidden", "");
     content.hidden = false;
@@ -590,6 +513,7 @@ function showCommunityContent(user) {
 
 // Authentication Handlers
 function handleLogout() {
+    localStorage.removeItem(DEMO_STORAGE_KEY);
     sessionStorage.removeItem(DEMO_STORAGE_KEY);
     if (auth) {
         signOut(auth).catch(() => {});
@@ -616,13 +540,12 @@ demoSignInBtn.addEventListener("click", async () => {
         photoURL: ""
     };
 
-    // Save session locally
-    sessionStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(demoUser));
+    // Save session in localStorage (persistent across reloads and tab navigation)
+    localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(demoUser));
 
-    // Also attempt Firebase Anonymous Auth if available
     if (auth) {
         try {
-            await setPersistence(auth, browserSessionPersistence);
+            await setPersistence(auth, browserLocalPersistence);
             await signInAnonymously(auth);
         } catch (e) {
             console.info("Proceeding with local demo session:", e);
@@ -632,8 +555,7 @@ demoSignInBtn.addEventListener("click", async () => {
     showCommunityContent(demoUser);
 });
 
-// Close Button Handling (Return to previous page or index.html)
-const modalCloseBtn = document.getElementById("modalCloseBtn");
+// Close Button (Return to previous page or index.html)
 if (modalCloseBtn) {
     modalCloseBtn.addEventListener("click", () => {
         if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
@@ -646,15 +568,15 @@ if (modalCloseBtn) {
 
 // Initialize Auth State on Page Load
 function initAuth() {
-    // 1. Check if demo session is already active in this tab
-    const savedDemo = sessionStorage.getItem(DEMO_STORAGE_KEY);
-    if (savedDemo) {
+    // 1. Check if user session is saved in localStorage
+    const savedUser = localStorage.getItem(DEMO_STORAGE_KEY) || sessionStorage.getItem(DEMO_STORAGE_KEY);
+    if (savedUser) {
         try {
-            const user = JSON.parse(savedDemo);
+            const user = JSON.parse(savedUser);
             showCommunityContent(user);
             return;
         } catch (e) {
-            sessionStorage.removeItem(DEMO_STORAGE_KEY);
+            localStorage.removeItem(DEMO_STORAGE_KEY);
         }
     }
 
@@ -669,8 +591,9 @@ function initAuth() {
                     photoURL: user.photoURL || "",
                     isAnonymous: user.isAnonymous
                 };
+                localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(activeUser));
                 showCommunityContent(activeUser);
-            } else if (!sessionStorage.getItem(DEMO_STORAGE_KEY)) {
+            } else if (!localStorage.getItem(DEMO_STORAGE_KEY)) {
                 showLoginGate();
             }
         });

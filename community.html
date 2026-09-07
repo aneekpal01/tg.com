@@ -59,7 +59,8 @@
      COMMUNITY MAIN
 ========================= -->
 <main class="community-main">
-<section class="community-hero">
+<!-- Logged-Out Hero (Only shown when not logged in) -->
+<section class="community-hero" id="communityHero">
 <div class="community-eyebrow"><span></span> TG ESPORTS COMMUNITY HUB</div>
 <h1>JOIN THE <strong>COMMUNITY</strong></h1>
 <p>Connect with the Total Gaming family, follow official esports updates, and interact with fellow fans.</p>
@@ -122,15 +123,26 @@
 </div>
 
 <!-- =========================
-     COMMUNITY CONTENT (GATED)
+     COMMUNITY CONTENT (LOGGED IN)
 ========================= -->
 <div class="community-content" id="communityContent" hidden>
-<!-- Logged In User Profile Bar -->
-<div class="community-profile" id="communityProfile"></div>
+  <!-- Compact Logged In Profile Bar -->
+  <div class="community-profile-bar" id="communityProfile"></div>
 
-<!-- Community Posts State & List -->
-<div class="community-state" id="postsState">Loading community updates...</div>
-<div class="community-posts" id="communityPosts"></div>
+  <!-- Feed Header -->
+  <div class="community-feed-header">
+    <div class="feed-header-left">
+      <div class="feed-live-badge"><span></span> LIVE FEED</div>
+      <h2>TG <strong>COMMUNITY</strong></h2>
+    </div>
+    <div class="feed-header-right">
+      <span class="feed-tagline">Official Esports Updates &amp; Discussions</span>
+    </div>
+  </div>
+
+  <!-- Community Posts State & List -->
+  <div class="community-state" id="postsState">Loading community updates...</div>
+  <div class="community-posts" id="communityPosts"></div>
 </div>
 </section>
 </main>
