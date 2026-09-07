@@ -249,16 +249,17 @@ adminUpdatesBtn.addEventListener(
             "show"
         );
 
-        adminLoginBtn.addEventListener(
-            "click",
-            () => {
+    }
+);
 
-                menuPanel.classList.remove("show");
-                menuBtn.setAttribute("aria-expanded", "false");
-                loginModal.classList.add("show");
 
-            }
-        );
+adminLoginBtn.addEventListener(
+    "click",
+    () => {
+
+        menuPanel.classList.remove("show");
+        menuBtn.setAttribute("aria-expanded", "false");
+        loginModal.classList.add("show");
 
     }
 );
