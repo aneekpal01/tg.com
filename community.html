@@ -12,6 +12,9 @@
 <link rel="icon" href="tg-logo.png" type="image/png"/>
 </head>
 <body class="tg-site community-page">
+<!-- =========================
+     NAVBAR
+========================= -->
 <nav class="navbar">
 <a class="logo" href="index.html" aria-label="Total Gaming Esports home">
 <img class="logo-img" src="tg-logo.png" alt="Total Gaming Logo"/>
@@ -52,33 +55,71 @@
 <button class="menu-login-btn" type="button">ADMIN LOGIN</button>
 </div>
 
+<!-- =========================
+     COMMUNITY MAIN
+========================= -->
 <main class="community-main">
 <section class="community-hero">
 <div class="community-eyebrow"><span></span> TG ESPORTS COMMUNITY HUB</div>
 <h1>JOIN THE <strong>COMMUNITY</strong></h1>
-<p>Connect with the Total Gaming family, follow official updates and share the moments that keep TG moving forward.</p>
+<p>Connect with the Total Gaming family, follow official esports updates, and interact with fellow fans.</p>
 </section>
 
 <section class="community-shell" aria-live="polite">
+<!-- =========================
+     COMMUNITY AUTH MODAL
+========================= -->
 <div class="community-auth-modal" id="communityAuthModal" role="dialog" aria-modal="true" aria-labelledby="communityLoginTitle">
-<div class="community-login" id="communityLogin">
-<div class="community-login-mark">TG</div>
-<p class="community-kicker">TOTAL GAMING ESPORTS</p>
-<h2 id="communityLoginTitle">WELCOME TO TG COMMUNITY</h2>
-<p>Sign in to join the TG Community.</p>
-<button class="google-signin" id="googleSignIn" type="button">
-<span class="google-mark">G</span> Continue with Google
-</button>
-<button class="demo-signin" id="demoSignIn" type="button">
-<span class="demo-mark">TG</span> Demo Login
-</button>
-<small>Your Google account is used only to securely authenticate your community account.</small>
-<p class="community-message" id="authMessage" role="alert"></p>
+<div class="community-login-card" id="communityLogin">
+  <div class="modal-brand">
+    <div class="modal-logo-wrap">
+      <img src="tg-logo.png" alt="TG" class="modal-logo-img"/>
+    </div>
+    <span class="modal-kicker">TOTAL GAMING ESPORTS</span>
+  </div>
+
+  <h2 id="communityLoginTitle" class="modal-title">Welcome to TG Community</h2>
+  <p class="modal-subtitle">Sign in to join the TG Community</p>
+
+  <!-- Google Sign-In Button -->
+  <button class="google-signin-btn" id="googleSignIn" type="button">
+    <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+      <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17Z"/>
+      <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24Z"/>
+      <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.16 0 9.97 0 12s.45 3.84 1.25 5.42l4.03-3.15Z"/>
+      <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/>
+    </svg>
+    <span>Continue with Google</span>
+  </button>
+
+  <div class="modal-divider">
+    <span>or</span>
+  </div>
+
+  <!-- Demo Login Button -->
+  <button class="demo-signin-btn" id="demoSignIn" type="button">
+    <svg class="demo-icon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+    </svg>
+    <span>Demo Login</span>
+    <span class="demo-badge">DEV</span>
+  </button>
+
+  <p class="demo-note">Temporary development session &bull; One-click access</p>
+
+  <!-- Auth Feedback Toast / Alert -->
+  <div class="auth-feedback" id="authMessage" role="status" aria-live="polite"></div>
 </div>
 </div>
 
+<!-- =========================
+     COMMUNITY CONTENT (GATED)
+========================= -->
 <div class="community-content" id="communityContent" hidden>
+<!-- Logged In User Profile Bar -->
 <div class="community-profile" id="communityProfile"></div>
+
+<!-- Community Posts State & List -->
 <div class="community-state" id="postsState">Loading community updates...</div>
 <div class="community-posts" id="communityPosts"></div>
 </div>
