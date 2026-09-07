@@ -1,11 +1,16 @@
 /* ==========================================================================
-   TG ESPORTS COMMUNITY — STYLES & AUTH GATE
+   TG ESPORTS COMMUNITY — COMPLETE STYLES & PREMIUM AUTH MODAL
    ========================================================================== */
+
+* {
+  box-sizing: border-box;
+}
 
 .community-page {
   min-height: 100vh;
   background: #070812;
   color: #eef2ff;
+  font-family: "Poppins", sans-serif;
 }
 
 .community-main {
@@ -23,13 +28,6 @@
   text-align: center;
 }
 
-.community-eyebrow,
-.modal-kicker {
-  font: 600 11px "Orbitron", sans-serif;
-  letter-spacing: 2.6px;
-  color: #00eaff;
-}
-
 .community-eyebrow {
   display: inline-flex;
   align-items: center;
@@ -38,6 +36,9 @@
   border: 1px solid rgba(0, 234, 255, 0.24);
   border-radius: 999px;
   background: rgba(0, 234, 255, 0.06);
+  font: 600 11px "Orbitron", sans-serif;
+  letter-spacing: 2.6px;
+  color: #00eaff;
 }
 
 .community-eyebrow span {
@@ -76,55 +77,66 @@
 }
 
 /* ==========================================================================
-   AUTH MODAL & BACKDROP (GATE)
+   PREMIUM AUTH MODAL OVERLAY & POPUP
    ========================================================================== */
 
 .community-auth-modal {
   position: fixed;
-  inset: 0;
-  z-index: 3000;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 9999;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
-  background: rgba(2, 5, 20, 0.65);
-  backdrop-filter: blur(6px);
-  -webkit-backdrop-filter: blur(6px);
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 0.3s ease, visibility 0.3s ease;
+  background: rgba(2, 5, 20, 0.78);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  animation: authOverlayFade 0.25s ease-out forwards;
 }
 
 .community-auth-modal[hidden] {
   display: none !important;
-  opacity: 0;
-  visibility: hidden;
+}
+
+@keyframes authOverlayFade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 /* Login Modal Card */
 .community-login-card {
-  width: min(100%, 410px);
-  padding: 38px 28px;
-  border-radius: 22px;
-  background: linear-gradient(145deg, rgba(16, 13, 40, 0.94), rgba(7, 16, 36, 0.96));
-  border: 1px solid rgba(145, 126, 222, 0.25);
-  box-shadow: 
-    0 25px 65px rgba(0, 0, 0, 0.65),
-    0 0 35px rgba(141, 39, 255, 0.16),
-    0 0 16px rgba(0, 234, 255, 0.12),
-    inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  text-align: center;
   position: relative;
+  width: 100%;
+  max-width: 460px;
+  padding: 40px 36px;
+  border-radius: 24px;
+  background: linear-gradient(160deg, rgba(17, 13, 44, 0.96), rgba(7, 16, 38, 0.98));
+  border: 1px solid rgba(0, 234, 255, 0.3);
+  box-shadow: 
+    0 25px 65px rgba(0, 0, 0, 0.8),
+    0 0 45px rgba(141, 39, 255, 0.28),
+    0 0 20px rgba(0, 234, 255, 0.18),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  text-align: center;
+  animation: authCardPop 0.28s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   overflow: hidden;
-  animation: modalEnter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@keyframes modalEnter {
+@keyframes authCardPop {
   from {
     opacity: 0;
-    transform: scale(0.94) translateY(12px);
+    transform: scale(0.95) translateY(14px);
   }
   to {
     opacity: 1;
@@ -132,103 +144,136 @@
   }
 }
 
-.modal-brand {
+/* Close Button (×) */
+.modal-close-btn {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #a0aec0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding: 0;
+  outline: none;
+}
+
+.modal-close-btn:hover {
+  background: rgba(255, 60, 95, 0.22);
+  border-color: rgba(255, 60, 95, 0.65);
+  color: #ffffff;
+  transform: rotate(90deg);
+}
+
+/* Logo & Brand Kicker */
+.modal-logo-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
+  gap: 8px;
+  margin-bottom: 14px;
 }
 
-.modal-logo-wrap {
-  width: 54px;
-  height: 54px;
-  border-radius: 16px;
-  display: grid;
-  place-items: center;
-  background: linear-gradient(135deg, rgba(0, 234, 255, 0.12), rgba(141, 39, 255, 0.2));
-  border: 1px solid rgba(0, 234, 255, 0.35);
-  box-shadow: 0 0 20px rgba(0, 234, 255, 0.2);
+.modal-logo-badge {
+  width: 58px;
+  height: 58px;
+  border-radius: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(0, 234, 255, 0.15), rgba(141, 39, 255, 0.25));
+  border: 1.5px solid rgba(0, 234, 255, 0.45);
+  box-shadow: 0 0 22px rgba(0, 234, 255, 0.28);
 }
 
 .modal-logo-img {
-  width: 36px;
-  height: 36px;
+  width: 38px;
+  height: 38px;
   object-fit: contain;
 }
 
 .modal-kicker {
-  font-size: 10px;
-  letter-spacing: 2.2px;
+  font-family: "Orbitron", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  color: #00eaff;
   text-transform: uppercase;
 }
 
+/* Title & Subtitle */
 .modal-title {
-  margin: 6px 0 6px;
-  font: 700 21px / 1.2 "Orbitron", sans-serif;
+  font-family: "Orbitron", sans-serif;
+  font-size: 21px;
+  font-weight: 800;
   color: #ffffff;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
+  margin: 0 0 8px 0;
+  line-height: 1.25;
 }
 
 .modal-subtitle {
-  color: #a3b1cc;
-  font-size: 13.5px;
-  margin-bottom: 24px;
+  font-family: "Poppins", sans-serif;
+  font-size: 14px;
+  color: #a8b4cc;
+  margin: 0 0 26px 0;
   line-height: 1.5;
 }
 
-/* ==========================================================================
-   LOGIN BUTTONS
-   ========================================================================== */
-
-.google-signin-btn,
-.demo-signin-btn {
+/* Google Sign-In Button */
+.btn-google {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 12px;
   width: 100%;
-  min-height: 50px;
-  padding: 0 18px;
-  border-radius: 12px;
-  font: 600 14px "Poppins", sans-serif;
+  height: 50px;
+  border-radius: 14px;
+  background: #ffffff;
+  color: #1a202c;
+  border: 1px solid rgba(255, 255, 255, 0.95);
+  font-family: "Poppins", sans-serif;
+  font-size: 14.5px;
+  font-weight: 600;
   cursor: pointer;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
   transition: all 0.22s ease;
   user-select: none;
-  -webkit-tap-highlight-color: transparent;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
 }
 
-/* Google Button */
-.google-signin-btn {
-  background: #ffffff;
-  color: #1f2937;
-  border: 1px solid rgba(255, 255, 255, 0.9);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.25);
-}
-
-.google-signin-btn:hover {
+.btn-google:hover {
   transform: translateY(-2px);
   background: #f8faff;
-  box-shadow: 0 8px 22px rgba(0, 0, 0, 0.35), 0 0 16px rgba(255, 255, 255, 0.3);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(255, 255, 255, 0.3);
 }
 
-.google-signin-btn:active {
+.btn-google:active {
   transform: translateY(0);
 }
 
-.google-icon {
+.google-svg-icon {
   flex-shrink: 0;
 }
 
-/* Divider */
+/* Divider (OR) */
 .modal-divider {
   display: flex;
   align-items: center;
   margin: 18px 0;
-  color: #72809d;
-  font: 600 11px "Orbitron", sans-serif;
-  text-transform: uppercase;
-  letter-spacing: 1.5px;
+  color: #718096;
+  font-family: "Orbitron", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
 }
 
 .modal-divider::before,
@@ -236,78 +281,88 @@
   content: "";
   flex: 1;
   height: 1px;
-  background: rgba(145, 126, 222, 0.2);
+  background: rgba(145, 126, 222, 0.25);
 }
 
 .modal-divider span {
-  padding: 0 12px;
+  padding: 0 14px;
 }
 
-/* Demo Sign-In Button */
-.demo-signin-btn {
-  background: linear-gradient(135deg, rgba(0, 234, 255, 0.16), rgba(141, 39, 255, 0.28));
-  border: 1px solid rgba(0, 234, 255, 0.45);
+/* Demo Login Button */
+.btn-demo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  height: 50px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #0088ff 0%, #8d27ff 50%, #ff0077 100%);
   color: #ffffff;
-  position: relative;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  font-family: "Poppins", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 6px 20px rgba(141, 39, 255, 0.35);
+  transition: all 0.22s ease;
+  user-select: none;
+  -webkit-appearance: none;
+  appearance: none;
+  outline: none;
 }
 
-.demo-signin-btn:hover {
+.btn-demo:hover {
   transform: translateY(-2px);
-  border-color: rgba(0, 234, 255, 0.85);
-  background: linear-gradient(135deg, rgba(0, 234, 255, 0.26), rgba(141, 39, 255, 0.38));
-  box-shadow: 0 8px 24px rgba(0, 234, 255, 0.25), 0 0 15px rgba(141, 39, 255, 0.3);
+  box-shadow: 
+    0 10px 28px rgba(141, 39, 255, 0.5),
+    0 0 25px rgba(0, 234, 255, 0.4);
+  filter: brightness(1.1);
 }
 
-.demo-signin-btn:active {
+.btn-demo:active {
   transform: translateY(0);
 }
 
-.demo-signin-btn:disabled {
+.btn-demo:disabled {
   opacity: 0.6;
   cursor: wait;
 }
 
-.demo-icon {
-  color: #00eaff;
-  filter: drop-shadow(0 0 6px #00eaff);
+.btn-demo-icon {
+  font-size: 18px;
 }
 
-.demo-badge {
-  font: 700 9px "Orbitron", sans-serif;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: rgba(0, 234, 255, 0.2);
-  border: 1px solid rgba(0, 234, 255, 0.4);
-  color: #00eaff;
-  letter-spacing: 0.8px;
-  margin-left: auto;
-}
-
-.demo-note {
-  margin-top: 14px;
-  color: #7b8aa6;
-  font-size: 11.5px;
-  line-height: 1.5;
+/* Footnote Note */
+.modal-footnote {
+  margin-top: 20px;
+  margin-bottom: 0;
+  color: #8795b2;
+  font-family: "Poppins", sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
 }
 
 /* Feedback message */
 .auth-feedback {
-  min-height: 20px;
-  margin-top: 12px;
-  font-size: 12.5px;
+  min-height: 0;
+  margin-top: 0;
+  font-family: "Poppins", sans-serif;
+  font-size: 13px;
   color: #00eaff;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
 }
 
 .auth-feedback.alert {
-  padding: 8px 12px;
-  border-radius: 8px;
-  background: rgba(0, 234, 255, 0.08);
-  border: 1px solid rgba(0, 234, 255, 0.25);
-  animation: fadeIn 0.2s ease;
+  margin-top: 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(0, 234, 255, 0.1);
+  border: 1px solid rgba(0, 234, 255, 0.35);
+  animation: fadeInMsg 0.2s ease;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInMsg {
   from { opacity: 0; transform: translateY(4px); }
   to { opacity: 1; transform: translateY(0); }
 }
@@ -342,8 +397,9 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(135deg, rgba(0, 234, 255, 0.2), rgba(141, 39, 255, 0.35));
   border: 1.5px solid rgba(0, 234, 255, 0.5);
   box-shadow: 0 0 14px rgba(0, 234, 255, 0.25);
@@ -400,6 +456,7 @@
   font: 600 12px "Poppins", sans-serif;
   cursor: pointer;
   transition: all 0.2s ease;
+  outline: none;
 }
 
 .logout-btn:hover {
@@ -442,8 +499,9 @@
 }
 
 .post-avatar {
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -482,6 +540,7 @@
   border-radius: 6px;
   cursor: pointer;
   transition: 0.2s;
+  outline: none;
 }
 
 .post-remove:hover {
@@ -525,6 +584,7 @@
   transition: all 0.2s ease;
   padding: 6px 10px;
   border-radius: 8px;
+  outline: none;
 }
 
 .post-actions button:hover {
@@ -617,6 +677,7 @@
   background: rgba(0, 0, 0, 0.3);
   outline: 0;
   font-size: 13px;
+  font-family: inherit;
   transition: border-color 0.2s ease;
 }
 
@@ -636,6 +697,7 @@
   font: 600 11.5px "Orbitron", sans-serif;
   letter-spacing: 0.5px;
   transition: all 0.2s ease;
+  outline: none;
 }
 
 .comment-form button:hover {
@@ -652,7 +714,7 @@
    MOBILE RESPONSIVENESS
    ========================================================================== */
 
-@media (max-width: 768px) {
+@media (max-width: 480px) {
   .community-main {
     padding: 110px 16px 60px;
   }
@@ -676,19 +738,24 @@
 
   .community-login-card {
     width: calc(100% - 16px);
-    max-width: 380px;
+    max-width: 400px;
     padding: 30px 20px;
     border-radius: 20px;
   }
 
   .modal-title {
-    font-size: 19px;
+    font-size: 18.5px;
   }
 
-  .google-signin-btn,
-  .demo-signin-btn {
-    min-height: 48px;
-    font-size: 13.5px;
+  .modal-subtitle {
+    font-size: 13px;
+    margin-bottom: 22px;
+  }
+
+  .btn-google,
+  .btn-demo {
+    height: 48px;
+    font-size: 14px;
   }
 
   .community-profile {
@@ -729,14 +796,14 @@ body.light-theme .community-main {
 }
 
 body.light-theme .community-auth-modal {
-  background: rgba(215, 222, 238, 0.68);
+  background: rgba(215, 222, 238, 0.75);
 }
 
 body.light-theme .community-login-card,
 body.light-theme .community-profile,
 body.light-theme .community-post-card {
   border-color: rgba(84, 71, 159, 0.2);
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(230, 236, 250, 0.92));
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(230, 236, 250, 0.94));
   box-shadow: 0 18px 45px rgba(64, 71, 120, 0.12);
 }
 
@@ -771,4 +838,5 @@ body.light-theme .comment-form input {
   background: rgba(255, 255, 255, 0.7);
   border-color: rgba(84, 71, 159, 0.24);
 }
+
 

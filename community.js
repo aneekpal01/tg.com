@@ -632,6 +632,18 @@ demoSignInBtn.addEventListener("click", async () => {
     showCommunityContent(demoUser);
 });
 
+// Close Button Handling (Return to previous page or index.html)
+const modalCloseBtn = document.getElementById("modalCloseBtn");
+if (modalCloseBtn) {
+    modalCloseBtn.addEventListener("click", () => {
+        if (window.history.length > 1 && document.referrer && document.referrer.includes(window.location.host)) {
+            window.history.back();
+        } else {
+            window.location.href = "index.html";
+        }
+    });
+}
+
 // Initialize Auth State on Page Load
 function initAuth() {
     // 1. Check if demo session is already active in this tab
