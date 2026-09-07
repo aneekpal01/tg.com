@@ -3250,6 +3250,40 @@ nav .admin-update-btn{
         }
     }
 
+    @media (max-width:768px){
+        .hero-actions{
+            display:flex;
+            flex-direction:column;
+            align-items:center;
+            gap:15px;
+            margin-top:32px;
+            white-space:normal;
+        }
+
+        .hero-button{
+            width:90%;
+            max-width:340px;
+            height:56px;
+            margin:0;
+            padding:14px 20px;
+            white-space:nowrap;
+            text-align:center;
+        }
+
+        .hero-secondary-button{
+            width:200px;
+            height:52px;
+            justify-content:center;
+            margin:0;
+            padding:13px 16px;
+            white-space:nowrap;
+        }
+
+        .hero-stats{
+            margin-top:60px;
+        }
+    }
+
     /* Final title-only gradient correction. */
     .hero h1{
         background:transparent;
