@@ -3752,6 +3752,163 @@ body.light-theme nav .menu-btn:hover{
 
 @media (max-width:768px){
     .menu-panel{
+        width:min(330px, calc(100vw - 32px));
+        padding:18px;
+        border:1px solid transparent;
+        background:
+            linear-gradient(rgba(7,10,28,.94), rgba(11,12,38,.94)) padding-box,
+            linear-gradient(135deg, rgba(0,234,255,.48), rgba(124,40,197,.38), rgba(255,0,200,.32)) border-box;
+        backdrop-filter:blur(23px) saturate(155%);
+        -webkit-backdrop-filter:blur(23px) saturate(155%);
+        box-shadow:
+            0 18px 44px rgba(0,0,0,.38),
+            0 4px 18px rgba(41,26,100,.26),
+            inset 0 1px 0 rgba(255,255,255,.1),
+            inset 0 0 24px rgba(66,44,155,.08);
+        transform:translateY(-10px) scale(.98);
+        transform-origin:top right;
+        transition:opacity .25s ease, visibility .25s ease, transform .25s cubic-bezier(.22,.8,.24,1);
+    }
+
+    .menu-panel::before{
+        content:"";
+        position:absolute;
+        top:0;
+        left:18px;
+        right:18px;
+        height:1px;
+        border-radius:999px;
+        background:linear-gradient(90deg, rgba(0,234,255,.1), rgba(0,234,255,.72), rgba(141,39,255,.7), rgba(255,0,200,.5), rgba(255,0,200,.08));
+        box-shadow:0 0 8px rgba(0,234,255,.25);
+        pointer-events:none;
+    }
+
+    .menu-panel.show{
+        transform:translateY(0) scale(1);
+    }
+
+    .menu-panel a{
+        position:relative;
+        min-height:46px;
+        margin:0 0 5px;
+        padding:11px 13px 11px 19px;
+        overflow:hidden;
+        transition:color .22s ease, background .22s ease, transform .22s ease;
+    }
+
+    .menu-panel a::before{
+        content:"";
+        position:absolute;
+        left:8px;
+        top:50%;
+        width:3px;
+        height:3px;
+        border-radius:50%;
+        background:currentColor;
+        box-shadow:0 0 0 rgba(0,234,255,0);
+        opacity:0;
+        transform:translateY(-50%) scale(.5);
+        transition:opacity .22s ease, transform .22s ease, box-shadow .22s ease;
+    }
+
+    .menu-panel a:nth-of-type(1)::before{
+        opacity:1;
+        transform:translateY(-50%) scale(1);
+        box-shadow:0 0 8px 2px rgba(0,234,255,.7);
+    }
+
+    .menu-panel a:hover,
+    .menu-panel a:focus-visible{
+        transform:translateX(3px);
+        background:rgba(0,234,255,.08);
+    }
+
+    .menu-panel a:hover::before,
+    .menu-panel a:focus-visible::before{
+        opacity:1;
+        transform:translateY(-50%) scale(1);
+        box-shadow:0 0 8px 2px rgba(0,234,255,.65);
+    }
+
+    .menu-panel .admin-update-btn,
+    .menu-panel .menu-login-btn{
+        min-height:40px;
+        margin:5px 0 0;
+        padding:9px 12px;
+        border:1px solid rgba(143,160,218,.2);
+        border-radius:9px;
+        background:rgba(255,255,255,.045);
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.06);
+        transition:color .22s ease, background .22s ease, border-color .22s ease, transform .22s ease;
+    }
+
+    .menu-panel .admin-update-btn{
+        margin-top:11px;
+        padding-top:12px;
+        border-top:1px solid rgba(143,113,226,.3);
+        border-radius:0 0 9px 9px;
+    }
+
+    .menu-panel .admin-update-btn:hover,
+    .menu-panel .menu-login-btn:hover{
+        transform:translateX(2px);
+        border-color:rgba(0,234,255,.34);
+        box-shadow:0 0 12px rgba(0,234,255,.08), inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    nav .menu-btn{
+        border:1px solid rgba(0,234,255,.24);
+        box-shadow:
+            0 4px 12px rgba(0,0,0,.2),
+            0 0 12px rgba(0,234,255,.08),
+            inset 0 1px 0 rgba(255,255,255,.08);
+    }
+
+    nav .menu-btn[aria-expanded="true"]{
+        border-color:rgba(0,234,255,.48);
+        box-shadow:
+            0 4px 14px rgba(0,0,0,.24),
+            0 0 16px rgba(0,234,255,.16),
+            inset 0 1px 0 rgba(255,255,255,.1);
+    }
+
+    body.light-theme .menu-panel{
+        background:
+            linear-gradient(rgba(236,240,252,.92), rgba(226,232,248,.94)) padding-box,
+            linear-gradient(135deg, rgba(0,148,194,.45), rgba(112,74,220,.4), rgba(190,70,185,.3)) border-box;
+        box-shadow:
+            0 18px 44px rgba(54,63,112,.22),
+            0 4px 18px rgba(112,74,220,.14),
+            inset 0 1px 0 rgba(255,255,255,.85),
+            inset 0 0 24px rgba(112,140,220,.08);
+    }
+
+    body.light-theme .menu-panel::before{
+        background:linear-gradient(90deg, rgba(0,148,194,.08), rgba(0,148,194,.6), rgba(112,74,220,.65), rgba(190,70,185,.4), rgba(190,70,185,.06));
+    }
+
+    body.light-theme .menu-panel a::before{
+        box-shadow:0 0 8px 2px rgba(0,148,194,.55);
+    }
+
+    body.light-theme .menu-panel .admin-update-btn,
+    body.light-theme .menu-panel .menu-login-btn{
+        border-color:rgba(91,73,174,.2);
+        background:rgba(255,255,255,.45);
+        box-shadow:inset 0 1px 0 rgba(255,255,255,.8);
+    }
+
+    body.light-theme nav .menu-btn{
+        border-color:rgba(0,148,194,.4);
+        box-shadow:
+            0 4px 12px rgba(54,63,112,.14),
+            0 0 12px rgba(0,148,194,.1),
+            inset 0 1px 0 rgba(255,255,255,.8);
+    }
+}
+
+@media (max-width:768px){
+    .menu-panel{
         top:calc(58px + 18px);
         right:16px;
         left:auto;
