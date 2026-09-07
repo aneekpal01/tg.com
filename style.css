@@ -2708,3 +2708,132 @@ nav .admin-update-btn{
         border-radius:0 !important;
     }
 }
+
+/* Final global roster image fit and theme control rules. */
+.player-image{
+    height:clamp(250px, 21vw, 280px);
+}
+
+.player-image img{
+    object-fit:contain;
+    object-position:center top;
+    background:#030305;
+}
+
+.theme-toggle{
+    display:grid;
+    width:40px;
+    height:40px;
+    place-items:center;
+    padding:0;
+    border:1px solid rgba(255,255,255,.16);
+    border-radius:50%;
+    color:#cbd1e4;
+    background:rgba(255,255,255,.06);
+    cursor:pointer;
+    transition:color .25s ease, background .25s ease, transform .25s ease, border-color .25s ease;
+}
+
+.theme-toggle:hover{
+    color:#00eaff;
+    border-color:rgba(0,234,255,.5);
+    background:rgba(0,234,255,.1);
+    transform:rotate(12deg);
+}
+
+.theme-toggle .theme-icon{
+    width:18px;
+    height:18px;
+    fill:none;
+    stroke:currentColor;
+    stroke-width:1.8;
+    stroke-linecap:round;
+    stroke-linejoin:round;
+}
+
+.theme-toggle .theme-moon{
+    display:none;
+}
+
+body.light-theme{
+    background:#e9edf7;
+    color:#11182b;
+}
+
+body.light-theme::before{
+    opacity:.35;
+    background:
+    radial-gradient(circle at 20% 20%, #b9a7ff66, transparent 30%),
+    radial-gradient(circle at 80% 30%, #8ad9ff55, transparent 30%),
+    linear-gradient(135deg, #eef1fa, #e8e7f5, #e6f3fa);
+}
+
+body.light-theme .theme-sun{
+    display:none;
+}
+
+body.light-theme .theme-moon{
+    display:block;
+}
+
+body.light-theme nav{
+    background:rgba(237,241,250,.82) !important;
+}
+
+body.light-theme .nav-links a{
+    color:#34405b;
+}
+
+body.light-theme .nav-links a:first-child,
+body.light-theme .nav-links a:hover{
+    color:#7d28d9;
+}
+
+body.light-theme .social-icon,
+body.light-theme .theme-toggle{
+    color:#34405b;
+}
+
+body.light-theme .player-card,
+body.light-theme .community-box,
+body.light-theme .team-box,
+body.light-theme .timeline-content{
+    background:linear-gradient(145deg, rgba(255,255,255,.86), rgba(225,231,248,.84));
+    border-color:rgba(84,71,159,.2);
+    box-shadow:0 15px 35px rgba(64,71,120,.12);
+}
+
+body.light-theme .player-name,
+body.light-theme .detail span{
+    color:#17203a;
+}
+
+body.light-theme .detail{
+    border-color:rgba(53,64,105,.14);
+}
+
+body.light-theme .detail strong,
+body.light-theme .team-box p{
+    color:#5d6680;
+}
+
+body,
+body::before,
+.player-card,
+.community-box,
+.team-box,
+.timeline-content,
+nav{
+    transition:background .35s ease, color .35s ease, border-color .35s ease, box-shadow .35s ease;
+}
+
+@media(max-width:650px){
+    .player-image{
+        height:250px;
+    }
+
+    .theme-toggle{
+        width:38px;
+        height:38px;
+    }
+}
