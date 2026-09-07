@@ -1,0 +1,46 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function admin() {
+      return signedIn() &&
+        request.auth.token.email == 'fozyajay27@gmail.com';
+    }
+
+    match /posts/{postId} {
+      allow read: if signedIn();
+      allow create, update, delete: if admin();
+
+      match /likes/{uid} {
+        allow read: if signedIn();
+        allow create: if signedIn() && request.auth.uid == uid &&
+          request.resource.data.uid == uid;
+        allow delete: if signedIn() && request.auth.uid == uid;
+        allow update: if false;
+      }
+
+      match /comments/{commentId} {
+        allow read: if signedIn();
+        allow create: if signedIn() &&
+          request.resource.data.uid == request.auth.uid &&
+          request.resource.data.text is string &&
+          request.resource.data.text.size() > 0 &&
+          request.resource.data.text.size() <= 280 &&
+          request.resource.data.displayName is string &&
+          request.resource.data.createdAt == request.time;
+        allow update, delete: if signedIn() &&
+          resource.data.uid == request.auth.uid;
+      }
+    }
+
+    match /users/{uid} {
+      allow read: if signedIn() && request.auth.uid == uid;
+      allow create, update: if signedIn() && request.auth.uid == uid;
+      allow delete: if false;
+    }
+  }
+}
