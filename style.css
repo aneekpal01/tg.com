@@ -3225,9 +3225,18 @@ nav .admin-update-btn{
         }
 
         .hero-actions{
-            flex-wrap:wrap;
-            gap:14px;
-            margin-top:32px;
+            display:block;
+            margin-top:0;
+            white-space:nowrap;
+        }
+
+        .hero-button{
+            margin-top:35px;
+        }
+
+        .hero-secondary-button{
+            margin:35px 0 0 4px;
+            padding:13px 16px;
         }
     }
 
