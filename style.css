@@ -3751,6 +3751,125 @@ body.light-theme nav .menu-btn:hover{
 }
 
 @media (max-width:768px){
+    .menu-panel{
+        top:calc(58px + 18px);
+        right:16px;
+        left:auto;
+        width:min(320px, calc(100vw - 32px));
+        max-height:calc(100dvh - 92px);
+        overflow-y:auto;
+        padding:10px;
+        border:1px solid rgba(131,111,218,.34);
+        border-radius:18px;
+        background:rgba(7,10,28,.96);
+        backdrop-filter:blur(18px) saturate(145%);
+        -webkit-backdrop-filter:blur(18px) saturate(145%);
+        box-shadow:
+            0 15px 40px rgba(0,0,0,.35),
+            0 0 24px rgba(86,39,185,.12);
+        transform:translateY(-10px);
+        transition:opacity .24s ease, visibility .24s ease, transform .24s ease;
+    }
+
+    .menu-panel.show{
+        transform:translateY(0);
+    }
+
+    .menu-panel a{
+        min-height:46px;
+        display:flex;
+        align-items:center;
+        margin:0 0 4px;
+        padding:11px 13px;
+        border-radius:10px;
+        color:#edf1ff;
+        font:600 12px "Orbitron",sans-serif;
+        letter-spacing:.8px;
+    }
+
+    .menu-panel a:hover,
+    .menu-panel a:focus-visible{
+        color:#00eaff;
+        background:rgba(0,234,255,.1);
+    }
+
+    .menu-panel a:nth-of-type(1){
+        color:#00eaff;
+    }
+
+    .menu-panel .admin-update-btn,
+    .menu-panel .menu-login-btn{
+        min-height:40px;
+        margin:4px 0 0;
+        padding:9px 13px;
+        border-radius:9px;
+        color:#b9c5df;
+        background:rgba(255,255,255,.045);
+        border:1px solid rgba(255,255,255,.08);
+        font-size:11px;
+        letter-spacing:.5px;
+    }
+
+    .menu-panel .admin-update-btn{
+        border-top:1px solid rgba(143,113,226,.3);
+        border-radius:0 0 9px 9px;
+        margin-top:9px;
+        padding-top:13px;
+    }
+
+    .menu-panel .admin-update-btn:hover,
+    .menu-panel .menu-login-btn:hover{
+        color:#00eaff;
+        background:rgba(0,234,255,.1);
+    }
+
+    nav .menu-btn[aria-expanded="true"] span:nth-child(1){
+        transform:translateY(7px) rotate(45deg);
+    }
+
+    nav .menu-btn[aria-expanded="true"] span:nth-child(2){
+        opacity:0;
+    }
+
+    nav .menu-btn[aria-expanded="true"] span:nth-child(3){
+        transform:translateY(-7px) rotate(-45deg);
+    }
+
+    nav .menu-btn span{
+        transition:transform .24s ease, opacity .2s ease;
+    }
+
+    body.light-theme .menu-panel{
+        background:rgba(235,239,251,.96);
+        border-color:rgba(91,73,174,.28);
+        box-shadow:
+            0 15px 40px rgba(54,63,112,.2),
+            0 0 24px rgba(112,74,220,.1);
+    }
+
+    body.light-theme .menu-panel a{
+        color:#17213f;
+    }
+
+    body.light-theme .menu-panel a:nth-of-type(1){
+        color:#7028c8;
+    }
+
+    body.light-theme .menu-panel a:hover,
+    body.light-theme .menu-panel a:focus-visible{
+        color:#087fbd;
+        background:rgba(0,174,220,.1);
+    }
+
+    body.light-theme .menu-panel .admin-update-btn,
+    body.light-theme .menu-panel .menu-login-btn{
+        color:#34405b;
+        background:rgba(255,255,255,.5);
+        border-color:rgba(91,73,174,.16);
+    }
+}
+
+@media (max-width:768px){
     nav{
         background:
             linear-gradient(110deg, rgba(14,19,49,.82), rgba(22,12,55,.76) 55%, rgba(8,31,61,.8)) !important;

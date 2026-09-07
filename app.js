@@ -272,6 +272,38 @@ menuBtn.addEventListener(
     }
 );
 
+document.addEventListener(
+    "click",
+    event => {
+
+        if(
+            !menuPanel.classList.contains("show") ||
+            menuPanel.contains(event.target) ||
+            menuBtn.contains(event.target)
+        ){
+            return;
+        }
+
+        menuPanel.classList.remove("show");
+        menuBtn.setAttribute("aria-expanded", "false");
+
+    }
+);
+
+document.addEventListener(
+    "keydown",
+    event => {
+
+        if(event.key !== "Escape"){
+            return;
+        }
+
+        menuPanel.classList.remove("show");
+        menuBtn.setAttribute("aria-expanded", "false");
+
+    }
+);
+
 
 document.querySelectorAll(
     ".menu-panel a"
