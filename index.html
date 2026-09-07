@@ -38,6 +38,36 @@ TOTAL GAMING ESPORTS
 <a aria-label="Instagram" class="social-icon" href="https://www.instagram.com/" rel="noopener noreferrer" target="_blank">
 <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
 </a>
+<!-- Global User Profile Dropdown (visible when logged in) -->
+<div class="nav-profile-wrap" id="navProfileWrap" hidden>
+<button aria-expanded="false" aria-haspopup="true" aria-label="User account menu" class="nav-profile-btn" id="navProfileBtn" type="button">
+<div class="nav-profile-avatar" id="navProfileAvatar">TG</div>
+<span class="nav-profile-caret">▼</span>
+</button>
+<div class="nav-profile-dropdown" id="navProfileDropdown">
+<div class="dropdown-header">
+<div class="dropdown-avatar" id="dropdownAvatar">TG</div>
+<div class="dropdown-info">
+<strong class="dropdown-name" id="dropdownName">TG Community Member</strong>
+<span class="dropdown-tag" id="dropdownTag"><span></span> Demo Member</span>
+</div>
+</div>
+<div class="dropdown-divider"></div>
+<a class="dropdown-link" href="community.html">
+<svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+<span>Community Hub</span>
+</a>
+<a class="dropdown-link" href="community.html#communityPosts">
+<svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+<span>My Activity &amp; Posts</span>
+</a>
+<div class="dropdown-divider"></div>
+<button class="dropdown-logout-btn" id="navLogoutBtn" type="button">
+<svg fill="none" height="15" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" width="15"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" x2="9" y1="12" y2="12"></line></svg>
+<span>Logout</span>
+</button>
+</div>
+</div>
 <button aria-label="Switch to light mode" class="theme-toggle" id="themeToggle" type="button">
 <svg aria-hidden="true" class="theme-icon theme-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
 <svg aria-hidden="true" class="theme-icon theme-moon" viewBox="0 0 24 24"><path d="M20 15.5A8.5 8.5 0 0 1 8.5 4 8.5 8.5 0 1 0 20 15.5Z"/></svg>
@@ -52,6 +82,14 @@ TOTAL GAMING ESPORTS
      MENU
 ========================= -->
 <div class="menu-panel" id="menuPanel">
+<!-- Mobile User Profile Card (visible when logged in) -->
+<div class="menu-profile-card" id="menuProfileCard" hidden>
+<div class="menu-profile-avatar" id="menuProfileAvatar">TG</div>
+<div class="menu-profile-info">
+<strong class="menu-profile-name" id="menuProfileName">TG Community Member</strong>
+<span class="menu-profile-tag" id="menuProfileTag"><span></span> Demo Member</span>
+</div>
+</div>
 <a href="#home">
 HOME
 </a>
@@ -75,6 +113,9 @@ ADMIN UPDATES
 </button>
 <button class="menu-login-btn" id="adminLoginBtn" type="button">
 ADMIN LOGIN
+</button>
+<button class="menu-logout-btn" id="menuLogoutBtn" type="button" hidden>
+LOGOUT
 </button>
 </div>
 <!-- =========================

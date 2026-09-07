@@ -495,6 +495,7 @@ function showLoginGate() {
     authMessage.textContent = "";
     authMessage.className = "auth-feedback";
     demoSignInBtn.disabled = false;
+    updateNavProfileUI(null);
 }
 
 function showCommunityContent(user) {
@@ -509,6 +510,7 @@ function showCommunityContent(user) {
     content.removeAttribute("hidden");
     renderProfile(user);
     loadPosts(user);
+    updateNavProfileUI(user);
 }
 
 // Authentication Handlers
@@ -565,6 +567,162 @@ if (modalCloseBtn) {
         }
     });
 }
+
+// Global Navbar Profile Elements
+const navProfileWrap = document.getElementById("navProfileWrap");
+const navProfileBtn = document.getElementById("navProfileBtn");
+const navProfileDropdown = document.getElementById("navProfileDropdown");
+const navProfileAvatar = document.getElementById("navProfileAvatar");
+const dropdownAvatar = document.getElementById("dropdownAvatar");
+const dropdownName = document.getElementById("dropdownName");
+const dropdownTag = document.getElementById("dropdownTag");
+const navLogoutBtn = document.getElementById("navLogoutBtn");
+
+const menuProfileCard = document.getElementById("menuProfileCard");
+const menuProfileAvatar = document.getElementById("menuProfileAvatar");
+const menuProfileName = document.getElementById("menuProfileName");
+const menuProfileTag = document.getElementById("menuProfileTag");
+const menuLogoutBtn = document.getElementById("menuLogoutBtn");
+
+function updateNavProfileUI(user) {
+    if (user) {
+        const displayName = user.displayName || "TG Community Member";
+        const isDemo = user.isAnonymous !== false;
+        const tagText = isDemo ? "Demo Member" : "Verified Member";
+        const avatarInitial = displayName.substring(0, 2).toUpperCase();
+
+        if (navProfileWrap) {
+            navProfileWrap.removeAttribute("hidden");
+            navProfileWrap.hidden = false;
+        }
+
+        if (navProfileAvatar) {
+            if (user.photoURL) {
+                navProfileAvatar.innerHTML = `<img src="${user.photoURL}" alt="${displayName}">`;
+            } else {
+                navProfileAvatar.textContent = avatarInitial;
+            }
+        }
+
+        if (dropdownAvatar) {
+            if (user.photoURL) {
+                dropdownAvatar.innerHTML = `<img src="${user.photoURL}" alt="${displayName}">`;
+            } else {
+                dropdownAvatar.textContent = avatarInitial;
+            }
+        }
+
+        if (dropdownName) {
+            dropdownName.textContent = displayName;
+        }
+
+        if (dropdownTag) {
+            dropdownTag.innerHTML = `<span></span> ${tagText}`;
+        }
+
+        if (menuProfileCard) {
+            menuProfileCard.removeAttribute("hidden");
+            menuProfileCard.hidden = false;
+        }
+
+        if (menuProfileAvatar) {
+            if (user.photoURL) {
+                menuProfileAvatar.innerHTML = `<img src="${user.photoURL}" alt="${displayName}">`;
+            } else {
+                menuProfileAvatar.textContent = avatarInitial;
+            }
+        }
+
+        if (menuProfileName) {
+            menuProfileName.textContent = displayName;
+        }
+
+        if (menuProfileTag) {
+            menuProfileTag.innerHTML = `<span></span> ${tagText}`;
+        }
+
+        if (menuLogoutBtn) {
+            menuLogoutBtn.removeAttribute("hidden");
+            menuLogoutBtn.hidden = false;
+        }
+    } else {
+        if (navProfileWrap) {
+            navProfileWrap.setAttribute("hidden", "");
+            navProfileWrap.hidden = true;
+        }
+
+        if (navProfileDropdown) {
+            navProfileDropdown.classList.remove("show");
+        }
+
+        if (navProfileBtn) {
+            navProfileBtn.setAttribute("aria-expanded", "false");
+        }
+
+        if (menuProfileCard) {
+            menuProfileCard.setAttribute("hidden", "");
+            menuProfileCard.hidden = true;
+        }
+
+        if (menuLogoutBtn) {
+            menuLogoutBtn.setAttribute("hidden", "");
+            menuLogoutBtn.hidden = true;
+        }
+    }
+}
+
+// Wire up Navbar Profile Dropdown Events
+if (navProfileBtn && navProfileDropdown) {
+    navProfileBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        const isOpen = navProfileDropdown.classList.toggle("show");
+        navProfileBtn.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.addEventListener("click", (e) => {
+        if (navProfileDropdown.classList.contains("show") && !navProfileDropdown.contains(e.target) && !navProfileBtn.contains(e.target)) {
+            navProfileDropdown.classList.remove("show");
+            navProfileBtn.setAttribute("aria-expanded", "false");
+        }
+    });
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && navProfileDropdown.classList.contains("show")) {
+            navProfileDropdown.classList.remove("show");
+            navProfileBtn.setAttribute("aria-expanded", "false");
+        }
+    });
+}
+
+if (navLogoutBtn) {
+    navLogoutBtn.addEventListener("click", handleLogout);
+}
+
+if (menuLogoutBtn) {
+    menuLogoutBtn.addEventListener("click", () => {
+        handleLogout();
+        if (menuPanel) {
+            menuPanel.classList.remove("show");
+            if (menuBtn) menuBtn.setAttribute("aria-expanded", "false");
+        }
+    });
+}
+
+// Listen to cross-tab storage changes
+window.addEventListener("storage", (e) => {
+    if (e.key === DEMO_STORAGE_KEY) {
+        if (e.newValue) {
+            try {
+                const user = JSON.parse(e.newValue);
+                showCommunityContent(user);
+            } catch (err) {
+                showLoginGate();
+            }
+        } else {
+            showLoginGate();
+        }
+    }
+});
 
 // Initialize Auth State on Page Load
 function initAuth() {
