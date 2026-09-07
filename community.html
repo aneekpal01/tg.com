@@ -60,16 +60,21 @@
 </section>
 
 <section class="community-shell" aria-live="polite">
+<div class="community-auth-modal" id="communityAuthModal" role="dialog" aria-modal="true" aria-labelledby="communityLoginTitle">
 <div class="community-login" id="communityLogin">
 <div class="community-login-mark">TG</div>
-<p class="community-kicker">MEMBERS ONLY</p>
-<h2>JOIN THE TG COMMUNITY</h2>
-<p>Connect with the Total Gaming community.</p>
+<p class="community-kicker">TOTAL GAMING ESPORTS</p>
+<h2 id="communityLoginTitle">WELCOME TO TG COMMUNITY</h2>
+<p>Sign in to join the TG Community.</p>
 <button class="google-signin" id="googleSignIn" type="button">
 <span class="google-mark">G</span> Continue with Google
 </button>
+<button class="demo-signin" id="demoSignIn" type="button">
+<span class="demo-mark">TG</span> Demo Login
+</button>
 <small>Your Google account is used only to securely authenticate your community account.</small>
 <p class="community-message" id="authMessage" role="alert"></p>
+</div>
 </div>
 
 <div class="community-content" id="communityContent" hidden>

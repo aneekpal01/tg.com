@@ -1,5 +1,5 @@
 import{initializeApp}from"https://www.gstatic.com/firebasejs/12.18.0/firebase-app.js";
-import{getAuth,GoogleAuthProvider,onAuthStateChanged,signInWithPopup,signOut}from"https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
+import{getAuth,onAuthStateChanged,signInAnonymously,signOut,setPersistence,browserSessionPersistence}from"https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 import{getFirestore,collection,doc,getDoc,setDoc,query,orderBy,onSnapshot,serverTimestamp,addDoc,deleteDoc}from"https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 const app=initializeApp({
@@ -12,9 +12,9 @@ const app=initializeApp({
 });
 const auth=getAuth(app);
 const db=getFirestore(app);
-const googleProvider=new GoogleAuthProvider();
 const ADMIN_EMAIL="fozyajay27@gmail.com";
 const login=document.getElementById("communityLogin");
+const authModal=document.getElementById("communityAuthModal");
 const content=document.getElementById("communityContent");
 const authMessage=document.getElementById("authMessage");
 const postsState=document.getElementById("postsState");
@@ -50,12 +50,17 @@ function renderProfile(user){
         image.src=user.photoURL;
         image.alt="";
         profileRoot.append(image);
+    }else{
+        const avatar=document.createElement("div");
+        avatar.className="profile-avatar-fallback";
+        avatar.textContent="TG";
+        profileRoot.append(avatar);
     }
     const copy=document.createElement("div");
     const name=document.createElement("strong");
-    name.textContent=user.displayName||"TG Community Member";
+    name.textContent=user.isAnonymous?"TG Community Member":(user.displayName||"TG Community Member");
     const joined=document.createElement("span");
-    joined.textContent="Authenticated community member";
+    joined.textContent=user.isAnonymous?"Demo development session":"Authenticated community member";
     copy.append(name,joined);
     const logout=document.createElement("button");
     logout.type="button";
@@ -204,23 +209,32 @@ function loadPosts(user){
     });
 }
 
-document.getElementById("googleSignIn").addEventListener("click",async()=>{
+document.getElementById("googleSignIn").addEventListener("click",()=>{
+    authMessage.textContent="Google Sign-In will be available soon.";
+});
+
+document.getElementById("demoSignIn").addEventListener("click",async()=>{
     authMessage.textContent="";
-    try{await signInWithPopup(auth,googleProvider);}
-    catch(error){
+    const button=document.getElementById("demoSignIn");
+    button.disabled=true;
+    try{
+        await setPersistence(auth,browserSessionPersistence);
+        await signInAnonymously(auth);
+    }catch(error){
         console.error(error);
-        authMessage.textContent="Google sign-in could not be completed. Please try again.";
+        authMessage.textContent="Demo login could not be completed. Please try again.";
+        button.disabled=false;
     }
 });
 
 onAuthStateChanged(auth,async user=>{
     if(!user){
         clearPostListeners();
-        login.hidden=false;
+        authModal.hidden=false;
         content.hidden=true;
         return;
     }
-    login.hidden=true;
+    authModal.hidden=true;
     content.hidden=false;
     renderProfile(user);
     loadPosts(user);
