@@ -2517,6 +2517,34 @@ nav .admin-update-btn{
         padding:0 14px;
     }
 
+    /* Desktop-only edge-to-edge header reset. Mobile header rules remain unchanged. */
+    @media(min-width:769px){
+        header,
+        nav,
+        .navbar,
+        .navbar-wrapper,
+        .nav-container{
+            position:fixed !important;
+            top:0 !important;
+            left:0 !important;
+            right:0 !important;
+            width:100% !important;
+            max-width:none !important;
+            margin:0 !important;
+            border-radius:0 !important;
+            border-left:0 !important;
+            border-right:0 !important;
+            box-shadow:none !important;
+        }
+
+        nav::before,
+        nav::after,
+        .navbar::before,
+        .navbar::after{
+            border-radius:0 !important;
+        }
+    }
+
     nav .logo span{
         display:block;
         font-size:11px;
