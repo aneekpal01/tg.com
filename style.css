@@ -4383,3 +4383,51 @@ body.light-theme nav .menu-btn:hover{
             border-color:rgba(0,148,194,.32);
         }
     }
+
+    @media (max-width:768px){
+        body:not(.light-theme) .menu-panel{
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(12,8,38,.97),
+                    rgba(18,12,55,.97),
+                    rgba(7,24,55,.97)
+                );
+            backdrop-filter:blur(18px);
+            -webkit-backdrop-filter:blur(18px);
+            border-color:rgba(121,92,190,.34);
+            box-shadow:
+                0 18px 40px rgba(4,3,24,.38),
+                inset 0 1px 0 rgba(119,104,209,.1);
+        }
+
+        body:not(.light-theme) .menu-panel a,
+        body:not(.light-theme) .menu-panel a:nth-of-type(1){
+            color:#dfe2f4;
+            border-bottom-color:rgba(103,87,166,.2);
+        }
+
+        body:not(.light-theme) .menu-panel a:nth-of-type(1){
+            color:#00dff2;
+        }
+
+        body:not(.light-theme) .menu-panel a:hover,
+        body:not(.light-theme) .menu-panel a:focus-visible{
+            color:#00dff2;
+            background:rgba(55,73,145,.14);
+        }
+
+        body:not(.light-theme) .menu-panel .admin-update-btn,
+        body:not(.light-theme) .menu-panel .menu-login-btn{
+            color:#d9ddf1;
+            background:rgba(30,24,70,.58);
+            border-color:rgba(111,91,177,.28);
+        }
+
+        body:not(.light-theme) .menu-panel .admin-update-btn:hover,
+        body:not(.light-theme) .menu-panel .menu-login-btn:hover{
+            color:#00dff2;
+            background:rgba(42,48,105,.48);
+            border-color:rgba(0,196,220,.32);
+        }
+    }
