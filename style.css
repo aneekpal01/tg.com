@@ -4265,3 +4265,121 @@ body.light-theme nav .menu-btn:hover{
             top:75px;
         }
     }
+
+    @media (max-width:768px){
+        .menu-panel{
+            top:75px;
+            right:16px;
+            left:16px;
+            width:auto;
+            max-width:none;
+            padding:14px 12px 12px;
+            border:1px solid rgba(219,225,246,.16);
+            border-radius:16px;
+            background:rgba(11,12,20,.985);
+            backdrop-filter:blur(20px);
+            -webkit-backdrop-filter:blur(20px);
+            box-shadow:
+                0 18px 40px rgba(0,0,0,.38),
+                inset 0 1px 0 rgba(255,255,255,.05);
+        }
+
+        .menu-panel::before{
+            display:none;
+        }
+
+        .menu-panel a{
+            min-height:46px;
+            margin:0;
+            padding:12px 10px;
+            border-radius:0;
+            border-bottom:1px solid rgba(219,225,246,.1);
+            color:#e8ebf5;
+            font-size:12px;
+            letter-spacing:.9px;
+            background:transparent;
+            transition:color .22s ease, background .22s ease, padding-left .22s ease;
+        }
+
+        .menu-panel a::before{
+            display:none;
+        }
+
+        .menu-panel a:nth-of-type(1){
+            color:#e8ebf5;
+        }
+
+        .menu-panel a:hover,
+        .menu-panel a:focus-visible{
+            color:#00dff2;
+            padding-left:14px;
+            background:rgba(255,255,255,.035);
+            transform:none;
+        }
+
+        .menu-panel .admin-update-btn,
+        .menu-panel .menu-login-btn{
+            width:100%;
+            min-height:44px;
+            margin:8px 0 0;
+            padding:11px 12px;
+            border:1px solid rgba(219,225,246,.14);
+            border-radius:9px;
+            color:#d7dced;
+            background:rgba(255,255,255,.025);
+            box-shadow:none;
+            font-size:11px;
+            letter-spacing:.7px;
+            text-align:center;
+            transition:color .22s ease, background .22s ease, border-color .22s ease;
+        }
+
+        .menu-panel .admin-update-btn{
+            margin-top:14px;
+            padding-top:11px;
+            border-top:1px solid rgba(219,225,246,.14);
+            border-radius:9px;
+        }
+
+        .menu-panel .admin-update-btn:hover,
+        .menu-panel .menu-login-btn:hover{
+            color:#00dff2;
+            background:rgba(0,223,242,.06);
+            border-color:rgba(0,223,242,.3);
+            transform:none;
+        }
+
+        body.light-theme .menu-panel{
+            border-color:rgba(63,76,128,.2);
+            background:rgba(242,245,252,.985);
+            box-shadow:
+                0 18px 40px rgba(54,63,112,.2),
+                inset 0 1px 0 rgba(255,255,255,.86);
+        }
+
+        body.light-theme .menu-panel a,
+        body.light-theme .menu-panel a:nth-of-type(1){
+            color:#263653;
+            border-bottom-color:rgba(63,76,128,.14);
+        }
+
+        body.light-theme .menu-panel a:hover,
+        body.light-theme .menu-panel a:focus-visible{
+            color:#087fbd;
+            background:rgba(0,148,194,.06);
+        }
+
+        body.light-theme .menu-panel .admin-update-btn,
+        body.light-theme .menu-panel .menu-login-btn{
+            color:#34405b;
+            border-color:rgba(63,76,128,.18);
+            background:rgba(255,255,255,.52);
+        }
+
+        body.light-theme .menu-panel .admin-update-btn:hover,
+        body.light-theme .menu-panel .menu-login-btn:hover{
+            color:#087fbd;
+            background:rgba(0,148,194,.08);
+            border-color:rgba(0,148,194,.32);
+        }
+    }
