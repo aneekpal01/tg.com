@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="style.css?v=sharptext1" rel="stylesheet"/>
+<link href="style.css?v=meshtexthover1" rel="stylesheet"/>
 <link href="tg-logo.png" rel="icon" type="image/png"/>
 <meta content="Total Gaming Esports — team, players, tournaments, gallery and community." name="description"/><meta content="#050510" name="theme-color"/></head>
 <body class="tg-site">
@@ -114,6 +114,16 @@ ADMIN LOGIN
 LOGOUT
 </button>
 </div>
+<!-- SVG Filter for Mesh Text Distortion / Glitch Warp -->
+<svg class="mesh-svg-defs" aria-hidden="true" style="position:absolute;width:0;height:0;pointer-events:none;overflow:hidden;">
+  <defs>
+    <filter id="meshDistortFilter" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence id="meshTurbulence" type="fractalNoise" baseFrequency="0.04 0.04" numOctaves="2" result="noise" seed="1"/>
+      <feDisplacementMap id="meshDisplacement" in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
+
 <!-- =========================
      HERO
 ========================= -->
@@ -122,14 +132,10 @@ LOGOUT
 <div class="hero-small">
 <span class="status-dot"></span> Official Esports Team
 </div>
-<h1>
-
+<h1 class="hero-mesh-title" id="heroMeshTitle" data-text="TOTAL GAMING&#10;ESPORTS">
 TOTAL GAMING
-
 <br/>
-
 ESPORTS
-
 </h1>
 <p>
 
@@ -756,6 +762,6 @@ Loving the Total Gaming Esports platform? Show your love and fuel future updates
 <!-- =========================
      FIREBASE + JAVASCRIPT
 ========================= -->
-<script defer="True" src="app.js?v=sharptext1" type="module"></script>
+<script defer="True" src="app.js?v=meshtexthover1" type="module"></script>
 </body>
 </html>

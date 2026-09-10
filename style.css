@@ -510,52 +510,152 @@ nav::before{
     vertical-align:1px;
 }
 
-.hero h1{
-
+.hero h1,
+.hero-mesh-title{
     font-family:"Orbitron",sans-serif;
-
-    font-size:
-    clamp(
-        45px,
-        8vw,
-        100px
-    );
-
+    font-size:clamp(45px, 8vw, 100px);
+    font-weight:900;
     line-height:1.05;
+    position:relative;
+    display:inline-block;
+    user-select:none;
+    -webkit-user-select:none;
+    cursor:default;
+    letter-spacing:1px;
+}
 
-    background:
+.hero-mesh-title .mesh-line{
+    display:block;
+    position:relative;
+    white-space:nowrap;
+}
 
-    linear-gradient(
-        90deg,
-        #00eaff,
-        #ffffff,
-        #ff00c8,
-        #00eaff
-    );
+.hero-mesh-title .mesh-word{
+    display:inline-block;
+    position:relative;
+    white-space:nowrap;
+}
 
-    background-size:300%;
-
+.hero-mesh-title .mesh-char{
+    display:inline-block;
+    position:relative;
+    background:linear-gradient(90deg, #00eaff 0%, #ffffff 35%, #ff00c8 70%, #00eaff 100%);
+    background-size:300% 100%;
     -webkit-background-clip:text;
-
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
     color:transparent;
+    animation:textGradient 6s linear infinite;
+    transform-origin:center center;
+    transition:color .2s ease;
+    will-change:transform;
+    -webkit-font-smoothing:antialiased;
+}
 
-    animation:
-    textGradient
-    6s
-    linear
-    infinite;
+.hero-mesh-title .mesh-space{
+    display:inline-block;
+    width:0.3em;
+}
+
+/* Chromatic Aberration & SVG Distortion on Hover */
+.hero-mesh-title.is-hovered .mesh-char{
+    filter:url(#meshDistortFilter);
+}
+
+/* Glitch Slices Overlay */
+.hero-mesh-title .mesh-glitch-layer{
+    position:absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    pointer-events:none;
+    opacity:0;
+    transition:opacity .25s ease;
+    mix-blend-mode:screen;
+    font-family:"Orbitron",sans-serif;
+    font-size:inherit;
+    font-weight:900;
+    line-height:1.05;
+    white-space:nowrap;
+    z-index:2;
+}
+
+.hero-mesh-title.is-hovered .mesh-glitch-layer{
+    opacity:0.85;
+}
+
+.hero-mesh-title .mesh-glitch-layer.layer-red{
+    color:#ff0055;
+    -webkit-text-fill-color:#ff0055;
+    clip-path:polygon(0 15%, 100% 15%, 100% 45%, 0 45%);
+    -webkit-clip-path:polygon(0 15%, 100% 15%, 100% 45%, 0 45%);
+    transform:translate(-3px, -1px);
+    animation:glitchSliceRed 2.5s infinite linear alternate-reverse;
+}
+
+.hero-mesh-title .mesh-glitch-layer.layer-cyan{
+    color:#00eaff;
+    -webkit-text-fill-color:#00eaff;
+    clip-path:polygon(0 60%, 100% 60%, 100% 90%, 0 90%);
+    -webkit-clip-path:polygon(0 60%, 100% 60%, 100% 90%, 0 90%);
+    transform:translate(3px, 1px);
+    animation:glitchSliceCyan 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitchSliceRed{
+    0%{
+        clip-path:polygon(0 10%, 100% 10%, 100% 35%, 0 35%);
+        transform:translate(-3px, -1px);
+    }
+    25%{
+        clip-path:polygon(0 40%, 100% 40%, 100% 55%, 0 55%);
+        transform:translate(2px, 1px);
+    }
+    50%{
+        clip-path:polygon(0 20%, 100% 20%, 100% 30%, 0 30%);
+        transform:translate(-4px, 0);
+    }
+    75%{
+        clip-path:polygon(0 70%, 100% 70%, 100% 85%, 0 85%);
+        transform:translate(3px, -2px);
+    }
+    100%{
+        clip-path:polygon(0 5%, 100% 5%, 100% 25%, 0 25%);
+        transform:translate(-2px, 2px);
+    }
+}
+
+@keyframes glitchSliceCyan{
+    0%{
+        clip-path:polygon(0 65%, 100% 65%, 100% 85%, 0 85%);
+        transform:translate(3px, 1px);
+    }
+    25%{
+        clip-path:polygon(0 15%, 100% 15%, 100% 30%, 0 30%);
+        transform:translate(-3px, -1px);
+    }
+    50%{
+        clip-path:polygon(0 75%, 100% 75%, 100% 95%, 0 95%);
+        transform:translate(4px, -1px);
+    }
+    75%{
+        clip-path:polygon(0 35%, 100% 35%, 100% 50%, 0 50%);
+        transform:translate(-2px, 2px);
+    }
+    100%{
+        clip-path:polygon(0 55%, 100% 55%, 100% 75%, 0 75%);
+        transform:translate(2px, -2px);
+    }
 }
 
 @keyframes textGradient{
-
     0%{
         background-position:0%;
     }
-
     100%{
         background-position:300%;
     }
-
 }
 
 .hero p{
