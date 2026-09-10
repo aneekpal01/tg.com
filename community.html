@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="style.css?v=support_qr1"/>
+<link rel="stylesheet" href="style.css?v=topbtn2"/>
 <link rel="stylesheet" href="community.css"/>
 <link rel="icon" href="tg-logo.png" type="image/png"/>
 </head>
@@ -26,7 +26,11 @@
 <a href="index.html#players">PLAYERS</a>
 <a href="index.html#gallery">ACHIEVEMENTS</a>
 <a href="index.html#about">LEGACY</a>
-<a href="community.html" aria-current="page">COMMUNITY</a>
+<a class="nav-community-cta active-page" href="community.html" aria-current="page">
+  <span class="comm-pulse-dot"></span>
+  <span>COMMUNITY</span>
+  <span class="comm-hub-badge">ACTIVE</span>
+</a>
 </div>
 <div class="nav-tools">
 <a class="social-icon" href="https://www.youtube.com/@TG.Universe-07" aria-label="YouTube Channel @TG.Universe-07" target="_blank" rel="noopener noreferrer">
@@ -89,7 +93,11 @@
 <a href="index.html#players">PLAYERS</a>
 <a href="index.html#gallery">ACHIEVEMENTS</a>
 <a href="index.html#about">LEGACY</a>
-<a href="community.html">COMMUNITY</a>
+<a class="menu-community-cta" href="community.html">
+  <span class="comm-pulse-dot"></span>
+  <span>COMMUNITY</span>
+  <span class="comm-hub-badge">HUB</span>
+</a>
 <a class="menu-support-link" href="index.html#support" id="menuSupportLink">
   <span class="menu-support-icon">☕</span>
   <span>SUPPORT / CHAI QR</span>
@@ -252,6 +260,13 @@ Enjoying the TG Community Hub? Show your support and fuel future gaming events &
 </div>
 </footer>
 
-<script type="module" src="community.js"></script>
+<!-- =========================
+     BACK TO TOP BUTTON
+========================= -->
+<button aria-label="Scroll to top" class="back-to-top" id="backToTopBtn" title="Back to top" type="button">
+  <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" width="20"><path d="M18 15l-6-6-6 6"></path></svg>
+</button>
+
+<script type="module" src="community.js?v=topbtn2"></script>
 </body>
 </html>

@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="style.css?v=support_qr1" rel="stylesheet"/>
+<link href="style.css?v=topbtn2" rel="stylesheet"/>
 <link href="tg-logo.png" rel="icon" type="image/png"/>
 <meta content="Total Gaming Esports — team, players, tournaments, gallery and community." name="description"/><meta content="#050510" name="theme-color"/></head>
 <body class="tg-site">
@@ -28,7 +28,11 @@ TOTAL GAMING ESPORTS
 <a href="#players">PLAYERS</a>
 <a href="#gallery">ACHIEVEMENTS</a>
 <a href="#about">LEGACY</a>
-<a href="community.html">COMMUNITY</a>
+<a class="nav-community-cta" href="community.html">
+  <span class="comm-pulse-dot"></span>
+  <span>COMMUNITY</span>
+  <span class="comm-hub-badge">HUB</span>
+</a>
 </div>
 <div class="nav-tools">
 <a aria-label="YouTube Channel @TG.Universe-07" class="social-icon" href="https://www.youtube.com/@TG.Universe-07" rel="noopener noreferrer" target="_blank">
@@ -101,8 +105,10 @@ ACHIEVEMENTS
 <a href="#about">
 LEGACY
 </a>
-<a href="community.html">
-COMMUNITY
+<a class="menu-community-cta" href="community.html">
+  <span class="comm-pulse-dot"></span>
+  <span>COMMUNITY</span>
+  <span class="comm-hub-badge">HUB</span>
 </a>
 <a class="menu-support-link" href="#support" id="menuSupportLink">
   <span class="menu-support-icon">☕</span>
@@ -834,8 +840,14 @@ Loading official updates...
 </div>
 </footer>
 <!-- =========================
+     BACK TO TOP BUTTON
+========================= -->
+<button aria-label="Scroll to top" class="back-to-top" id="backToTopBtn" title="Back to top" type="button">
+  <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" width="20"><path d="M18 15l-6-6-6 6"></path></svg>
+</button>
+<!-- =========================
      FIREBASE + JAVASCRIPT
 ========================= -->
-<script defer="True" src="app.js?v=support_qr1" type="module"></script>
+<script defer="True" src="app.js?v=topbtn2" type="module"></script>
 </body>
 </html>
