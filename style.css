@@ -779,51 +779,64 @@ section{
     position:absolute;
     left:50%;
     top:50%;
-    width:315px;
-    height:500px;
-    margin-left:-157px;
-    margin-top:-250px;
+    width:320px;
+    height:508px;
+    margin-left:-160px;
+    margin-top:-254px;
     border-radius:24px;
     overflow:hidden;
     cursor:pointer;
-    transform-style:preserve-3d;
-    -webkit-transform-style:preserve-3d;
     backface-visibility:hidden;
     -webkit-backface-visibility:hidden;
     transform-origin:center center;
-    background:linear-gradient(145deg, rgba(18,26,56,.92), rgba(8,11,28,.97));
-    border:1px solid rgba(0,234,255,.22);
-    box-shadow:0 15px 45px rgba(0,0,0,.65);
-    backdrop-filter:blur(16px);
-    -webkit-backdrop-filter:blur(16px);
+    background:#0d122b;
+    background:linear-gradient(155deg, #111738 0%, #090c20 100%);
+    border:1.5px solid rgba(0,234,255,.22);
+    box-shadow:0 14px 40px rgba(0,0,0,.65);
     transition:
-        transform 0.62s cubic-bezier(0.16, 1, 0.3, 1),
-        opacity 0.45s ease,
-        filter 0.45s ease,
+        transform 0.58s cubic-bezier(0.16, 1, 0.3, 1),
+        opacity 0.4s ease,
         border-color 0.35s ease,
         box-shadow 0.35s ease;
     display:flex;
     flex-direction:column;
-    will-change:transform, opacity, filter;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    text-rendering:optimizeLegibility;
+}
+
+.coverflow-card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:rgba(4,6,18,.48);
+    z-index:2;
+    pointer-events:none;
+    transition:opacity .35s ease;
+    opacity:1;
+}
+
+.coverflow-card.active::before{
+    opacity:0;
 }
 
 .coverflow-card:not(.active){
-    filter:brightness(0.65) contrast(0.95);
+    opacity:0.75;
     cursor:pointer;
 }
 
 .coverflow-card:not(.active):hover{
-    filter:brightness(0.92) contrast(1);
-    border-color:rgba(0,234,255,.6);
-    box-shadow:0 20px 50px rgba(0,234,255,.2);
+    opacity:0.95;
+    border-color:rgba(0,234,255,.65);
+    box-shadow:0 18px 45px rgba(0,234,255,.22);
 }
 
 .coverflow-card.active{
-    filter:brightness(1) contrast(1);
+    opacity:1;
     border-color:#00eaff;
     box-shadow:
-        0 25px 75px rgba(0,0,0,.85),
-        0 0 35px rgba(0,234,255,.35),
+        0 24px 70px rgba(0,0,0,.85),
+        0 0 35px rgba(0,234,255,.36),
         inset 0 1px 0 rgba(255,255,255,.2);
     cursor:default;
 }
@@ -835,6 +848,7 @@ section{
     overflow:hidden;
     background:linear-gradient(135deg, #10142b, #1b2046);
     flex-shrink:0;
+    z-index:1;
 }
 
 .coverflow-image-wrap img{
@@ -844,6 +858,8 @@ section{
     object-position:center top;
     display:block;
     transition:transform .45s ease;
+    -webkit-backface-visibility:hidden;
+    backface-visibility:hidden;
 }
 
 .coverflow-card.active:hover .coverflow-image-wrap img{
@@ -854,18 +870,18 @@ section{
     position:absolute;
     top:12px;
     left:12px;
-    padding:4px 10px;
+    padding:4.5px 11px;
     border-radius:999px;
-    background:rgba(5,8,24,.82);
-    border:1px solid rgba(0,234,255,.45);
+    background:rgba(5,8,24,.92);
+    border:1px solid rgba(0,234,255,.55);
     color:#00eaff;
     font-family:"Orbitron",sans-serif;
     font-size:10px;
     font-weight:700;
     letter-spacing:1.5px;
-    backdrop-filter:blur(8px);
-    -webkit-backdrop-filter:blur(8px);
-    box-shadow:0 4px 12px rgba(0,0,0,.4);
+    box-shadow:0 4px 12px rgba(0,0,0,.5);
+    z-index:3;
+    -webkit-font-smoothing:antialiased;
 }
 
 .coverflow-info{
@@ -874,6 +890,11 @@ section{
     flex-direction:column;
     flex:1;
     justify-content:space-between;
+    background:#0d122b;
+    background:linear-gradient(180deg, rgba(16,23,54,.96), rgba(9,12,32,.99));
+    z-index:3;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
 }
 
 .coverflow-header-row{
@@ -881,42 +902,45 @@ section{
     align-items:center;
     justify-content:space-between;
     margin-bottom:10px;
-    gap:6px;
+    gap:8px;
     flex-wrap:nowrap;
 }
 
 .coverflow-player-name{
     font-family:"Orbitron",sans-serif;
-    font-size:15px;
+    font-size:16px;
     font-weight:800;
     color:#ffffff;
-    letter-spacing:.3px;
+    letter-spacing:.4px;
     margin:0;
     white-space:nowrap;
     overflow:hidden;
     text-overflow:ellipsis;
     flex-shrink:1;
+    text-shadow:0 1px 4px rgba(0,0,0,.6);
+    -webkit-font-smoothing:antialiased;
 }
 
 .coverflow-role-badge{
     display:inline-block;
-    padding:3px 8px;
+    padding:3.5px 9px;
     border-radius:6px;
-    background:rgba(255,0,200,.15);
-    border:1px solid rgba(255,0,200,.4);
-    color:#ff4bd8;
+    background:rgba(255,0,200,.2);
+    border:1px solid rgba(255,0,200,.55);
+    color:#ff55dc;
     font-family:"Orbitron",sans-serif;
-    font-size:9px;
+    font-size:9.5px;
     font-weight:700;
     letter-spacing:.6px;
     white-space:nowrap;
     flex-shrink:0;
     text-shadow:0 0 8px rgba(255,0,200,.4);
+    -webkit-font-smoothing:antialiased;
 }
 
 .coverflow-role-badge.coach{
-    background:rgba(255,170,0,.15);
-    border-color:rgba(255,170,0,.4);
+    background:rgba(255,170,0,.2);
+    border-color:rgba(255,170,0,.55);
     color:#ffbb33;
     text-shadow:0 0 8px rgba(255,170,0,.4);
 }
@@ -932,20 +956,24 @@ section{
     justify-content:space-between;
     align-items:center;
     padding-bottom:5px;
-    border-bottom:1px solid rgba(255,255,255,.07);
-    font-size:11.5px;
+    border-bottom:1px solid rgba(255,255,255,.09);
+    font-size:12px;
     font-family:"Poppins",sans-serif;
+    line-height:1.35;
+    -webkit-font-smoothing:antialiased;
 }
 
 .coverflow-detail-row strong{
-    color:#94a3b8;
-    font-weight:400;
+    color:#9cb0d1;
+    font-weight:500;
+    letter-spacing:.2px;
 }
 
 .coverflow-detail-row span{
     color:#ffffff;
     font-weight:600;
     text-align:right;
+    letter-spacing:.3px;
 }
 
 .coverflow-social-links{
@@ -962,14 +990,15 @@ section{
     gap:6px;
     padding:8px 10px;
     border-radius:8px;
-    background:rgba(255,255,255,.07);
-    border:1px solid rgba(255,255,255,.1);
-    color:#e2e8f0;
+    background:rgba(255,255,255,.08);
+    border:1px solid rgba(255,255,255,.15);
+    color:#f1f5f9;
     text-decoration:none;
-    font-size:11.5px;
+    font-size:12px;
     font-weight:600;
     font-family:"Poppins",sans-serif;
     transition:all .22s ease;
+    -webkit-font-smoothing:antialiased;
 }
 
 .coverflow-social-btn:hover{
@@ -1008,16 +1037,14 @@ section{
     width:46px;
     height:46px;
     border-radius:50%;
-    border:1px solid rgba(0,234,255,.3);
-    background:rgba(14,20,48,.85);
+    border:1px solid rgba(0,234,255,.4);
+    background:rgba(14,20,48,.92);
     color:#00eaff;
     display:grid;
     place-items:center;
     cursor:pointer;
     transition:all .25s ease;
     box-shadow:0 4px 16px rgba(0,0,0,.4);
-    backdrop-filter:blur(10px);
-    -webkit-backdrop-filter:blur(10px);
     outline:none;
 }
 
@@ -1060,30 +1087,35 @@ section{
 
 /* Light Theme Overrides for 3D Coverflow */
 body.light-theme .coverflow-card{
-    background:rgba(255,255,255,.94);
-    border-color:rgba(0,148,194,.25);
-    box-shadow:0 15px 40px rgba(40,50,90,.12);
+    background:#ffffff;
+    border-color:rgba(0,148,194,.3);
+    box-shadow:0 14px 38px rgba(40,50,90,.14);
+}
+
+body.light-theme .coverflow-card::before{
+    background:rgba(230,238,252,.5);
 }
 
 body.light-theme .coverflow-card.active{
     border-color:#0094c2;
     box-shadow:
-        0 25px 70px rgba(40,50,90,.22),
-        0 0 35px rgba(0,148,194,.25),
+        0 22px 65px rgba(40,50,90,.24),
+        0 0 35px rgba(0,148,194,.28),
         inset 0 1px 0 rgba(255,255,255,.9);
 }
 
-body.light-theme .coverflow-card:not(.active){
-    filter:brightness(0.85) contrast(0.95);
+body.light-theme .coverflow-info{
+    background:#ffffff;
 }
 
 body.light-theme .coverflow-player-name{
     color:#0f172a;
+    text-shadow:none;
 }
 
 body.light-theme .coverflow-badge{
-    background:rgba(255,255,255,.88);
-    border-color:rgba(0,148,194,.4);
+    background:rgba(255,255,255,.94);
+    border-color:rgba(0,148,194,.5);
     color:#0284c7;
 }
 
@@ -1101,13 +1133,13 @@ body.light-theme .coverflow-detail-row span{
 
 body.light-theme .coverflow-social-btn{
     background:rgba(0,148,194,.08);
-    border-color:rgba(0,148,194,.2);
+    border-color:rgba(0,148,194,.22);
     color:#1e293b;
 }
 
 body.light-theme .coverflow-btn{
-    background:rgba(255,255,255,.92);
-    border-color:rgba(0,148,194,.3);
+    background:rgba(255,255,255,.95);
+    border-color:rgba(0,148,194,.35);
     color:#0284c7;
     box-shadow:0 4px 16px rgba(40,50,90,.15);
 }

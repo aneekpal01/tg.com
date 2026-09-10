@@ -1658,24 +1658,25 @@ function initPlayersCoverflow() {
 
             const isCenter = offset === 0;
             const absOffset = Math.abs(offset);
-            const xOffset = offset * xSpacing;
-            const zOffset = isCenter ? (isMobile ? 70 : 120) : -absOffset * zDepth;
+            const xOffset = Math.round(offset * xSpacing);
+            const zOffset = isCenter ? 0 : -Math.round(absOffset * zDepth);
             const rotateY = offset * -rotateAngle;
-            const scale = isCenter ? 1 : 0.82;
-            const opacity = absOffset > 2 ? 0 : (absOffset === 2 ? 0.35 : 1);
+            const scale = isCenter ? 1 : (isMobile ? 0.82 : 0.85);
+            const opacity = absOffset > 2 ? 0 : (absOffset === 2 ? 0.3 : (isCenter ? 1 : 0.75));
             const zIndex = 30 - absOffset * 3;
             const pointerEvents = absOffset > 2 ? "none" : "auto";
 
-            card.style.transform = `translateX(${xOffset}px) translateZ(${zOffset}px) rotateY(${rotateY}deg) scale(${scale})`;
+            // Crisp 1:1 render for center card without 3D texture upscaling blur
+            if (isCenter) {
+                card.style.transform = "translate3d(0, 0, 0) rotateY(0deg) scale(1)";
+                card.classList.add("active");
+            } else {
+                card.style.transform = `translate3d(${xOffset}px, 0, ${zOffset}px) rotateY(${rotateY}deg) scale(${scale})`;
+                card.classList.remove("active");
+            }
             card.style.zIndex = zIndex;
             card.style.opacity = opacity;
             card.style.pointerEvents = pointerEvents;
-
-            if (isCenter) {
-                card.classList.add("active");
-            } else {
-                card.classList.remove("active");
-            }
         });
 
         updateDots(activeIndex);
