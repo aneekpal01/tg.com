@@ -1676,8 +1676,25 @@ function initPlayersCoverflow() {
         setActive(activeIndex - 1);
     };
 
-    // Card click events
+    // Hover & Click events for cards (Auto-center on mouse hover)
+    let hoverTimeout = null;
     cards.forEach((card, idx) => {
+        // Automatically bring card to center on mouse hover
+        card.addEventListener("mouseenter", () => {
+            if (idx !== activeIndex) {
+                if (hoverTimeout) clearTimeout(hoverTimeout);
+                hoverTimeout = setTimeout(() => {
+                    setActive(idx);
+                    resetAutoplay();
+                }, 50);
+            }
+        });
+
+        card.addEventListener("mouseleave", () => {
+            if (hoverTimeout) clearTimeout(hoverTimeout);
+        });
+
+        // Click event fallback & instant activation
         card.addEventListener("click", (e) => {
             // Allow clicking social links directly on active center card
             if (e.target.closest(".coverflow-social-btn")) {
@@ -1685,6 +1702,7 @@ function initPlayersCoverflow() {
             }
             if (idx !== activeIndex) {
                 e.preventDefault();
+                if (hoverTimeout) clearTimeout(hoverTimeout);
                 setActive(idx);
                 resetAutoplay();
             }
