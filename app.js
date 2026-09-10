@@ -1893,3 +1893,115 @@ if (backToTopBtn) {
         });
     });
 }
+
+/* ==================================================
+   ORIGINKIT ARROW REVEAL BUTTON
+================================================== */
+function initArrowRevealButtons() {
+    const wrappers = document.querySelectorAll(".originkit-arrow-reveal-wrapper");
+    if (!wrappers.length) return;
+
+    wrappers.forEach((wrapper) => {
+        const btn = wrapper.querySelector(".originkit-arrow-reveal-btn");
+        const badge = wrapper.querySelector(".arb-badge");
+        const arrow = wrapper.querySelector(".arb-arrow");
+        const slot = wrapper.querySelector(".arb-slot");
+        const strokeEl = wrapper.querySelector(".arb-stroke");
+        const label = wrapper.querySelector(".arb-label");
+
+        if (!btn || !badge || !arrow || !slot) return;
+
+        let hoverScale = 1;
+        let hoverX = 0;
+        let isHovered = false;
+
+        const measure = () => {
+            const w = btn.offsetWidth;
+            const h = btn.offsetHeight;
+            if (!w || !h) return;
+
+            const radius = Math.min(w, h) / 2;
+            btn.style.borderRadius = `${radius}px`;
+            if (strokeEl) strokeEl.style.borderRadius = `${radius + 2}px`;
+
+            const badgeSize = Math.max(28, Math.min(38, h - 8));
+            const rb = badgeSize / 2;
+
+            const rawCx = slot.offsetLeft + slot.offsetWidth / 2;
+            const cy = slot.offsetTop + slot.offsetHeight / 2;
+
+            const fromEdge = Math.max(rb + 4, radius);
+            const cx = Math.min(Math.max(rawCx, fromEdge), w - fromEdge);
+
+            const far = Math.hypot(Math.max(cx, w - cx), Math.max(cy, h - cy));
+            const coverD = Math.ceil(2 * far * 1.08);
+
+            const arrowSize = Math.min(18, Math.floor(badgeSize / Math.SQRT2));
+
+            hoverScale = badgeSize > 0 ? (coverD / badgeSize) : 1;
+            hoverX = (w / 2) - cx;
+
+            badge.style.width = `${badgeSize}px`;
+            badge.style.height = `${badgeSize}px`;
+            badge.style.left = `${cx}px`;
+            badge.style.top = `${cy}px`;
+            badge.style.marginLeft = `${-rb}px`;
+            badge.style.marginTop = `${-rb}px`;
+
+            arrow.style.width = `${arrowSize}px`;
+            arrow.style.height = `${arrowSize}px`;
+            arrow.style.left = `${cx}px`;
+            arrow.style.top = `${cy}px`;
+            arrow.style.marginLeft = `${-arrowSize / 2}px`;
+            arrow.style.marginTop = `${-arrowSize / 2}px`;
+
+            if (!isHovered) {
+                badge.style.transform = "scale(1)";
+                arrow.style.transform = "translate(0px, 0px) rotate(0deg)";
+                if (label) label.style.transform = "translateX(0px)";
+            } else {
+                badge.style.transform = `scale(${hoverScale})`;
+                arrow.style.transform = `translate(${hoverX}px, 0px) rotate(45deg)`;
+                if (label) label.style.transform = "translateX(-8px)";
+            }
+        };
+
+        measure();
+
+        if (window.ResizeObserver) {
+            const ro = new ResizeObserver(measure);
+            ro.observe(btn);
+            ro.observe(slot);
+        } else {
+            window.addEventListener("resize", measure);
+        }
+
+        wrapper.addEventListener("pointerenter", () => {
+            isHovered = true;
+            badge.style.transform = `scale(${hoverScale})`;
+            arrow.style.transform = `translate(${hoverX}px, 0px) rotate(45deg)`;
+            if (label) label.style.transform = "translateX(-8px)";
+        });
+
+        wrapper.addEventListener("pointerleave", () => {
+            isHovered = false;
+            badge.style.transform = "scale(1)";
+            arrow.style.transform = "translate(0px, 0px) rotate(0deg)";
+            if (label) label.style.transform = "translateX(0px)";
+            btn.style.transform = "scale(1)";
+            if (strokeEl) strokeEl.style.transform = "scale(1)";
+        });
+
+        wrapper.addEventListener("pointerdown", () => {
+            btn.style.transform = "scale(0.97)";
+            if (strokeEl) strokeEl.style.transform = "scale(0.97)";
+        });
+
+        wrapper.addEventListener("pointerup", () => {
+            btn.style.transform = "scale(1)";
+            if (strokeEl) strokeEl.style.transform = "scale(1)";
+        });
+    });
+}
+
+initArrowRevealButtons();

@@ -6860,3 +6860,183 @@ body.light-theme .back-to-top:hover{
         border-radius:12px !important;
     }
 }
+
+/* ==================================================
+   ORIGINKIT ARROW REVEAL BUTTON — "MEET THE PLAYERS"
+================================================== */
+.originkit-arrow-reveal-wrapper {
+    display: inline-flex !important;
+    position: relative !important;
+    overflow: visible !important;
+    min-height: 48px !important;
+    border-radius: 999px !important;
+    user-select: none !important;
+    cursor: pointer !important;
+    z-index: 1 !important;
+}
+
+.hero-actions .originkit-arrow-reveal-wrapper {
+    margin: 0 !important;
+}
+
+.originkit-arrow-reveal-btn {
+    box-sizing: border-box !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 16px !important;
+    padding: 8px 10px 8px 24px !important;
+    background: #090e24 !important;
+    color: #ffffff !important;
+    font-family: "Orbitron", sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.8px !important;
+    text-decoration: none !important;
+    border-radius: 999px !important;
+    overflow: hidden !important;
+    position: relative !important;
+    border: none !important;
+    cursor: pointer !important;
+    white-space: nowrap !important;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6), 0 0 22px rgba(0, 234, 255, 0.22) !important;
+    transition: transform 0.46s cubic-bezier(0.44, 0, 0.56, 1), box-shadow 0.35s ease, color 0.35s ease !important;
+    z-index: 1 !important;
+}
+
+.originkit-arrow-reveal-btn::after {
+    display: none !important;
+}
+
+.arb-label {
+    position: relative !important;
+    z-index: 3 !important;
+    color: #ffffff !important;
+    pointer-events: none !important;
+    font-family: "Orbitron", sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.8px !important;
+    transition: transform 0.46s cubic-bezier(0.44, 0, 0.56, 1), color 0.35s ease, text-shadow 0.35s ease !important;
+}
+
+.arb-slot {
+    flex: none !important;
+    width: 38px !important;
+    height: 38px !important;
+    pointer-events: none !important;
+    opacity: 0 !important;
+}
+
+.arb-badge {
+    position: absolute !important;
+    z-index: 2 !important;
+    border-radius: 50% !important;
+    background: linear-gradient(135deg, #00eaff 0%, #0077ff 100%) !important;
+    box-shadow: 0 0 20px rgba(0, 234, 255, 0.85), 0 0 35px rgba(0, 119, 255, 0.45) !important;
+    transform-origin: center !important;
+    pointer-events: none !important;
+    transition: transform 0.46s cubic-bezier(0.44, 0, 0.56, 1), background 0.35s ease, box-shadow 0.35s ease !important;
+}
+
+.arb-arrow {
+    position: absolute !important;
+    z-index: 4 !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #050718 !important;
+    pointer-events: none !important;
+    transform-origin: center !important;
+    transition: transform 0.46s cubic-bezier(0.44, 0, 0.56, 1), color 0.35s ease !important;
+}
+
+.arb-icon-svg {
+    width: 18px !important;
+    height: 18px !important;
+    display: block !important;
+}
+
+.arb-stroke {
+    position: absolute !important;
+    inset: -2px !important;
+    border-radius: 999px !important;
+    border: 1.5px solid rgba(0, 234, 255, 0.45) !important;
+    box-shadow: 0 0 16px rgba(0, 234, 255, 0.25) !important;
+    z-index: 5 !important;
+    pointer-events: none !important;
+    box-sizing: border-box !important;
+    transition: transform 0.46s cubic-bezier(0.44, 0, 0.56, 1), border-color 0.35s ease, box-shadow 0.35s ease !important;
+}
+
+/* Hover States */
+.originkit-arrow-reveal-wrapper:hover .originkit-arrow-reveal-btn {
+    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.75), 0 0 38px rgba(0, 234, 255, 0.6) !important;
+}
+
+.originkit-arrow-reveal-wrapper:hover .arb-label {
+    color: #050718 !important;
+    font-weight: 800 !important;
+}
+
+.originkit-arrow-reveal-wrapper:hover .arb-arrow {
+    color: #050718 !important;
+}
+
+.originkit-arrow-reveal-wrapper:hover .arb-stroke {
+    border-color: #00eaff !important;
+    box-shadow: 0 0 26px rgba(0, 234, 255, 0.65) !important;
+}
+
+/* Light Theme */
+body.light-theme .originkit-arrow-reveal-btn {
+    background: #ffffff !important;
+    color: #09122a !important;
+    box-shadow: 0 12px 28px rgba(22, 38, 86, 0.15), 0 0 20px rgba(0, 148, 194, 0.18) !important;
+}
+
+body.light-theme .arb-label {
+    color: #09122a !important;
+}
+
+body.light-theme .arb-badge {
+    background: linear-gradient(135deg, #0099ff 0%, #0055ff 100%) !important;
+    box-shadow: 0 0 18px rgba(0, 148, 194, 0.5) !important;
+}
+
+body.light-theme .arb-arrow {
+    color: #ffffff !important;
+}
+
+body.light-theme .arb-stroke {
+    border-color: rgba(0, 148, 194, 0.45) !important;
+    box-shadow: 0 0 15px rgba(0, 148, 194, 0.25) !important;
+}
+
+body.light-theme .originkit-arrow-reveal-wrapper:hover .arb-label {
+    color: #ffffff !important;
+}
+
+body.light-theme .originkit-arrow-reveal-wrapper:hover .arb-arrow {
+    color: #ffffff !important;
+}
+
+body.light-theme .originkit-arrow-reveal-wrapper:hover .arb-stroke {
+    border-color: #087fbd !important;
+    box-shadow: 0 0 24px rgba(0, 148, 194, 0.45) !important;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    .originkit-arrow-reveal-wrapper {
+        width: min(90%, 340px) !important;
+        justify-content: center !important;
+    }
+    .hero-actions .originkit-arrow-reveal-btn {
+        width: 100% !important;
+        height: 54px !important;
+        padding: 8px 10px 8px 18px !important;
+        font-size: 12.5px !important;
+        justify-content: space-between !important;
+    }
+}
