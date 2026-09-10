@@ -987,88 +987,280 @@ section{
 }
 
 
-/* =========================
-   GALLERY
-========================= */
+/* ==========================================================================
+   MAGNETIC CAROUSEL (ORIGINKIT EFFECT)
+   ========================================================================== */
 
-.gallery{
-
+.magnetic-carousel-shell{
+    width:100%;
     max-width:1300px;
-
-    margin:auto;
-
-    display:grid;
-
-    grid-template-columns:
-    repeat(3,1fr);
-
-    gap:25px;
-}
-
-.gallery-item{
-
+    margin:0 auto;
     position:relative;
-
-    height:320px;
-
-    overflow:hidden;
-
-    border-radius:20px;
-
-    border:
-    1px solid
-    rgba(255,255,255,.12);
-
-    background:#111;
+    padding:20px 10px 40px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
 }
 
-.gallery-item img{
+.magnetic-hint{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 16px;
+    border-radius:999px;
+    background:rgba(0,234,255,.08);
+    border:1px solid rgba(0,234,255,.24);
+    color:#00eaff;
+    font-family:"Orbitron",sans-serif;
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:1.2px;
+    margin-bottom:30px;
+    text-shadow:0 0 12px rgba(0,234,255,.35);
+    box-shadow:0 4px 18px rgba(0,234,255,.08);
+    animation:pulseMagneticHint 3s ease-in-out infinite;
+}
 
+.magnetic-hint span{
+    color:#ff00c8;
+}
+
+@keyframes pulseMagneticHint{
+    0%, 100%{ transform:scale(1); opacity:.9; }
+    50%{ transform:scale(1.04); opacity:1; }
+}
+
+.magnetic-carousel-track{
+    width:100%;
+    min-height:460px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:16px;
+    position:relative;
+    overflow:visible;
+    padding:20px 0;
+    touch-action:pan-y;
+}
+
+/* Transparent / Dimmed Backdrop */
+.magnetic-backdrop{
+    position:fixed;
+    inset:0;
+    background:rgba(3,4,15,.78);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    z-index:40;
+    opacity:0;
+    visibility:hidden;
+    pointer-events:none;
+    transition:opacity .35s ease, visibility .35s;
+}
+
+.magnetic-backdrop.active{
+    opacity:1;
+    visibility:visible;
+    pointer-events:auto;
+}
+
+/* Individual Magnetic Card Bar */
+.magnetic-card{
+    flex:none;
+    position:relative;
+    border-radius:24px;
+    overflow:hidden;
+    cursor:pointer;
+    background:#0b0e24;
+    border:1px solid rgba(0,234,255,.24);
+    box-shadow:0 14px 34px rgba(0,0,0,.55), 0 0 20px rgba(0,234,255,.08);
+    will-change:width, height, filter, opacity, transform;
+    z-index:2;
+    transition:border-color .3s ease, box-shadow .3s ease;
+    user-select:none;
+    -webkit-user-select:none;
+}
+
+.magnetic-card:hover{
+    border-color:#00eaff;
+    box-shadow:0 20px 48px rgba(0,0,0,.7), 0 0 30px rgba(0,234,255,.3);
+}
+
+.magnetic-card.open{
+    z-index:50 !important;
+    border-color:#00eaff !important;
+    border-width:2px;
+    box-shadow:0 30px 100px rgba(0,0,0,.9), 0 0 60px rgba(0,234,255,.45) !important;
+    border-radius:28px;
+}
+
+.magnetic-card.blurred{
+    z-index:1 !important;
+    pointer-events:none;
+}
+
+/* Inner Image */
+.magnetic-card-img{
     width:100%;
     height:100%;
-
     object-fit:cover;
-
-    transition:.5s;
+    object-position:center;
+    display:block;
+    transition:transform .4s ease;
 }
 
-.gallery-item:hover img{
-
-    transform:scale(1.1);
+.magnetic-card:hover .magnetic-card-img{
+    transform:scale(1.05);
 }
 
-.gallery-overlay{
+.magnetic-card.open .magnetic-card-img{
+    transform:scale(1);
+}
 
+/* Overlay & Title Badge */
+.magnetic-card-overlay{
     position:absolute;
-
-    left:0;
-    right:0;
-    bottom:0;
-
-    padding:25px;
-
-    background:
-
-    linear-gradient(
-        transparent,
-        rgba(0,0,0,.9)
-    );
+    inset:0;
+    padding:22px 18px;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    background:linear-gradient(180deg, rgba(0,0,0,0) 35%, rgba(5,7,20,.85) 75%, rgba(3,4,15,.96) 100%);
+    pointer-events:none;
+    opacity:0;
+    transform:translateY(12px);
+    transition:opacity .25s ease, transform .25s ease;
 }
 
-.gallery-overlay h3{
-
-    font-family:"Orbitron",sans-serif;
-
-    font-size:18px;
+.magnetic-card:hover .magnetic-card-overlay,
+.magnetic-card.open .magnetic-card-overlay{
+    opacity:1;
+    transform:translateY(0);
 }
 
-.gallery-overlay p{
-
+.magnetic-tag{
+    display:inline-block;
+    align-self:flex-start;
+    padding:3px 9px;
+    border-radius:6px;
+    background:rgba(0,234,255,.18);
+    border:1px solid rgba(0,234,255,.35);
     color:#00eaff;
+    font-family:"Orbitron",sans-serif;
+    font-size:9px;
+    font-weight:700;
+    letter-spacing:1.2px;
+    margin-bottom:6px;
+}
 
-    font-size:12px;
+.magnetic-card-overlay h3{
+    color:#ffffff;
+    font-family:"Orbitron",sans-serif;
+    font-size:14px;
+    font-weight:700;
+    margin:0 0 2px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+    letter-spacing:.6px;
+}
 
-    margin-top:5px;
+.magnetic-card.open .magnetic-card-overlay h3{
+    font-size:22px;
+    margin-bottom:6px;
+    white-space:normal;
+}
+
+.magnetic-card-overlay p{
+    color:#00eaff;
+    font-size:11px;
+    font-family:"Poppins",sans-serif;
+    margin:0;
+    letter-spacing:.4px;
+}
+
+/* Close Button (shown when open) */
+.magnetic-close-btn{
+    position:absolute;
+    top:16px;
+    right:16px;
+    width:36px;
+    height:36px;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.3);
+    background:rgba(0,0,0,.65);
+    color:#ffffff;
+    font-size:14px;
+    display:grid;
+    place-items:center;
+    cursor:pointer;
+    z-index:10;
+    opacity:0;
+    visibility:hidden;
+    transform:scale(.8);
+    transition:opacity .25s ease, transform .25s ease, background .2s ease;
+}
+
+.magnetic-card.open .magnetic-close-btn{
+    opacity:1;
+    visibility:visible;
+    transform:scale(1);
+}
+
+.magnetic-close-btn:hover{
+    background:#ff1744;
+    border-color:#ff1744;
+    transform:scale(1.1) rotate(90deg);
+}
+
+/* Light Theme Overrides */
+body.light-theme .magnetic-card{
+    background:#ffffff;
+    border-color:rgba(0,148,194,.3);
+    box-shadow:0 14px 34px rgba(60,70,120,.14), 0 0 20px rgba(0,148,194,.1);
+}
+
+body.light-theme .magnetic-card:hover{
+    border-color:#0094c2;
+    box-shadow:0 20px 45px rgba(60,70,120,.22), 0 0 28px rgba(0,148,194,.22);
+}
+
+body.light-theme .magnetic-card.open{
+    border-color:#0094c2 !important;
+    box-shadow:0 30px 90px rgba(40,50,90,.32), 0 0 50px rgba(0,148,194,.32) !important;
+}
+
+body.light-theme .magnetic-backdrop{
+    background:rgba(235,240,252,.82);
+}
+
+body.light-theme .magnetic-hint{
+    background:rgba(0,148,194,.08);
+    border-color:rgba(0,148,194,.3);
+    color:#087fbd;
+}
+
+@media(max-width:768px){
+    .magnetic-carousel-shell{
+        padding:20px 8px 30px;
+    }
+
+    .magnetic-carousel-track{
+        min-height:360px;
+        gap:8px;
+    }
+
+    .magnetic-card{
+        border-radius:18px;
+    }
+
+    .magnetic-card-overlay h3{
+        font-size:12px;
+    }
+
+    .magnetic-card.open .magnetic-card-overlay h3{
+        font-size:16px;
+    }
 }
 
 

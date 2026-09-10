@@ -1339,3 +1339,250 @@ function initGlobalProfile(){
 }
 
 initGlobalProfile();
+
+/* ==================================================
+   MAGNETIC CAROUSEL (ORIGINKIT EFFECT)
+================================================== */
+function initMagneticCarousel() {
+    const track = document.getElementById("magneticCarouselTrack");
+    const backdrop = document.getElementById("magneticBackdrop");
+    if (!track) return;
+
+    const cards = Array.from(track.querySelectorAll(".magnetic-card"));
+    const count = cards.length;
+    if (count === 0) return;
+
+    // Config parameters based on Originkit presets
+    const getDimensions = () => {
+        const isMobile = window.innerWidth <= 768;
+        const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+        if (isMobile) {
+            return {
+                collapsedWidth: 70,
+                hoverWidth: 150,
+                collapsedHeight: 280,
+                hoverHeight: 330,
+                openSize: Math.min(window.innerWidth - 32, 440),
+                gap: 8,
+                influence: 110,
+                blur: 24,
+            };
+        } else if (isTablet) {
+            return {
+                collapsedWidth: 90,
+                hoverWidth: 180,
+                collapsedHeight: 320,
+                hoverHeight: 370,
+                openSize: Math.min(window.innerWidth - 48, 540),
+                gap: 12,
+                influence: 150,
+                blur: 26,
+            };
+        }
+        return {
+            collapsedWidth: 110,
+            hoverWidth: 220,
+            collapsedHeight: 350,
+            hoverHeight: 410,
+            openSize: 620,
+            gap: 16,
+            influence: 190,
+            blur: 28,
+        };
+    };
+
+    let targetFactors = new Array(count).fill(0);
+    let curFactors = new Array(count).fill(0);
+    let openIndex = null;
+    let animLoopId = null;
+
+    // Apply base dimensions
+    const applyDimensions = () => {
+        const { collapsedWidth, collapsedHeight, gap } = getDimensions();
+        track.style.gap = `${gap}px`;
+        cards.forEach((card) => {
+            if (openIndex === null) {
+                card.style.width = `${collapsedWidth}px`;
+                card.style.height = `${collapsedHeight}px`;
+                card.style.filter = "none";
+                card.style.opacity = "1";
+                card.classList.remove("open", "blurred");
+            }
+        });
+    };
+    applyDimensions();
+
+    const startLoop = () => {
+        if (animLoopId) return;
+        const step = () => {
+            if (openIndex !== null) {
+                animLoopId = null;
+                return;
+            }
+            const { collapsedWidth, hoverWidth, collapsedHeight, hoverHeight } = getDimensions();
+            let moving = false;
+            for (let i = 0; i < count; i++) {
+                const diff = (targetFactors[i] ?? 0) - curFactors[i];
+                if (Math.abs(diff) > 0.001) {
+                    curFactors[i] += diff * 0.2; // Smooth continuous spring/lerp
+                    moving = true;
+                } else {
+                    curFactors[i] = targetFactors[i] ?? 0;
+                }
+                const f = curFactors[i];
+                const w = collapsedWidth + (hoverWidth - collapsedWidth) * f;
+                const h = collapsedHeight + (hoverHeight - collapsedHeight) * f;
+                cards[i].style.width = `${w}px`;
+                cards[i].style.height = `${h}px`;
+                cards[i].style.transition = "none";
+            }
+            if (moving) {
+                animLoopId = requestAnimationFrame(step);
+            } else {
+                animLoopId = null;
+            }
+        };
+        animLoopId = requestAnimationFrame(step);
+    };
+
+    const setTargetFromCursor = (clientX) => {
+        const rect = track.getBoundingClientRect();
+        const cx = clientX - rect.left;
+        const { collapsedWidth, gap, influence } = getDimensions();
+        const totalBase = count * collapsedWidth + (count - 1) * gap;
+        const startX = (rect.width - totalBase) / 2;
+
+        for (let i = 0; i < count; i++) {
+            const center = startX + i * (collapsedWidth + gap) + collapsedWidth / 2;
+            const dist = Math.abs(cx - center);
+            const f = Math.max(0, 1 - dist / influence);
+            targetFactors[i] = f * f * (3 - 2 * f); // Smoothstep falloff
+        }
+        startLoop();
+    };
+
+    track.addEventListener("mousemove", (e) => {
+        if (openIndex !== null) return;
+        setTargetFromCursor(e.clientX);
+    });
+
+    track.addEventListener("mouseleave", () => {
+        if (openIndex !== null) return;
+        targetFactors.fill(0);
+        startLoop();
+    });
+
+    // Touch events for mobile
+    track.addEventListener("touchmove", (e) => {
+        if (openIndex !== null || !e.touches[0]) return;
+        setTargetFromCursor(e.touches[0].clientX);
+    }, { passive: true });
+
+    track.addEventListener("touchend", () => {
+        if (openIndex !== null) return;
+        targetFactors.fill(0);
+        startLoop();
+    });
+
+    const openCard = (idx) => {
+        if (animLoopId) {
+            cancelAnimationFrame(animLoopId);
+            animLoopId = null;
+        }
+        openIndex = idx;
+        const { collapsedWidth, collapsedHeight, openSize, blur } = getDimensions();
+        const dur = 0.35;
+        const ease = "cubic-bezier(0.44, 0, 0.56, 1)";
+        const barTransition = `width ${dur}s ${ease}, height ${dur}s ${ease}, filter ${dur}s ${ease}, opacity ${dur}s ${ease}, transform ${dur}s ${ease}`;
+
+        cards.forEach((card, i) => {
+            card.style.transition = barTransition;
+            if (i === idx) {
+                card.style.width = `${openSize}px`;
+                card.style.height = `${openSize}px`;
+                card.style.filter = "none";
+                card.style.opacity = "1";
+                card.classList.add("open");
+                card.classList.remove("blurred");
+            } else {
+                card.style.width = `${collapsedWidth}px`;
+                card.style.height = `${collapsedHeight}px`;
+                card.style.filter = `blur(${blur}px)`;
+                card.style.opacity = "0.45";
+                card.classList.remove("open");
+                card.classList.add("blurred");
+            }
+        });
+
+        if (backdrop) {
+            backdrop.classList.add("active");
+        }
+    };
+
+    const closeCard = () => {
+        if (openIndex === null) return;
+        const { collapsedWidth, collapsedHeight } = getDimensions();
+        const dur = 0.35;
+        const ease = "cubic-bezier(0.44, 0, 0.56, 1)";
+        const barTransition = `width ${dur}s ${ease}, height ${dur}s ${ease}, filter ${dur}s ${ease}, opacity ${dur}s ${ease}`;
+
+        cards.forEach((card) => {
+            card.style.transition = barTransition;
+            card.style.width = `${collapsedWidth}px`;
+            card.style.height = `${collapsedHeight}px`;
+            card.style.filter = "none";
+            card.style.opacity = "1";
+            card.classList.remove("open", "blurred");
+        });
+
+        if (backdrop) {
+            backdrop.classList.remove("active");
+        }
+
+        targetFactors.fill(0);
+        curFactors.fill(0);
+        openIndex = null;
+    };
+
+    cards.forEach((card, idx) => {
+        card.addEventListener("click", (e) => {
+            e.stopPropagation();
+            if (openIndex === idx) {
+                closeCard();
+            } else {
+                openCard(idx);
+            }
+        });
+
+        const closeBtn = card.querySelector(".magnetic-close-btn");
+        if (closeBtn) {
+            closeBtn.addEventListener("click", (e) => {
+                e.stopPropagation();
+                closeCard();
+            });
+        }
+    });
+
+    if (backdrop) {
+        backdrop.addEventListener("click", (e) => {
+            e.stopPropagation();
+            closeCard();
+        });
+    }
+
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && openIndex !== null) {
+            closeCard();
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        if (openIndex === null) {
+            applyDimensions();
+        } else {
+            openCard(openIndex);
+        }
+    });
+}
+
+initMagneticCarousel();
