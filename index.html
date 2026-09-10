@@ -8,7 +8,7 @@
 <link href="https://fonts.googleapis.com" rel="preconnect"/>
 <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&amp;family=Poppins:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
-<link href="style.css?v=about_pillars1" rel="stylesheet"/>
+<link href="style.css?v=support_qr1" rel="stylesheet"/>
 <link href="tg-logo.png" rel="icon" type="image/png"/>
 <meta content="Total Gaming Esports — team, players, tournaments, gallery and community." name="description"/><meta content="#050510" name="theme-color"/></head>
 <body class="tg-site">
@@ -103,6 +103,11 @@ LEGACY
 </a>
 <a href="community.html">
 COMMUNITY
+</a>
+<a class="menu-support-link" href="#support" id="menuSupportLink">
+  <span class="menu-support-icon">☕</span>
+  <span>SUPPORT / CHAI QR</span>
+  <span class="menu-support-pill">UPI</span>
 </a>
 <button class="admin-update-btn" id="adminUpdatesBtn" type="button">
 ADMIN UPDATES
@@ -748,31 +753,55 @@ Loading official updates...
      SUPPORT / 1 CUP CHAI SECTION
 ========================= -->
 <section class="support-section" id="support">
-<div class="support-card reveal">
-<div class="support-badge">
-<span>☕</span> SUPPORT THE CREATOR
-</div>
-<h2 class="support-title">
-BUY 1 CUP <strong>CHAI</strong> FOR TG
-</h2>
-<p class="support-desc">
-Loving the Total Gaming Esports platform? Show your love and fuel future updates with a cup of chai! Scan the official QR code below via any UPI app.
-</p>
-<div class="support-qr-wrap">
-<div class="support-qr-box">
-<img alt="Official Support QR - Total Gaming Universe" class="support-qr-img" src="tg-chai-qr.png"/>
-<div class="support-scan-hint">
-<svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg>
-<span>Scan via GPay / PhonePe / Paytm / UPI</span>
-</div>
-</div>
-</div>
-<div class="support-actions">
-<a class="support-yt-btn" href="https://www.youtube.com/@TG.Universe-07" rel="noopener noreferrer" target="_blank">
-<svg fill="currentColor" height="18" viewBox="0 0 24 24" width="18"><path d="M21.6 7.2a2.9 2.9 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.9 2.9 0 0 0-2 2A30 30 0 0 0 2 12a30 30 0 0 0 .4 4.8 2.9 2.9 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.9 2.9 0 0 0 2-2A30 30 0 0 0 22 12a30 30 0 0 0-.4-4.8ZM10 15.2V8.8l5.5 3.2-5.5 3.2Z"/></svg>
-<span>Subscribe @TG.Universe-07</span>
-</a>
-</div>
+<div class="support-card reveal" id="supportCard">
+  <div class="support-glow-border"></div>
+  
+  <div class="support-grid">
+    <!-- Left Info Column -->
+    <div class="support-info-col">
+      <div class="support-badge">
+        <span>☕</span> FUEL TOTAL GAMING ESPORTS
+      </div>
+      <h2 class="support-title">
+        BUY 1 CUP <strong>CHAI</strong> FOR TG
+      </h2>
+      <p class="support-desc">
+        Loving the Total Gaming Esports platform? Fuel future updates, new features, and tournament coverage with a cup of chai! Every sip fuels our passion to build the ultimate esports hub for you.
+      </p>
+
+      <!-- Supported UPI Apps -->
+      <div class="support-upi-pills">
+        <span class="upi-pill gpay"><span class="upi-dot"></span> Google Pay</span>
+        <span class="upi-pill phonepe"><span class="upi-dot"></span> PhonePe</span>
+        <span class="upi-pill paytm"><span class="upi-dot"></span> Paytm</span>
+        <span class="upi-pill bhim"><span class="upi-dot"></span> Any UPI App</span>
+      </div>
+
+      <div class="support-actions">
+        <a class="support-yt-btn" href="https://www.youtube.com/@TG.Universe-07" rel="noopener noreferrer" target="_blank">
+          <svg fill="currentColor" height="18" viewBox="0 0 24 24" width="18"><path d="M21.6 7.2a2.9 2.9 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.9 2.9 0 0 0-2 2A30 30 0 0 0 2 12a30 30 0 0 0 .4 4.8 2.9 2.9 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.9 2.9 0 0 0 2-2A30 30 0 0 0 22 12a30 30 0 0 0-.4-4.8ZM10 15.2V8.8l5.5 3.2-5.5 3.2Z"/></svg>
+          <span>Subscribe @TG.Universe-07</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Right QR Code Column -->
+    <div class="support-qr-col">
+      <div class="support-qr-frame">
+        <div class="support-qr-header">
+          <span class="qr-live-pulse"></span>
+          <span>OFFICIAL UPI QR</span>
+        </div>
+        <div class="support-qr-box">
+          <img alt="Official Support QR - Total Gaming Universe" class="support-qr-img" src="tg-chai-qr.png"/>
+        </div>
+        <div class="support-scan-hint">
+          <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg>
+          <span>Scan via GPay / PhonePe / Paytm / UPI</span>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 </section>
 <!-- =========================
@@ -807,6 +836,6 @@ Loving the Total Gaming Esports platform? Show your love and fuel future updates
 <!-- =========================
      FIREBASE + JAVASCRIPT
 ========================= -->
-<script defer="True" src="app.js?v=galleryfix1" type="module"></script>
+<script defer="True" src="app.js?v=support_qr1" type="module"></script>
 </body>
 </html>

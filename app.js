@@ -323,6 +323,24 @@ document.querySelectorAll(
 
 });
 
+const menuSupportLink = document.getElementById("menuSupportLink");
+if (menuSupportLink) {
+    menuSupportLink.addEventListener("click", () => {
+        const supportCard = document.getElementById("supportCard");
+        if (supportCard) {
+            supportCard.style.transition = "transform 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease";
+            supportCard.style.borderColor = "#ffaa00";
+            supportCard.style.boxShadow = "0 0 60px rgba(255, 170, 0, 0.5), 0 25px 80px rgba(0, 0, 0, 0.8)";
+            supportCard.style.transform = "scale(1.02)";
+            setTimeout(() => {
+                supportCard.style.borderColor = "";
+                supportCard.style.boxShadow = "";
+                supportCard.style.transform = "";
+            }, 1600);
+        }
+    });
+}
+
 
 /* ==================================================
    ADMIN UPDATES OPEN
