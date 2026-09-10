@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="style.css?v=wa2"/>
-<link rel="stylesheet" href="community.css?v=wa2"/>
+<link rel="stylesheet" href="style.css?v=wa3"/>
+<link rel="stylesheet" href="community.css?v=wa3"/>
 <link rel="icon" href="tg-logo.png" type="image/png"/>
 </head>
 <body class="tg-site community-page">
@@ -43,7 +43,6 @@
 <!-- User Profile & Auth Actions in Nav (visible on desktop and mobile) -->
 <div class="nav-auth-actions" id="navAuthActions">
 <button class="nav-signin-btn" id="navSignInBtn" type="button" aria-label="Sign in to chat">
-<span class="nav-signin-icon">🎮</span>
 <span class="nav-signin-text">Sign In</span>
 </button>
 
@@ -55,20 +54,27 @@
 </button>
 <div class="nav-profile-dropdown" id="navProfileDropdown">
 <div class="dropdown-header">
+<div class="dropdown-avatar-container" id="dropdownAvatarContainer" title="Click to change profile picture">
 <div class="dropdown-avatar" id="dropdownAvatar">TG</div>
+<label for="changePhotoInput" class="avatar-edit-badge" title="Change photo">
+  <svg viewBox="0 0 24 24" width="13" height="13" fill="currentColor"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+</label>
+<input type="file" id="changePhotoInput" accept="image/*" style="display:none;"/>
+</div>
 <div class="dropdown-info">
 <strong class="dropdown-name" id="dropdownName">TG Community Member</strong>
-<span class="dropdown-tag" id="dropdownTag"><span></span> Verified Fan</span>
+<span class="dropdown-tag" id="dropdownTag"><span></span> Verified Member</span>
+<label for="changePhotoInput" class="btn-change-photo">Change Photo</label>
 </div>
 </div>
 <div class="dropdown-channels-group">
 <div class="dropdown-section-title">COMMUNITY CHANNELS</div>
 <button type="button" class="dropdown-channel-btn active" data-channel="general" id="dropChannelGeneral">
-<span>💬 Fan Lounge</span>
+<span class="channel-btn-title">Fan Lounge</span>
 <span class="tab-badge">LIVE</span>
 </button>
 <button type="button" class="dropdown-channel-btn" data-channel="announcements" id="dropChannelAnnouncements">
-<span>📢 Official Announcements</span>
+<span class="channel-btn-title">Official Announcements</span>
 <span class="tab-badge admin-badge">ADMIN</span>
 </button>
 </div>
@@ -95,24 +101,23 @@
 <div class="menu-profile-avatar" id="menuProfileAvatar">TG</div>
 <div class="menu-profile-info">
 <strong class="menu-profile-name" id="menuProfileName">TG Community Member</strong>
-<span class="menu-profile-tag" id="menuProfileTag"><span></span> Fan</span>
+<span class="menu-profile-tag" id="menuProfileTag"><span></span> Member</span>
 </div>
 </div>
 
 <!-- Mobile Sign In Action (visible when logged out) -->
 <button class="menu-login-cta" id="menuLoginCta" type="button">
-<span>🎮</span>
 <span>SIGN IN TO CHAT</span>
 </button>
 
 <div class="menu-section-divider"></div>
 <div class="menu-section-title">COMMUNITY CHANNELS</div>
 <button type="button" class="menu-channel-action active" data-channel="general" id="menuTabGeneral">
-<span>💬 Fan Lounge</span>
+<span>Fan Lounge</span>
 <span class="tab-badge">LIVE</span>
 </button>
 <button type="button" class="menu-channel-action" data-channel="announcements" id="menuTabAnnouncements">
-<span>📢 Official Announcements</span>
+<span>Official Announcements</span>
 <span class="tab-badge admin-badge">ADMIN</span>
 </button>
 
@@ -149,7 +154,7 @@
 
       <!-- Title & Subtitle -->
       <h2 id="communityLoginTitle" class="modal-title">JOIN TG COMMUNITY CHAT</h2>
-      <p class="modal-subtitle">Sign in with Google or continue with a custom Gamer Tag to post in real-time.</p>
+      <p class="modal-subtitle">Sign in with Google or create your custom Gamer Tag &amp; Profile Picture to post in real-time.</p>
 
       <!-- Google Sign-In Button -->
       <button class="btn-google" id="googleSignIn" type="button">
@@ -164,14 +169,25 @@
 
       <!-- Divider -->
       <div class="modal-divider">
-        <span>OR QUICK FAN LOGIN</span>
+        <span>OR CUSTOM GAMER PROFILE</span>
       </div>
 
-      <!-- Gamer Tag Input & Demo Button -->
+      <!-- Gamer Tag Input & Avatar Upload -->
       <div class="demo-login-group">
+        <div class="modal-avatar-picker">
+          <div class="modal-avatar-preview" id="modalAvatarPreview">TG</div>
+          <div class="modal-avatar-controls">
+            <label for="modalAvatarInput" class="btn-pick-avatar">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              <span>Choose Profile Photo</span>
+            </label>
+            <input type="file" id="modalAvatarInput" accept="image/*" style="display:none;"/>
+            <span class="modal-avatar-hint" id="modalAvatarHint">Upload custom photo (optional)</span>
+          </div>
+        </div>
+
         <input type="text" id="demoUsernameInput" class="demo-username-input" placeholder="Enter your Gamer Tag (e.g. TG_Aman)..." maxlength="25"/>
         <button class="btn-demo" id="demoSignIn" type="button">
-          <span class="btn-demo-icon">🎮</span>
           <span>Enter Chat as Fan</span>
         </button>
       </div>
@@ -217,13 +233,11 @@
       <!-- Channel Switcher Tabs in WhatsApp Header -->
       <div class="wa-header-tabs" role="tablist" aria-label="Community Channels">
         <button class="wa-channel-tab active" id="tabGeneral" role="tab" aria-selected="true" data-channel="general">
-          <span class="tab-icon">💬</span>
           <span class="tab-label">Fan Lounge</span>
           <span class="tab-badge" id="badgeGeneral">LIVE</span>
         </button>
         
         <button class="wa-channel-tab" id="tabAnnouncements" role="tab" aria-selected="false" data-channel="announcements">
-          <span class="tab-icon">📢</span>
           <span class="tab-label">Official Announcements</span>
           <span class="tab-badge admin-badge">ADMIN ONLY</span>
         </button>
@@ -247,32 +261,6 @@
       </div>
     </div>
 
-    <!-- Quick Emoji Reaction Drawer -->
-    <div class="wa-emoji-shelf" id="waEmojiShelf" hidden>
-      <div class="wa-emoji-shelf-header">
-        <span>Quick Reactions &amp; Gaming Emojis</span>
-        <button type="button" class="wa-emoji-close" id="waEmojiClose" aria-label="Close emoji shelf">✕</button>
-      </div>
-      <div class="wa-emoji-grid">
-        <button type="button" class="wa-emoji-item" data-emoji="🔥">🔥</button>
-        <button type="button" class="wa-emoji-item" data-emoji="❤️">❤️</button>
-        <button type="button" class="wa-emoji-item" data-emoji="🏆">🏆</button>
-        <button type="button" class="wa-emoji-item" data-emoji="👑">👑</button>
-        <button type="button" class="wa-emoji-item" data-emoji="🎮">🎮</button>
-        <button type="button" class="wa-emoji-item" data-emoji="🚀">🚀</button>
-        <button type="button" class="wa-emoji-item" data-emoji="💯">💯</button>
-        <button type="button" class="wa-emoji-item" data-emoji="👏">👏</button>
-        <button type="button" class="wa-emoji-item" data-emoji="😂">😂</button>
-        <button type="button" class="wa-emoji-item" data-emoji="🎯">🎯</button>
-        <button type="button" class="wa-emoji-item" data-emoji="⚡">⚡</button>
-        <button type="button" class="wa-emoji-item" data-emoji="💥">💥</button>
-        <button type="button" class="wa-emoji-item" data-emoji="😎">😎</button>
-        <button type="button" class="wa-emoji-item" data-emoji="🤝">🤝</button>
-        <button type="button" class="wa-emoji-item" data-emoji="🦾">🦾</button>
-        <button type="button" class="wa-emoji-item" data-emoji="✨">✨</button>
-      </div>
-    </div>
-
     <!-- WhatsApp Pinned Bottom Input Bar -->
     <footer class="wa-bottom-bar" id="waBottomBar">
       <!-- Locked Banner for Regular Users on Announcements Tab -->
@@ -285,13 +273,6 @@
 
       <!-- Active Message Input Form -->
       <form class="wa-chat-form" id="waChatForm">
-        <!-- Emoji Toggle Button -->
-        <button type="button" class="wa-btn-icon wa-emoji-toggle" id="waEmojiToggle" aria-label="Open emoji picker" title="Insert Emoji">
-          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
-            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
-          </svg>
-        </button>
-
         <!-- Input Pill -->
         <div class="wa-input-pill">
           <input 
@@ -317,6 +298,6 @@
   </div>
 </main>
 
-<script type="module" src="community.js?v=wa2"></script>
+<script type="module" src="community.js?v=wa3"></script>
 </body>
 </html>

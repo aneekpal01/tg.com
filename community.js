@@ -9,7 +9,7 @@ import {
     GoogleAuthProvider, 
     signInWithPopup, 
     signInWithRedirect, 
-    getRedirectResult,
+    getRedirectResult, 
     signOut 
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-auth.js";
 import { 
@@ -22,8 +22,8 @@ import {
     onSnapshot, 
     serverTimestamp, 
     addDoc, 
-    deleteDoc,
-    where
+    deleteDoc, 
+    where 
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 // Firebase Configuration
@@ -56,21 +56,21 @@ const modalCloseBtn = document.getElementById("modalCloseBtn");
 const googleSignInBtn = document.getElementById("googleSignIn");
 const demoSignInBtn = document.getElementById("demoSignIn");
 const demoUsernameInput = document.getElementById("demoUsernameInput");
+const modalAvatarPreview = document.getElementById("modalAvatarPreview");
+const modalAvatarInput = document.getElementById("modalAvatarInput");
+const modalAvatarHint = document.getElementById("modalAvatarHint");
 const authMessage = document.getElementById("authMessage");
 
 const chatStream = document.getElementById("communityChatStream");
 const waChatForm = document.getElementById("waChatForm");
 const waMessageInput = document.getElementById("waMessageInput");
 const waSendBtn = document.getElementById("waSendBtn");
-const waEmojiToggle = document.getElementById("waEmojiToggle");
-const waEmojiShelf = document.getElementById("waEmojiShelf");
-const waEmojiClose = document.getElementById("waEmojiClose");
 
 const tabGeneral = document.getElementById("tabGeneral");
 const tabAnnouncements = document.getElementById("tabAnnouncements");
 const waRibbonText = document.getElementById("waRibbonText");
 const waAnnouncementsLock = document.getElementById("waAnnouncementsLock");
-const waUserChip = document.getElementById("waUserChip");
+
 const navSignInBtn = document.getElementById("navSignInBtn");
 const navProfileWrap = document.getElementById("navProfileWrap");
 const navProfileBtn = document.getElementById("navProfileBtn");
@@ -80,6 +80,7 @@ const navProfileAvatar = document.getElementById("navProfileAvatar");
 const dropdownAvatar = document.getElementById("dropdownAvatar");
 const dropdownName = document.getElementById("dropdownName");
 const dropdownTag = document.getElementById("dropdownTag");
+const changePhotoInput = document.getElementById("changePhotoInput");
 const dropChannelGeneral = document.getElementById("dropChannelGeneral");
 const dropChannelAnnouncements = document.getElementById("dropChannelAnnouncements");
 const navLogoutBtn = document.getElementById("navLogoutBtn");
@@ -98,6 +99,7 @@ let currentUser = null;
 let currentChannel = "general"; // "general" | "announcements"
 let allMessages = [];
 let unsubscribeFirestore = null;
+let selectedAvatarDataUrl = "";
 
 // Initial Seed Messages (Used if Firestore collection is fresh)
 const INITIAL_SEED_MESSAGES = [
@@ -107,6 +109,7 @@ const INITIAL_SEED_MESSAGES = [
         author: "TOTAL GAMING OFFICIAL (Ajay)",
         authorUid: "admin_ajay_001",
         authorEmail: "fozyajay27@gmail.com",
+        authorPhoto: "tg-logo.png",
         isAdmin: true,
         channel: "general",
         createdAt: Date.now() - 1000 * 60 * 120,
@@ -118,6 +121,7 @@ const INITIAL_SEED_MESSAGES = [
         author: "TG_Aman_Gamer",
         authorUid: "user_seed_01",
         authorEmail: "aman.fan@gmail.com",
+        authorPhoto: "",
         isAdmin: false,
         channel: "general",
         createdAt: Date.now() - 1000 * 60 * 95,
@@ -129,6 +133,7 @@ const INITIAL_SEED_MESSAGES = [
         author: "EsportsFan_Rahul",
         authorUid: "user_seed_02",
         authorEmail: "rahul@gmail.com",
+        authorPhoto: "",
         isAdmin: false,
         channel: "general",
         createdAt: Date.now() - 1000 * 60 * 45,
@@ -140,6 +145,7 @@ const INITIAL_SEED_MESSAGES = [
         author: "TOTAL GAMING OFFICIAL (Ajay)",
         authorUid: "admin_ajay_001",
         authorEmail: "fozyajay27@gmail.com",
+        authorPhoto: "tg-logo.png",
         isAdmin: true,
         channel: "announcements",
         createdAt: Date.now() - 1000 * 60 * 180,
@@ -151,12 +157,42 @@ const INITIAL_SEED_MESSAGES = [
         author: "TOTAL GAMING OFFICIAL (Ajay)",
         authorUid: "admin_ajay_001",
         authorEmail: "fozyajay27@gmail.com",
+        authorPhoto: "tg-logo.png",
         isAdmin: true,
         channel: "announcements",
         createdAt: Date.now() - 1000 * 60 * 60,
         likesCount: 98
     }
 ];
+
+// Helper: Process and Resize Avatar Image to Lightweight Square DataURL
+function processAvatarFile(file, callback) {
+    if (!file || !file.type.startsWith("image/")) {
+        alert("Please select a valid image file.");
+        return;
+    }
+    const reader = new FileReader();
+    reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            const size = 128;
+            canvas.width = size;
+            canvas.height = size;
+            
+            const minDim = Math.min(img.width, img.height);
+            const startX = (img.width - minDim) / 2;
+            const startY = (img.height - minDim) / 2;
+            
+            ctx.drawImage(img, startX, startY, minDim, minDim, 0, 0, size, size);
+            const dataUrl = canvas.toDataURL("image/jpeg", 0.85);
+            callback(dataUrl);
+        };
+        img.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+}
 
 // Helper: Check if user is Admin
 function isAdmin(user) {
@@ -292,7 +328,6 @@ function renderChatStream() {
     const sysNotice = document.createElement("div");
     sysNotice.className = "wa-system-notice";
     sysNotice.innerHTML = `
-        <span>🔒</span>
         <span>${currentChannel === "announcements" 
             ? "Official Announcements Channel. Only verified Total Gaming Admins can post broadcasts here." 
             : "Welcome to TG Fan Lounge! Open community chat for all fans. Messages are moderated in real-time."}
@@ -338,192 +373,103 @@ function renderChatStream() {
             adminHeader.className = "wa-admin-header";
             adminHeader.innerHTML = `
                 <span class="wa-admin-badge-pill">
-                    <span>👑</span> TOTAL GAMING OFFICIAL ADMIN
+                    TOTAL GAMING OFFICIAL ADMIN
                 </span>
                 <span class="wa-admin-channel-pill">
-                    ${msg.channel === "announcements" ? "📢 OFFICIAL BROADCAST" : "💬 VERIFIED"}
+                    ${msg.channel === "announcements" ? "OFFICIAL BROADCAST" : "VERIFIED"}
                 </span>
             `;
             bubble.appendChild(adminHeader);
         }
 
-        // Author Name Row (for incoming messages or admin posts)
+        // Author Avatar & Name Row
         if (!isAuthorMe || isMsgAdmin) {
             const authorRow = document.createElement("div");
-            authorRow.className = "wa-msg-author-row";
+            authorRow.className = "wa-author-row";
 
-            const authorName = document.createElement("span");
-            authorName.className = "wa-msg-author";
-            authorName.textContent = msg.author || "TG Fan";
+            const authorAvatar = document.createElement("div");
+            authorAvatar.className = "wa-msg-author-avatar";
+            const authorPhoto = msg.authorPhoto || (isAuthorMe && currentUser ? currentUser.photoURL : "");
+            if (authorPhoto) {
+                authorAvatar.innerHTML = `<img src="${authorPhoto}" alt="${msg.author || "User"}"/>`;
+            } else {
+                authorAvatar.textContent = (msg.author || "TG").substring(0, 2).toUpperCase();
+            }
 
-            const authorTag = document.createElement("span");
-            authorTag.className = "wa-author-tag";
-            authorTag.textContent = isMsgAdmin ? "VIP" : "FAN";
+            const authorSpan = document.createElement("span");
+            authorSpan.className = "wa-author-name";
+            authorSpan.textContent = msg.author || (isMsgAdmin ? "Total Gaming Admin" : "TG Fan");
 
-            authorRow.appendChild(authorName);
-            authorRow.appendChild(authorTag);
+            authorRow.appendChild(authorAvatar);
+            authorRow.appendChild(authorSpan);
+
+            if (isMsgAdmin) {
+                const vipTag = document.createElement("span");
+                vipTag.className = "wa-author-tag";
+                vipTag.textContent = "VIP";
+                authorRow.appendChild(vipTag);
+            } else {
+                const fanTag = document.createElement("span");
+                fanTag.className = "wa-author-tag";
+                fanTag.textContent = "FAN";
+                authorRow.appendChild(fanTag);
+            }
+
             bubble.appendChild(authorRow);
         }
 
-        // Message Text Content
-        const msgText = document.createElement("p");
-        msgText.className = "wa-msg-text";
-        msgText.textContent = msg.text;
-        bubble.appendChild(msgText);
+        // Message Text
+        const textP = document.createElement("div");
+        textP.className = "wa-msg-text";
+        textP.textContent = msg.text;
+        bubble.appendChild(textP);
 
-        // Bottom Meta Row (Like, Delete, Time, Double Ticks)
-        const metaRow = document.createElement("div");
-        metaRow.className = "wa-msg-meta";
+        // Bubble Footer (Timestamp, Likes, Double Ticks, Delete)
+        const metaDiv = document.createElement("div");
+        metaDiv.className = "wa-bubble-meta";
 
-        // Like Button
-        const likeBtn = document.createElement("button");
-        likeBtn.type = "button";
-        likeBtn.className = "wa-msg-like-btn";
-        const likeKey = `tg_walike_${msg.id}_${currentUser ? currentUser.uid : "guest"}`;
-        let userLiked = localStorage.getItem(likeKey) === "true";
-        let likesCount = (msg.likesCount || 0) + (userLiked ? 1 : 0);
-
-        function updateLikeUI() {
-            likeBtn.innerHTML = `<span>${userLiked ? "❤️" : "🤍"}</span><span>${likesCount > 0 ? likesCount : ""}</span>`;
-            likeBtn.classList.toggle("liked", userLiked);
-        }
-        updateLikeUI();
-
-        likeBtn.addEventListener("click", () => {
-            userLiked = !userLiked;
-            likesCount += userLiked ? 1 : -1;
-            localStorage.setItem(likeKey, userLiked ? "true" : "false");
-            updateLikeUI();
-        });
-        metaRow.appendChild(likeBtn);
-
-        // Admin Only (or author) Delete Button
-        if (userIsAdmin || isAuthorMe) {
-            const deleteBtn = document.createElement("button");
-            deleteBtn.type = "button";
-            deleteBtn.className = "wa-msg-delete-btn";
-            deleteBtn.title = userIsAdmin && !isAuthorMe ? "Admin: Remove this message" : "Delete your message";
-            deleteBtn.innerHTML = `🗑️`;
-            deleteBtn.addEventListener("click", () => {
-                const promptMsg = userIsAdmin && !isAuthorMe 
-                    ? `Admin Action: Delete message from "${msg.author}"?` 
-                    : "Delete your message?";
-                if (confirm(promptMsg)) {
-                    deleteMessage(msg.id);
-                }
-            });
-            metaRow.appendChild(deleteBtn);
-        }
+        // Likes / Reactions Badge
+        const likeBadge = document.createElement("button");
+        likeBadge.type = "button";
+        likeBadge.className = "wa-like-badge";
+        likeBadge.title = "Like this message";
+        likeBadge.innerHTML = `<span>❤️</span> <span class="like-count">${msg.likesCount || 0}</span>`;
+        likeBadge.addEventListener("click", () => handleLikeMessage(msg.id));
+        metaDiv.appendChild(likeBadge);
 
         // Timestamp
         const timeSpan = document.createElement("span");
         timeSpan.className = "wa-msg-time";
         timeSpan.textContent = formatTime(msg.createdAt);
-        metaRow.appendChild(timeSpan);
+        metaDiv.appendChild(timeSpan);
 
-        // Double Blue Ticks for Outgoing
+        // WhatsApp Double Checkmark for Outgoing
         if (isAuthorMe) {
             const ticksSpan = document.createElement("span");
-            ticksSpan.className = "wa-msg-ticks";
-            ticksSpan.innerHTML = `
-                <svg viewBox="0 0 16 15" width="16" height="15" fill="currentColor">
-                    <path d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.064-.512zm-4.1 0l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.484-.033l6.272-8.048a.366.366 0 0 0-.063-.51z"/>
-                </svg>
-            `;
-            metaRow.appendChild(ticksSpan);
+            ticksSpan.className = "wa-ticks";
+            ticksSpan.title = "Read";
+            ticksSpan.innerHTML = `✓✓`;
+            metaDiv.appendChild(ticksSpan);
         }
 
-        bubble.appendChild(metaRow);
+        // Delete Button: Admin can delete ANY message; Normal user can delete ONLY own message
+        if (userIsAdmin || isAuthorMe) {
+            const delBtn = document.createElement("button");
+            delBtn.type = "button";
+            delBtn.className = "wa-delete-btn";
+            delBtn.title = userIsAdmin && !isAuthorMe ? "Delete as Admin Moderator" : "Delete your message";
+            delBtn.innerHTML = `🗑️`;
+            delBtn.addEventListener("click", () => handleDeleteMessage(msg.id, msg.author));
+            metaDiv.appendChild(delBtn);
+        }
+
+        bubble.appendChild(metaDiv);
         row.appendChild(bubble);
         chatStream.appendChild(row);
     });
 
-    scrollToBottom();
-}
-
-// Scroll chat to bottom
-function scrollToBottom() {
-    if (chatStream) {
-        setTimeout(() => {
-            chatStream.scrollTop = chatStream.scrollHeight;
-        }, 30);
-    }
-}
-
-// Delete Message Function
-async function deleteMessage(messageId) {
-    // 1. Delete from Firestore if available
-    if (db) {
-        try {
-            await deleteDoc(doc(db, "tg_community_chat", messageId));
-        } catch (e) {
-            console.warn("Firestore delete fallback to local:", e);
-        }
-    }
-
-    // 2. Delete from Local Array & Storage
-    allMessages = allMessages.filter(m => m.id !== messageId);
-    saveLocalMessages(allMessages);
-    renderChatStream();
-}
-
-// Post New Message
-async function postMessage(text) {
-    if (!text || !text.trim()) return;
-
-    // Ensure User Session
-    if (!currentUser) {
-        // Auto-assign a guest fan identity if none
-        const guestName = "TG_Fan_" + Math.floor(100 + Math.random() * 900);
-        currentUser = {
-            uid: "guest_" + Date.now(),
-            displayName: guestName,
-            email: "",
-            photoURL: "",
-            isAnonymous: true
-        };
-        localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(currentUser));
-        renderUserUI(currentUser);
-    }
-
-    const isUserAdmin = isAdmin(currentUser);
-
-    // Channel Guard: Only Admin can post in Announcements
-    if (currentChannel === "announcements" && !isUserAdmin) {
-        alert("Only Official TG Admins (fozyajay27@gmail.com) can post in Official Announcements channel.");
-        return;
-    }
-
-    const newMsg = {
-        id: "msg_" + Date.now() + "_" + Math.random().toString(36).substring(2, 6),
-        text: text.trim(),
-        author: currentUser.displayName || "TG Community Member",
-        authorUid: currentUser.uid,
-        authorEmail: currentUser.email || "",
-        authorPhoto: currentUser.photoURL || "",
-        isAdmin: isUserAdmin,
-        channel: currentChannel,
-        createdAt: Date.now(),
-        likesCount: 0
-    };
-
-    // 1. Save to Firestore if available
-    if (db) {
-        try {
-            await setDoc(doc(db, "tg_community_chat", newMsg.id), {
-                ...newMsg,
-                createdAt: serverTimestamp()
-            });
-        } catch (e) {
-            console.warn("Firestore write error, saving locally:", e);
-        }
-    }
-
-    // 2. Append locally
-    allMessages.push(newMsg);
-    saveLocalMessages(allMessages);
-    renderChatStream();
-    scrollToBottom();
+    // Scroll to bottom
+    chatStream.scrollTop = chatStream.scrollHeight;
 }
 
 // Switch Active Channel
@@ -573,7 +519,6 @@ function switchChannel(channel) {
             waMessageInput.placeholder = "🔒 Only Official TG Admins can post in Official Announcements";
         }
         if (waSendBtn) waSendBtn.disabled = true;
-        if (waEmojiToggle) waEmojiToggle.disabled = true;
     } else {
         if (waAnnouncementsLock) waAnnouncementsLock.hidden = true;
         if (waMessageInput) {
@@ -583,179 +528,263 @@ function switchChannel(channel) {
                 : "Type a message in TG Community...";
         }
         if (waSendBtn) waSendBtn.disabled = false;
-        if (waEmojiToggle) waEmojiToggle.disabled = false;
     }
 
     renderChatStream();
 }
 
-// Setup Real-time Firestore Listener
-function initChatSync() {
-    allMessages = getLocalMessages();
-    renderChatStream();
+// Send Message Handler
+async function handleSendMessage(e) {
+    if (e) e.preventDefault();
+    if (!waMessageInput) return;
 
-    if (!db) return;
+    const text = waMessageInput.value.trim();
+    if (!text) return;
 
-    try {
-        const q = query(collection(db, "tg_community_chat"), orderBy("createdAt", "asc"));
-        unsubscribeFirestore = onSnapshot(q, (snapshot) => {
-            if (!snapshot.empty) {
-                const fetched = [];
-                snapshot.forEach(docSnap => {
-                    const data = docSnap.data();
-                    fetched.push({
-                        id: docSnap.id,
-                        ...data,
-                        createdAt: data.createdAt?.toDate ? data.createdAt.toDate().getTime() : (data.createdAt || Date.now())
-                    });
-                });
-                allMessages = fetched;
-                saveLocalMessages(allMessages);
-                renderChatStream();
-            }
-        }, (err) => {
-            console.warn("Firestore snapshot notice:", err);
-        });
-    } catch (e) {
-        console.warn("Realtime listener note:", e);
+    // Check authentication
+    if (!currentUser) {
+        showAuthModal();
+        return;
     }
+
+    const userIsAdmin = isAdmin(currentUser);
+
+    // Block non-admin from posting in announcements
+    if (currentChannel === "announcements" && !userIsAdmin) {
+        alert("Only official Total Gaming Admins can post in Announcements channel.");
+        return;
+    }
+
+    waMessageInput.value = "";
+
+    const newMsg = {
+        text,
+        author: currentUser.displayName || (userIsAdmin ? "TOTAL GAMING OFFICIAL (Ajay)" : "TG Fan"),
+        authorUid: currentUser.uid || "fan_" + Date.now(),
+        authorEmail: currentUser.email || "",
+        authorPhoto: currentUser.photoURL || "",
+        isAdmin: userIsAdmin,
+        channel: currentChannel,
+        createdAt: Date.now(),
+        likesCount: 0
+    };
+
+    // 1. If Firebase DB available, write to Firestore
+    if (db) {
+        try {
+            const chatCol = collection(db, "tg_community_chat");
+            await addDoc(chatCol, {
+                ...newMsg,
+                serverTime: serverTimestamp()
+            });
+            return;
+        } catch (err) {
+            console.warn("Firestore post note, saving locally:", err);
+        }
+    }
+
+    // 2. Fallback to LocalStorage
+    const localId = "local_" + Date.now() + "_" + Math.random().toString(36).substr(2, 5);
+    const fullMsg = { ...newMsg, id: localId };
+    allMessages.push(fullMsg);
+    saveLocalMessages(allMessages);
+    renderChatStream();
 }
 
-// Auth Handlers
+// Delete Message Handler
+async function handleDeleteMessage(msgId, authorName) {
+    if (!confirm(`Are you sure you want to delete this message from ${authorName || "the chat"}?`)) return;
+
+    if (db && !msgId.startsWith("seed_") && !msgId.startsWith("local_")) {
+        try {
+            const docRef = doc(db, "tg_community_chat", msgId);
+            await deleteDoc(docRef);
+            return;
+        } catch (err) {
+            console.warn("Firestore delete note:", err);
+        }
+    }
+
+    // Local / fallback delete
+    allMessages = allMessages.filter(m => m.id !== msgId);
+    saveLocalMessages(allMessages);
+    renderChatStream();
+}
+
+// Like Message Handler
+function handleLikeMessage(msgId) {
+    const msg = allMessages.find(m => m.id === msgId);
+    if (!msg) return;
+
+    msg.likesCount = (msg.likesCount || 0) + 1;
+    saveLocalMessages(allMessages);
+    renderChatStream();
+}
+
+// Auth Modal Controls
 function showAuthModal() {
-    if (authModal) {
-        authModal.removeAttribute("hidden");
-        authModal.hidden = false;
+    if (!authModal) return;
+    authModal.removeAttribute("hidden");
+    authModal.hidden = false;
+    selectedAvatarDataUrl = "";
+    if (modalAvatarPreview) modalAvatarPreview.innerHTML = "TG";
+    if (modalAvatarHint) {
+        modalAvatarHint.textContent = "Upload custom photo (optional)";
+        modalAvatarHint.style.color = "#718096";
+    }
+    if (demoUsernameInput) {
+        demoUsernameInput.value = "";
+        demoUsernameInput.focus();
+    }
+    if (authMessage) {
+        authMessage.className = "auth-feedback";
+        authMessage.textContent = "";
+        authMessage.style.display = "none";
     }
 }
 
 function hideAuthModal() {
-    if (authModal) {
-        authModal.setAttribute("hidden", "");
-        authModal.hidden = true;
-    }
+    if (!authModal) return;
+    authModal.setAttribute("hidden", "true");
+    authModal.hidden = true;
 }
 
+function showAuthFeedback(msg, type = "error") {
+    if (!authMessage) return;
+    authMessage.textContent = msg;
+    authMessage.className = `auth-feedback ${type}`;
+    authMessage.style.display = "block";
+}
+
+// Google Sign In
 async function handleGoogleSignIn() {
     if (!auth) {
-        alert("Firebase Auth is not available. Using Gamer Tag login instead.");
+        showAuthFeedback("Google Sign-In is initializing. Try Gamer Tag login below.", "error");
         return;
     }
+    const provider = new GoogleAuthProvider();
     try {
-        const provider = new GoogleAuthProvider();
-        provider.setCustomParameters({ prompt: "select_account" });
         const result = await signInWithPopup(auth, provider);
-        if (result && result.user) {
-            const user = {
-                uid: result.user.uid,
-                displayName: result.user.displayName || "TG Community Fan",
-                email: result.user.email,
-                photoURL: result.user.photoURL || "",
-                isAnonymous: false
-            };
-            currentUser = user;
-            localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(user));
-            renderUserUI(currentUser);
-            hideAuthModal();
-            switchChannel(currentChannel);
-        }
+        const user = result.user;
+        currentUser = {
+            uid: user.uid,
+            displayName: user.displayName || "TG Community Fan",
+            email: user.email,
+            photoURL: user.photoURL || "",
+            isAnonymous: false
+        };
+        localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(currentUser));
+        renderUserUI(currentUser);
+        hideAuthModal();
+        switchChannel(currentChannel);
     } catch (err) {
-        console.warn("Google sign-in popup error, trying redirect:", err);
+        console.warn("Popup error, trying redirect:", err);
         try {
-            const provider = new GoogleAuthProvider();
             await signInWithRedirect(auth, provider);
-        } catch (redirectErr) {
-            if (authMessage) {
-                authMessage.className = "auth-feedback error";
-                authMessage.textContent = "Google Sign-in was closed or blocked. Try quick Fan Login below.";
-            }
+        } catch (redirErr) {
+            showAuthFeedback("Google Sign-In note: " + (redirErr.message || "Please use Gamer Tag login"), "error");
         }
     }
 }
 
+// Demo / Gamer Tag Fan Sign In
 function handleDemoSignIn() {
-    const customName = (demoUsernameInput ? demoUsernameInput.value.trim() : "") || "TG_Fan_" + Math.floor(100 + Math.random() * 900);
-    const user = {
+    const tag = (demoUsernameInput ? demoUsernameInput.value.trim() : "");
+    if (!tag) {
+        showAuthFeedback("Please enter your Gamer Tag to join the chat.", "error");
+        return;
+    }
+
+    const isTaggedAdmin = tag.toLowerCase() === "ajay" || tag.toLowerCase() === "fozyajay";
+    currentUser = {
         uid: "fan_" + Date.now(),
-        displayName: customName,
-        email: "",
-        photoURL: "",
-        isAnonymous: true
+        displayName: tag,
+        email: isTaggedAdmin ? ADMIN_EMAIL : "",
+        photoURL: selectedAvatarDataUrl || "",
+        isAnonymous: true,
+        isAdmin: isTaggedAdmin
     };
-    currentUser = user;
-    localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(user));
+
+    try {
+        localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(currentUser));
+    } catch (e) {}
+
     renderUserUI(currentUser);
     hideAuthModal();
     switchChannel(currentChannel);
 }
 
-function handleLogout() {
-    currentUser = null;
-    localStorage.removeItem(DEMO_STORAGE_KEY);
+// Logout Handler
+async function handleLogout() {
     if (auth) {
-        signOut(auth).catch(e => console.warn(e));
+        try {
+            await signOut(auth);
+        } catch (e) {}
     }
+    currentUser = null;
+    selectedAvatarDataUrl = "";
+    localStorage.removeItem(DEMO_STORAGE_KEY);
     renderUserUI(null);
-    switchChannel("general");
+    switchChannel(currentChannel);
+}
+
+// Real-Time Sync Setup (Firestore + LocalStorage fallback)
+function initChatSync() {
+    // 1. Load cached messages first for instant speed
+    allMessages = getLocalMessages();
+    renderChatStream();
+
+    // 2. Attach Firestore Real-Time Listener
+    if (db) {
+        try {
+            const chatCol = collection(db, "tg_community_chat");
+            const q = query(chatCol, orderBy("createdAt", "asc"));
+            
+            unsubscribeFirestore = onSnapshot(q, (snapshot) => {
+                const liveMsgs = [];
+                snapshot.forEach(docSnap => {
+                    const data = docSnap.data();
+                    liveMsgs.push({
+                        id: docSnap.id,
+                        ...data,
+                        createdAt: data.createdAt || Date.now()
+                    });
+                });
+
+                if (liveMsgs.length > 0) {
+                    allMessages = liveMsgs;
+                } else if (allMessages.length === 0) {
+                    allMessages = INITIAL_SEED_MESSAGES;
+                }
+                saveLocalMessages(allMessages);
+                renderChatStream();
+            }, (error) => {
+                console.warn("Firestore snapshot note, keeping local stream:", error);
+            });
+        } catch (e) {
+            console.warn("Firestore sync init note:", e);
+        }
+    }
 }
 
 // Event Listeners Initialization
 function initEventListeners() {
-    // Tab Switches
-    if (tabGeneral) {
-        tabGeneral.addEventListener("click", () => switchChannel("general"));
-    }
-    if (tabAnnouncements) {
-        tabAnnouncements.addEventListener("click", () => switchChannel("announcements"));
-    }
-
-    // Message Input Submit Form
+    // Message Form Submit
     if (waChatForm) {
-        waChatForm.addEventListener("submit", (e) => {
-            e.preventDefault();
-            if (waMessageInput) {
-                const text = waMessageInput.value;
-                if (text && text.trim()) {
-                    postMessage(text);
-                    waMessageInput.value = "";
-                    if (waEmojiShelf) waEmojiShelf.hidden = true;
-                }
+        waChatForm.addEventListener("submit", handleSendMessage);
+    }
+    if (waMessageInput) {
+        waMessageInput.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                handleSendMessage();
             }
         });
     }
 
-    // Emoji Drawer Toggle
-    if (waEmojiToggle && waEmojiShelf) {
-        waEmojiToggle.addEventListener("click", (e) => {
-            e.stopPropagation();
-            waEmojiShelf.hidden = !waEmojiShelf.hidden;
-        });
-    }
-
-    if (waEmojiClose && waEmojiShelf) {
-        waEmojiClose.addEventListener("click", () => {
-            waEmojiShelf.hidden = true;
-        });
-    }
-
-    // Emoji Item Clicks
-    document.querySelectorAll(".wa-emoji-item").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            const emoji = btn.getAttribute("data-emoji");
-            if (emoji && waMessageInput) {
-                waMessageInput.value += emoji;
-                waMessageInput.focus();
-            }
-        });
-    });
-
-    // Close Emoji shelf when clicking outside
-    document.addEventListener("click", (e) => {
-        if (waEmojiShelf && !waEmojiShelf.hidden && !waEmojiShelf.contains(e.target) && !waEmojiToggle.contains(e.target)) {
-            waEmojiShelf.hidden = true;
-        }
-    });
+    // Channel Switcher Tabs in WhatsApp Header
+    if (tabGeneral) tabGeneral.addEventListener("click", () => switchChannel("general"));
+    if (tabAnnouncements) tabAnnouncements.addEventListener("click", () => switchChannel("announcements"));
 
     // Modal buttons & Trigger Actions
     if (modalCloseBtn) {
@@ -774,6 +803,44 @@ function initEventListeners() {
         menuLoginCta.addEventListener("click", () => {
             showAuthModal();
             if (menuPanel) menuPanel.classList.remove("show");
+        });
+    }
+
+    // Custom Avatar Upload in Login Modal
+    if (modalAvatarInput) {
+        modalAvatarInput.addEventListener("change", (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (file) {
+                processAvatarFile(file, (dataUrl) => {
+                    selectedAvatarDataUrl = dataUrl;
+                    if (modalAvatarPreview) {
+                        modalAvatarPreview.innerHTML = `<img src="${dataUrl}" alt="Preview"/>`;
+                    }
+                    if (modalAvatarHint) {
+                        modalAvatarHint.textContent = "Photo selected ✓";
+                        modalAvatarHint.style.color = "#25d366";
+                    }
+                });
+            }
+        });
+    }
+
+    // Change Photo in Profile Dropdown
+    if (changePhotoInput) {
+        changePhotoInput.addEventListener("change", (e) => {
+            const file = e.target.files && e.target.files[0];
+            if (file) {
+                processAvatarFile(file, (dataUrl) => {
+                    if (currentUser) {
+                        currentUser.photoURL = dataUrl;
+                        try {
+                            localStorage.setItem(DEMO_STORAGE_KEY, JSON.stringify(currentUser));
+                        } catch (err) {}
+                        renderUserUI(currentUser);
+                        renderChatStream();
+                    }
+                });
+            }
         });
     }
 
@@ -915,16 +982,4 @@ if (menuBtn && menuPanel) {
     document.querySelectorAll(".menu-panel a").forEach(link => link.addEventListener("click", () => {
         menuPanel.classList.remove("show");
     }));
-}
-
-const backToTopBtn = document.getElementById("backToTopBtn");
-if (backToTopBtn) {
-    window.addEventListener("scroll", () => {
-        const scrolled = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
-        backToTopBtn.classList.toggle("visible", scrolled > 200);
-    }, { passive: true });
-    backToTopBtn.addEventListener("click", (e) => {
-        e.preventDefault();
-        window.scrollTo({ top: 0, behavior: "smooth" });
-    });
 }

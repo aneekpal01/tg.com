@@ -1,4 +1,4 @@
-﻿/* ==========================================================================
+/* ==========================================================================
    TG COMMUNITY — AUTHENTIC FULL-WIDTH WHATSAPP CHAT UI/UX
    ========================================================================== */
 
@@ -68,26 +68,30 @@ body.light-theme {
   box-sizing: border-box;
 }
 
-.community-page {
-  min-height: 100vh;
+html, body.community-page {
+  height: 100%;
+  height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden !important;
   background: var(--wa-bg-deep);
   color: var(--wa-input-text);
   font-family: "Poppins", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-  overflow-x: hidden;
 }
 
 /* Full Width Main Layout (Edge-to-Edge) */
 .wa-main-fullwidth {
   width: 100vw;
   max-width: 100%;
-  height: calc(100vh - 72px);
-  min-height: 560px;
-  margin-top: 72px;
+  height: calc(100vh - 74px);
+  height: calc(100dvh - 74px);
+  margin-top: 74px;
   padding: 0 !important;
   display: flex;
   flex-direction: column;
   position: relative;
   background: var(--wa-bg-deep);
+  overflow: hidden;
 }
 
 /* WhatsApp Application Frame */
@@ -104,17 +108,18 @@ body.light-theme {
    WHATSAPP TOP CHAT HEADER
    ========================================================================== */
 .wa-chat-header {
-  height: 64px;
-  min-height: 64px;
+  height: 62px;
+  min-height: 62px;
   background: var(--wa-header-bg);
   border-bottom: 1px solid var(--wa-divider);
-  padding: 0 18px;
+  padding: 0 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   z-index: 10;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   gap: 12px;
+  flex-shrink: 0;
 }
 
 .wa-header-left {
@@ -126,8 +131,8 @@ body.light-theme {
 }
 
 .wa-header-back-btn {
-  width: 38px;
-  height: 38px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -147,8 +152,8 @@ body.light-theme {
 
 .wa-avatar-container {
   position: relative;
-  width: 44px;
-  height: 44px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
   overflow: visible;
   flex-shrink: 0;
@@ -167,8 +172,8 @@ body.light-theme {
   position: absolute;
   bottom: 1px;
   right: 1px;
-  width: 11px;
-  height: 11px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   background: #25d366;
   border: 2px solid var(--wa-header-bg);
@@ -190,7 +195,7 @@ body.light-theme {
 .wa-main-title {
   font-family: "Orbitron", sans-serif;
   font-weight: 700;
-  font-size: 15px;
+  font-size: 14.5px;
   letter-spacing: 0.5px;
   color: var(--wa-input-text);
   white-space: nowrap;
@@ -205,19 +210,19 @@ body.light-theme {
 }
 
 .wa-presence-text {
-  font-size: 11.5px;
-  color: var(--wa-subtext);
+  font-size: 11px;
+  color: #25d366;
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 320px;
 }
 
 /* Channel Tabs in Header */
 .wa-header-tabs {
   display: flex;
   align-items: center;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.25);
   padding: 4px;
   border-radius: 12px;
   border: 1px solid var(--wa-card-border);
@@ -238,7 +243,7 @@ body.light-theme .wa-header-tabs {
   background: transparent;
   border: none;
   color: var(--wa-subtext);
-  font-size: 12.5px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -256,95 +261,37 @@ body.light-theme .wa-header-tabs {
 }
 
 .tab-badge {
-  font-size: 9.5px;
+  font-size: 9px;
   padding: 2px 6px;
   border-radius: 999px;
   background: rgba(255, 255, 255, 0.2);
   font-family: "Orbitron", sans-serif;
   letter-spacing: 0.5px;
+  font-weight: 700;
 }
 
 .tab-badge.admin-badge {
   background: #f59e0b;
   color: #000;
-  font-weight: 700;
+  font-weight: 800;
 }
 
-/* Header Right User Chip */
-.wa-header-right {
+/* System Info Ribbon */
+.wa-info-ribbon {
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid var(--wa-divider);
+  padding: 6px 16px;
+  font-size: 11.5px;
+  color: var(--wa-subtext);
   display: flex;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
+  text-align: center;
   flex-shrink: 0;
 }
 
-.wa-user-chip {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.wa-chip-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 5px 12px;
-  border-radius: 20px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid var(--wa-card-border);
-  color: var(--wa-input-text);
-  font-size: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.wa-chip-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: #00eaff;
-}
-
-.wa-chip-avatar {
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #00eaff, #8d27ff);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  font-weight: 700;
-  color: #fff;
-  overflow: hidden;
-}
-
-.wa-chip-avatar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.wa-admin-star-badge {
-  font-size: 10px;
-  background: linear-gradient(90deg, #ffd700, #ff8800);
-  color: #000;
-  font-weight: 700;
-  padding: 1px 6px;
-  border-radius: 4px;
-  font-family: "Orbitron", sans-serif;
-}
-
-/* ==========================================================================
-   CHANNEL INFO SYSTEM BANNER
-   ========================================================================== */
-.wa-info-ribbon {
-  background: var(--wa-header-bg);
-  border-bottom: 1px solid var(--wa-divider);
-  padding: 6px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 11.5px;
-  color: var(--wa-subtext);
+body.light-theme .wa-info-ribbon {
+  background: rgba(0, 0, 0, 0.03);
 }
 
 .wa-ribbon-content {
@@ -352,55 +299,39 @@ body.light-theme .wa-header-tabs {
   align-items: center;
   gap: 8px;
   max-width: 900px;
-  text-align: center;
 }
 
-.ribbon-lock-icon {
-  font-size: 13px;
-  color: #f59e0b;
+.wa-ribbon-content strong {
+  color: var(--wa-input-text);
 }
 
 /* ==========================================================================
-   WHATSAPP CHAT STREAM (WALLPAPER & BUBBLES)
+   WHATSAPP CHAT STREAM
    ========================================================================== */
 .wa-chat-stream {
   flex: 1;
-  width: 100%;
   overflow-y: auto;
   overflow-x: hidden;
-  padding: 18px 24px 20px;
+  padding: 16px 24px;
   display: flex;
   flex-direction: column;
-  gap: 6px;
-  scroll-behavior: smooth;
-  position: relative;
-  
-  /* WhatsApp Doodle Background Pattern */
+  gap: 12px;
   background-color: var(--wa-bg-deep);
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(0, 234, 255, 0.03) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(141, 39, 255, 0.03) 0%, transparent 40%),
-    radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 0);
-  background-size: 100% 100%, 100% 100%, 28px 28px;
+  background-image: radial-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 20px 20px;
+  scroll-behavior: smooth;
 }
 
 body.light-theme .wa-chat-stream {
-  background-image: 
-    radial-gradient(circle at 10% 20%, rgba(0, 168, 132, 0.05) 0%, transparent 40%),
-    radial-gradient(circle at 90% 80%, rgba(0, 140, 255, 0.05) 0%, transparent 40%),
-    radial-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 0);
-  background-size: 100% 100%, 100% 100%, 28px 28px;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px);
 }
 
-/* Stream Loading Indicator */
 .wa-stream-loading {
+  margin: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
   gap: 12px;
-  margin: auto;
-  padding: 30px;
   color: var(--wa-subtext);
   font-size: 13px;
 }
@@ -408,8 +339,8 @@ body.light-theme .wa-chat-stream {
 .wa-loading-spinner {
   width: 32px;
   height: 32px;
-  border: 3px solid rgba(0, 168, 132, 0.2);
-  border-top-color: var(--wa-green);
+  border: 3px solid rgba(0, 234, 255, 0.2);
+  border-top-color: #00eaff;
   border-radius: 50%;
   animation: waSpin 0.8s linear infinite;
 }
@@ -418,60 +349,38 @@ body.light-theme .wa-chat-stream {
   to { transform: rotate(360deg); }
 }
 
-/* WhatsApp Date Separator */
-.wa-date-divider {
-  align-self: center;
-  margin: 12px 0 8px;
-  padding: 5px 14px;
-  background: var(--wa-system-bg);
-  border-radius: 8px;
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--wa-system-text);
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
-  user-select: none;
-}
-
-/* WhatsApp System Notification Bubble */
 .wa-system-notice {
-  align-self: center;
-  max-width: 520px;
-  margin: 6px 0 12px;
-  padding: 8px 16px;
-  background: var(--wa-system-bg);
-  border: 1px solid var(--wa-card-border);
+  margin: 4px auto 10px;
+  padding: 6px 14px;
   border-radius: 8px;
-  font-size: 11.5px;
+  background: var(--wa-system-bg);
   color: var(--wa-system-text);
+  font-size: 11.5px;
   text-align: center;
-  line-height: 1.5;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+  max-width: 520px;
+  box-shadow: var(--wa-shadow);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
 }
 
-/* ==========================================================================
-   MESSAGE BUBBLES (INCOMING, OUTGOING, ADMIN VIP)
-   ========================================================================== */
+.wa-date-divider {
+  margin: 10px auto;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: var(--wa-system-bg);
+  color: var(--wa-system-text);
+  font-family: "Orbitron", sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: var(--wa-shadow);
+}
+
+/* Chat Message Rows */
 .wa-msg-row {
   display: flex;
   width: 100%;
-  margin-bottom: 3px;
-  animation: waMsgFadeIn 0.2s ease-out;
-}
-
-@keyframes waMsgFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
 .wa-msg-row.incoming {
@@ -482,44 +391,38 @@ body.light-theme .wa-chat-stream {
   justify-content: flex-end;
 }
 
+/* Message Bubble Base */
 .wa-msg-bubble {
   position: relative;
-  max-width: min(78%, 680px);
-  min-width: 120px;
-  padding: 7px 11px 5px 11px;
-  border-radius: 10px;
+  max-width: 75%;
+  min-width: 160px;
+  padding: 8px 12px 6px;
+  border-radius: 12px;
   box-shadow: var(--wa-shadow);
   word-break: break-word;
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 1.45;
+  transition: transform 0.15s ease;
 }
 
-/* Incoming Bubble */
 .wa-msg-row.incoming .wa-msg-bubble {
   background: var(--wa-incoming-bg);
   color: var(--wa-incoming-text);
   border-top-left-radius: 2px;
 }
 
-/* Outgoing Bubble */
 .wa-msg-row.outgoing .wa-msg-bubble {
   background: var(--wa-outgoing-bg);
   color: var(--wa-outgoing-text);
   border-top-right-radius: 2px;
 }
 
-/* ==========================================================================
-   ADMIN VIP MESSAGE BUBBLE (PROMINENT & DISTINCT)
-   ========================================================================== */
+/* Admin VIP Special Styling */
 .wa-msg-bubble.admin-post {
   background: var(--wa-admin-bubble-bg) !important;
-  border: 1.5px solid var(--wa-admin-border);
-  box-shadow: 
-    0 4px 18px var(--wa-admin-glow),
-    0 0 8px rgba(255, 215, 0, 0.25),
-    var(--wa-shadow) !important;
   color: var(--wa-admin-text) !important;
-  padding: 10px 14px 7px 14px;
+  border: 1.5px solid var(--wa-admin-border);
+  box-shadow: 0 4px 20px var(--wa-admin-glow), var(--wa-shadow);
 }
 
 .wa-admin-header {
@@ -533,77 +436,74 @@ body.light-theme .wa-chat-stream {
 }
 
 .wa-admin-badge-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  background: linear-gradient(90deg, #ffd700, #ff8800);
-  color: #050510;
   font-family: "Orbitron", sans-serif;
-  font-weight: 800;
   font-size: 10px;
-  padding: 3px 8px;
-  border-radius: 6px;
-  letter-spacing: 0.6px;
-  box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  font-weight: 800;
+  color: #ffd700;
+  letter-spacing: 0.5px;
 }
 
 .wa-admin-channel-pill {
   font-size: 9.5px;
-  font-family: "Orbitron", sans-serif;
-  color: #f59e0b;
-  letter-spacing: 0.5px;
   font-weight: 700;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.15);
+  padding: 2px 6px;
+  border-radius: 4px;
 }
 
-/* Bubble Header (Author Name & Fan Role) */
-.wa-msg-author-row {
+/* Author Row with Custom Avatar */
+.wa-author-row {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 3px;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 
-.wa-msg-author {
-  font-size: 12.5px;
+.wa-msg-author-avatar {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00eaff, #8d27ff);
+  color: #fff;
+  font-family: "Orbitron", sans-serif;
+  font-size: 9.5px;
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.wa-msg-author-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.wa-author-name {
+  font-weight: 700;
+  font-size: 12px;
   color: #53bdeb;
 }
 
-.wa-msg-row.outgoing .wa-msg-author {
-  color: #25d366;
-}
-
-.wa-msg-bubble.admin-post .wa-msg-author {
-  color: #ffd700 !important;
-  font-size: 13.5px;
+.wa-msg-bubble.admin-post .wa-author-name {
+  color: #ffd700;
 }
 
 .wa-author-tag {
   font-size: 9px;
   padding: 1px 5px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.1);
-  color: var(--wa-subtext);
+  border-radius: 3px;
+  background: rgba(83, 189, 235, 0.15);
+  color: #53bdeb;
+  font-family: "Orbitron", sans-serif;
   font-weight: 600;
-  text-transform: uppercase;
 }
 
-/* Message Text */
-.wa-msg-text {
-  margin: 0;
-  white-space: pre-wrap;
-  font-size: 13.8px;
-  line-height: 1.45;
-}
-
-.wa-msg-bubble.admin-post .wa-msg-text {
-  font-size: 14.5px;
-  font-weight: 500;
-  letter-spacing: 0.2px;
-}
-
-/* Bubble Bottom Meta (Time, Checkmarks, Admin Delete, Reactions) */
-.wa-msg-meta {
+/* Bubble Meta (Time, Ticks, Reactions, Delete) */
+.wa-bubble-meta {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -611,187 +511,84 @@ body.light-theme .wa-chat-stream {
   margin-top: 4px;
   font-size: 11px;
   color: var(--wa-subtext);
-  user-select: none;
 }
 
 .wa-msg-time {
   font-size: 10.5px;
 }
 
-/* Double Checkmark */
-.wa-msg-ticks {
+.wa-ticks {
   display: inline-flex;
   align-items: center;
-  color: var(--wa-accent-blue);
-  margin-left: 2px;
+  color: #53bdeb;
+  font-weight: 700;
 }
 
-/* Admin Message Delete Button */
-.wa-msg-delete-btn {
-  background: transparent;
-  border: none;
-  color: #ff4757;
-  font-size: 13px;
-  cursor: pointer;
-  padding: 2px 4px;
-  border-radius: 4px;
-  display: inline-flex;
-  align-items: center;
-  transition: all 0.2s ease;
-  margin-right: 2px;
-  opacity: 0.75;
-}
-
-.wa-msg-delete-btn:hover {
-  opacity: 1;
-  background: rgba(255, 71, 87, 0.15);
-  transform: scale(1.15);
-}
-
-/* Message Like Action */
-.wa-msg-like-btn {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid var(--wa-card-border);
-  border-radius: 12px;
-  padding: 2px 7px;
-  font-size: 11px;
-  color: var(--wa-input-text);
-  cursor: pointer;
+.wa-like-badge {
   display: inline-flex;
   align-items: center;
   gap: 3px;
-  transition: all 0.2s ease;
-  margin-right: auto;
-}
-
-.wa-msg-like-btn:hover {
-  background: rgba(255, 71, 87, 0.2);
-  border-color: #ff4757;
-}
-
-.wa-msg-like-btn.liked {
-  background: rgba(255, 71, 87, 0.25);
-  border-color: #ff4757;
-  color: #ff4757;
-}
-
-/* ==========================================================================
-   QUICK EMOJI REACTION DRAWER
-   ========================================================================== */
-.wa-emoji-shelf {
-  position: absolute;
-  bottom: 74px;
-  left: 20px;
-  right: 20px;
-  max-width: 480px;
-  background: var(--wa-header-bg);
-  border: 1px solid var(--wa-card-border);
-  border-radius: 16px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-  padding: 12px 14px;
-  z-index: 50;
-  animation: waShelfPop 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.wa-emoji-shelf[hidden] {
-  display: none !important;
-}
-
-@keyframes waShelfPop {
-  from {
-    opacity: 0;
-    transform: translateY(12px) scale(0.96);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-}
-
-.wa-emoji-shelf-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--wa-subtext);
-  margin-bottom: 8px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--wa-divider);
-}
-
-.wa-emoji-close {
-  background: transparent;
-  border: none;
-  color: var(--wa-subtext);
-  font-size: 13px;
-  cursor: pointer;
   padding: 2px 6px;
-}
-
-.wa-emoji-close:hover {
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   color: var(--wa-input-text);
-}
-
-.wa-emoji-grid {
-  display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  gap: 6px;
-}
-
-.wa-emoji-item {
-  background: transparent;
-  border: none;
-  font-size: 22px;
-  padding: 6px 2px;
-  border-radius: 8px;
+  font-size: 11px;
   cursor: pointer;
-  transition: transform 0.15s ease, background 0.15s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  transition: all 0.15s ease;
 }
 
-.wa-emoji-item:hover {
-  transform: scale(1.3);
-  background: rgba(255, 255, 255, 0.1);
+.wa-like-badge:hover {
+  transform: scale(1.08);
+  border-color: #ff4757;
+}
+
+.wa-delete-btn {
+  background: none;
+  border: none;
+  color: var(--wa-subtext);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 4px;
+  border-radius: 4px;
+  transition: all 0.15s ease;
+}
+
+.wa-delete-btn:hover {
+  color: #ff4757;
+  background: rgba(255, 71, 87, 0.15);
 }
 
 /* ==========================================================================
-   WHATSAPP PINNED BOTTOM INPUT BAR
+   WHATSAPP PINNED BOTTOM BAR
    ========================================================================== */
 .wa-bottom-bar {
-  min-height: 64px;
   background: var(--wa-footer-bg);
   border-top: 1px solid var(--wa-divider);
-  padding: 10px 18px;
+  padding: 10px 16px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  z-index: 20;
-  position: relative;
+  gap: 6px;
+  z-index: 10;
+  flex-shrink: 0;
 }
 
-/* Admin Announcements Lock Notice */
 .wa-announcements-lock {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 8px;
-  padding: 10px 16px;
-  background: rgba(245, 158, 11, 0.12);
+  padding: 8px 12px;
+  border-radius: 10px;
+  background: rgba(245, 158, 11, 0.15);
   border: 1px solid rgba(245, 158, 11, 0.35);
-  border-radius: 12px;
-  color: #f59e0b;
-  font-size: 12.5px;
-  text-align: center;
+  color: #fbbf24;
+  font-size: 12px;
 }
 
 .wa-announcements-lock[hidden] {
   display: none !important;
 }
 
-/* Chat Form */
 .wa-chat-form {
   display: flex;
   align-items: center;
@@ -799,55 +596,24 @@ body.light-theme .wa-chat-stream {
   width: 100%;
 }
 
-.wa-chat-form[hidden] {
-  display: none !important;
-}
-
-.wa-btn-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: none;
-  background: transparent;
-  color: var(--wa-subtext);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  flex-shrink: 0;
-}
-
-.wa-btn-icon:hover {
-  color: #00eaff;
-  background: rgba(255, 255, 255, 0.08);
-  transform: scale(1.08);
-}
-
 .wa-input-pill {
   flex: 1;
   background: var(--wa-input-bg);
   border-radius: 24px;
-  padding: 2px 18px;
+  padding: 4px 16px;
   display: flex;
   align-items: center;
-  border: 1px solid transparent;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-.wa-input-pill:focus-within {
-  border-color: var(--wa-green);
-  box-shadow: 0 0 10px rgba(0, 168, 132, 0.25);
+  box-shadow: var(--wa-shadow);
 }
 
 .wa-message-input {
   width: 100%;
-  height: 40px;
   background: transparent;
   border: none;
   outline: none;
   color: var(--wa-input-text);
-  font-size: 14.5px;
+  font-size: 14px;
+  padding: 8px 0;
   font-family: inherit;
 }
 
@@ -855,348 +621,32 @@ body.light-theme .wa-chat-stream {
   color: var(--wa-input-placeholder);
 }
 
-/* Round Green Send Button */
 .wa-send-btn {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  border: none;
   background: var(--wa-green);
+  border: none;
   color: #ffffff;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 3px 12px rgba(0, 168, 132, 0.4);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0, 168, 132, 0.4);
   flex-shrink: 0;
 }
 
 .wa-send-btn:hover {
   background: var(--wa-green-hover);
-  transform: scale(1.08);
-  box-shadow: 0 4px 16px rgba(0, 168, 132, 0.6);
+  transform: scale(1.05);
 }
 
-.wa-send-btn:active {
-  transform: scale(0.94);
+.wa-send-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
 }
-
-/* ==========================================================================
-   AUTH MODAL & POPUP (GUEST / LOGIN GATING)
-   ========================================================================== */
-.community-auth-modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  width: 100vw;
-  height: 100vh;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-  background: rgba(2, 5, 20, 0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  animation: waFadeOverlay 0.25s ease-out;
-}
-
-.community-auth-modal[hidden] {
-  display: none !important;
-}
-
-@keyframes waFadeOverlay {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.community-login-card {
-  position: relative;
-  width: 100%;
-  max-width: 440px;
-  padding: 38px 30px;
-  border-radius: 24px;
-  background: linear-gradient(160deg, rgba(17, 13, 44, 0.96), rgba(7, 16, 38, 0.98));
-  border: 1px solid rgba(0, 234, 255, 0.35);
-  box-shadow: 
-    0 25px 65px rgba(0, 0, 0, 0.8),
-    0 0 45px rgba(141, 39, 255, 0.28),
-    0 0 20px rgba(0, 234, 255, 0.18);
-  text-align: center;
-  animation: waCardPop 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes waCardPop {
-  from {
-    opacity: 0;
-    transform: scale(0.94) translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-.modal-close-btn {
-  position: absolute;
-  top: 14px;
-  right: 14px;
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.05);
-  color: #a0aec0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.modal-close-btn:hover {
-  background: rgba(255, 60, 95, 0.22);
-  border-color: rgba(255, 60, 95, 0.65);
-  color: #ffffff;
-  transform: rotate(90deg);
-}
-
-.modal-logo-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 12px;
-}
-
-.modal-logo-badge {
-  width: 52px;
-  height: 52px;
-  border-radius: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, rgba(0, 234, 255, 0.15), rgba(141, 39, 255, 0.25));
-  border: 1.5px solid rgba(0, 234, 255, 0.45);
-  box-shadow: 0 0 20px rgba(0, 234, 255, 0.28);
-}
-
-.modal-logo-img {
-  width: 34px;
-  height: 34px;
-  object-fit: contain;
-}
-
-.modal-kicker {
-  font-family: "Orbitron", sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  color: #00eaff;
-}
-
-.modal-title {
-  font-family: "Orbitron", sans-serif;
-  font-size: 18px;
-  font-weight: 800;
-  letter-spacing: 0.5px;
-  margin-top: 4px;
-  color: #ffffff;
-}
-
-.modal-subtitle {
-  font-size: 12.5px;
-  color: #aeb8d0;
-  margin-top: 6px;
-  line-height: 1.5;
-}
-
-.btn-google {
-  width: 100%;
-  margin-top: 20px;
-  padding: 12px 18px;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: #ffffff;
-  color: #1a1a1a;
-  font-family: "Poppins", sans-serif;
-  font-size: 14px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.25);
-}
-
-.btn-google:hover {
-  background: #f1f3f4;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(0, 234, 255, 0.25);
-}
-
-.modal-divider {
-  display: flex;
-  align-items: center;
-  margin: 18px 0 14px;
-  text-align: center;
-}
-
-.modal-divider::before,
-.modal-divider::after {
-  content: "";
-  flex: 1;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.modal-divider span {
-  padding: 0 10px;
-  font-size: 10.5px;
-  font-weight: 700;
-  color: #718096;
-  letter-spacing: 1.5px;
-  font-family: "Orbitron", sans-serif;
-}
-
-.demo-login-group {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.demo-username-input {
-  width: 100%;
-  padding: 10px 14px;
-  background: rgba(0, 0, 0, 0.4);
-  border: 1px solid rgba(0, 234, 255, 0.25);
-  border-radius: 10px;
-  color: #fff;
-  font-size: 13.5px;
-  outline: none;
-  transition: border-color 0.2s ease;
-}
-
-.demo-username-input:focus {
-  border-color: #00eaff;
-  box-shadow: 0 0 10px rgba(0, 234, 255, 0.3);
-}
-
-.btn-demo {
-  width: 100%;
-  padding: 11px 18px;
-  border-radius: 10px;
-  border: 1px solid rgba(141, 39, 255, 0.5);
-  background: linear-gradient(135deg, rgba(141, 39, 255, 0.25), rgba(0, 234, 255, 0.25));
-  color: #ffffff;
-  font-family: "Orbitron", sans-serif;
-  font-size: 12.5px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-demo:hover {
-  background: linear-gradient(135deg, rgba(141, 39, 255, 0.45), rgba(0, 234, 255, 0.45));
-  border-color: #00eaff;
-  transform: translateY(-2px);
-}
-
-.modal-footnote {
-  margin-top: 14px;
-  font-size: 11.5px;
-  color: #718096;
-}
-
-.auth-feedback {
-  margin-top: 10px;
-  font-size: 12px;
-  padding: 6px 12px;
-  border-radius: 6px;
-  display: none;
-}
-
-.auth-feedback.error {
-  display: block;
-  background: rgba(255, 71, 87, 0.15);
-  color: #ff4757;
-  border: 1px solid rgba(255, 71, 87, 0.3);
-}
-
-.auth-feedback.success {
-  display: block;
-  background: rgba(45, 255, 155, 0.15);
-  color: #2dff9b;
-  border: 1px solid rgba(45, 255, 155, 0.3);
-}
-
-/* ==========================================================================
-   RESPONSIVE DESIGN (MOBILE & TABLET EDGE-TO-EDGE)
-   ========================================================================== */
-@media (max-width: 768px) {
-  .wa-main-fullwidth {
-    height: calc(100vh - 64px);
-    margin-top: 64px;
-  }
-
-  .wa-chat-header {
-    height: auto;
-    min-height: 58px;
-    padding: 8px 12px;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .wa-header-tabs {
-    order: 3;
-    width: 100%;
-    justify-content: center;
-    margin-top: 2px;
-  }
-
-  .wa-channel-tab {
-    flex: 1;
-    justify-content: center;
-    padding: 5px 8px;
-    font-size: 11.5px;
-  }
-
-  .wa-presence-text {
-    max-width: 180px;
-    font-size: 11px;
-  }
-
-  .wa-chat-stream {
-    padding: 12px 12px 16px;
-  }
-
-  .wa-msg-bubble {
-    max-width: 88%;
-  }
-
-  .wa-bottom-bar {
-    padding: 8px 10px;
-  }
-
-  .wa-emoji-shelf {
-    left: 8px;
-    right: 8px;
-    bottom: 68px;
-  }
-
-  .wa-emoji-grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-}
-
 
 /* ==========================================================================
    NAVBAR PROFILE & AUTH ACTIONS (PC & MOBILE)
@@ -1230,10 +680,6 @@ body.light-theme .wa-chat-stream {
   border-color: #00eaff;
   transform: translateY(-1px);
   box-shadow: 0 0 16px rgba(0, 234, 255, 0.4);
-}
-
-.nav-signin-btn .nav-signin-icon {
-  font-size: 13px;
 }
 
 .community-page .nav-profile-wrap,
@@ -1305,21 +751,22 @@ body.light-theme .wa-chat-stream {
   transition: transform 0.2s ease;
 }
 
+/* Sleek Profile Dropdown Card */
 .nav-profile-dropdown {
   position: absolute;
   top: calc(100% + 10px);
   right: 0;
-  width: 260px;
-  background: rgba(13, 17, 28, 0.98);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  width: 270px;
+  background: linear-gradient(160deg, #101428, #0a0d1e);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid rgba(0, 234, 255, 0.35);
-  border-radius: 16px;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 234, 255, 0.15);
-  padding: 14px;
+  border-radius: 18px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 25px rgba(0, 234, 255, 0.15);
+  padding: 16px;
   display: none;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
   z-index: 2000;
   animation: waDropdownSlide 0.2s ease-out;
 }
@@ -1336,24 +783,33 @@ body.light-theme .wa-chat-stream {
 .dropdown-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding-bottom: 10px;
+  gap: 12px;
+  padding-bottom: 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+.dropdown-avatar-container {
+  position: relative;
+  width: 44px;
+  height: 44px;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
 .dropdown-avatar {
-  width: 36px;
-  height: 36px;
+  width: 100%;
+  height: 100%;
   border-radius: 50%;
   background: linear-gradient(135deg, #00eaff, #8d27ff);
   color: #ffffff;
   font-family: "Orbitron", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
+  font-size: 14px;
+  font-weight: 800;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  border: 2px solid rgba(0, 234, 255, 0.45);
 }
 
 .dropdown-avatar img {
@@ -1362,15 +818,37 @@ body.light-theme .wa-chat-stream {
   object-fit: cover;
 }
 
+.avatar-edit-badge {
+  position: absolute;
+  bottom: -2px;
+  right: -2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #00eaff;
+  color: #050818;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 0 8px rgba(0, 234, 255, 0.9);
+  transition: transform 0.2s ease;
+}
+
+.avatar-edit-badge:hover {
+  transform: scale(1.15);
+}
+
 .dropdown-info {
   display: flex;
   flex-direction: column;
   min-width: 0;
+  gap: 3px;
 }
 
 .dropdown-name {
   font-family: "Poppins", sans-serif;
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
   color: #ffffff;
   white-space: nowrap;
@@ -1391,6 +869,29 @@ body.light-theme .wa-chat-stream {
   height: 6px;
   border-radius: 50%;
   background: #25d366;
+  box-shadow: 0 0 6px #25d366;
+}
+
+.btn-change-photo {
+  display: inline-block;
+  margin-top: 2px;
+  padding: 3px 8px;
+  background: rgba(0, 234, 255, 0.12);
+  border: 1px solid rgba(0, 234, 255, 0.3);
+  border-radius: 6px;
+  color: #00eaff;
+  font-size: 10.5px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: center;
+  width: fit-content;
+  transition: all 0.2s ease;
+}
+
+.btn-change-photo:hover {
+  background: rgba(0, 234, 255, 0.25);
+  color: #ffffff;
+  border-color: #00eaff;
 }
 
 .dropdown-section-title {
@@ -1405,34 +906,46 @@ body.light-theme .wa-chat-stream {
 .dropdown-channels-group {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 
+/* Clean Dark Styled Dropdown Channel Buttons (Fixing the white block issue) */
+.nav-profile-dropdown .dropdown-channel-btn,
 .dropdown-channel-btn {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 8px 10px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 8px;
-  color: #e9edef;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  padding: 9px 12px !important;
+  background: rgba(255, 255, 255, 0.06) !important;
+  border: 1px solid rgba(0, 234, 255, 0.18) !important;
+  border-radius: 10px !important;
+  color: #e2e8f0 !important;
+  font-family: "Poppins", sans-serif !important;
+  font-size: 12.5px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  outline: none !important;
+  box-sizing: border-box !important;
+  text-align: left !important;
 }
 
+.nav-profile-dropdown .dropdown-channel-btn:hover,
 .dropdown-channel-btn:hover {
-  background: rgba(0, 234, 255, 0.12);
-  border-color: rgba(0, 234, 255, 0.3);
-  color: #00eaff;
+  background: rgba(0, 234, 255, 0.15) !important;
+  border-color: #00eaff !important;
+  color: #00eaff !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(0, 234, 255, 0.2) !important;
 }
 
+.nav-profile-dropdown .dropdown-channel-btn.active,
 .dropdown-channel-btn.active {
-  background: rgba(0, 168, 132, 0.2);
-  border-color: var(--wa-green);
-  color: #25d366;
+  background: linear-gradient(135deg, rgba(0, 168, 132, 0.35), rgba(0, 234, 255, 0.2)) !important;
+  border-color: #00a884 !important;
+  color: #25d366 !important;
+  box-shadow: 0 2px 10px rgba(0, 168, 132, 0.25) !important;
 }
 
 .dropdown-divider {
@@ -1442,27 +955,28 @@ body.light-theme .wa-chat-stream {
 }
 
 .dropdown-logout-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  padding: 8px 12px;
-  background: rgba(255, 71, 87, 0.12);
-  border: 1px solid rgba(255, 71, 87, 0.3);
-  border-radius: 8px;
-  color: #ff4757;
-  font-family: "Orbitron", sans-serif;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.5px;
-  cursor: pointer;
-  transition: all 0.2s ease;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  padding: 9px 12px !important;
+  background: rgba(255, 71, 87, 0.12) !important;
+  border: 1px solid rgba(255, 71, 87, 0.3) !important;
+  border-radius: 10px !important;
+  color: #ff4757 !important;
+  font-family: "Orbitron", sans-serif !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.5px !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
 }
 
 .dropdown-logout-btn:hover {
-  background: rgba(255, 71, 87, 0.25);
-  border-color: #ff4757;
-  color: #ffffff;
+  background: rgba(255, 71, 87, 0.28) !important;
+  border-color: #ff4757 !important;
+  color: #ffffff !important;
 }
 
 /* Mobile Drawer Channel Actions */
@@ -1532,9 +1046,310 @@ body.light-theme .wa-chat-stream {
   color: #25d366;
 }
 
-/* Light Theme Adjustments for Nav and Dropdown */
+/* ==========================================================================
+   AUTH MODAL & AVATAR PICKER
+   ========================================================================== */
+.community-auth-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(2, 5, 20, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  animation: waFadeOverlay 0.25s ease-out;
+}
+
+.community-auth-modal[hidden] {
+  display: none !important;
+}
+
+.community-login-card {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  padding: 34px 28px;
+  border-radius: 22px;
+  background: linear-gradient(160deg, rgba(17, 13, 44, 0.96), rgba(7, 16, 38, 0.98));
+  border: 1px solid rgba(0, 234, 255, 0.35);
+  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.85), 0 0 35px rgba(141, 39, 255, 0.25);
+  text-align: center;
+  animation: waCardPop 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes waCardPop {
+  from { opacity: 0; transform: scale(0.94) translateY(16px); }
+  to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: #a0aec0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.modal-close-btn:hover {
+  background: rgba(255, 60, 95, 0.22);
+  border-color: rgba(255, 60, 95, 0.65);
+  color: #ffffff;
+}
+
+.modal-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.modal-logo-badge {
+  width: 48px;
+  height: 48px;
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(0, 234, 255, 0.15), rgba(141, 39, 255, 0.25));
+  border: 1.5px solid rgba(0, 234, 255, 0.45);
+}
+
+.modal-logo-img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+}
+
+.modal-kicker {
+  font-family: "Orbitron", sans-serif;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #00eaff;
+}
+
+.modal-title {
+  font-family: "Orbitron", sans-serif;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  margin-top: 4px;
+  color: #ffffff;
+}
+
+.modal-subtitle {
+  font-size: 12px;
+  color: #aeb8d0;
+  margin-top: 4px;
+  line-height: 1.45;
+}
+
+.btn-google {
+  width: 100%;
+  margin-top: 16px;
+  padding: 11px 18px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: #ffffff;
+  color: #1a1a1a;
+  font-family: "Poppins", sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-google:hover {
+  background: #f1f3f4;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 234, 255, 0.25);
+}
+
+.modal-divider {
+  display: flex;
+  align-items: center;
+  margin: 16px 0 12px;
+}
+
+.modal-divider::before,
+.modal-divider::after {
+  content: "";
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.modal-divider span {
+  padding: 0 10px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #718096;
+  letter-spacing: 1.5px;
+  font-family: "Orbitron", sans-serif;
+}
+
+.demo-login-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Avatar Picker in Modal */
+.modal-avatar-picker {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(0, 234, 255, 0.2);
+  border-radius: 12px;
+}
+
+.modal-avatar-preview {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00eaff, #8d27ff);
+  color: #ffffff;
+  font-family: "Orbitron", sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border: 2px solid rgba(0, 234, 255, 0.5);
+  flex-shrink: 0;
+}
+
+.modal-avatar-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.modal-avatar-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+}
+
+.btn-pick-avatar {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  background: rgba(0, 234, 255, 0.15);
+  border: 1px solid rgba(0, 234, 255, 0.4);
+  border-radius: 8px;
+  color: #00eaff;
+  font-size: 11.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-pick-avatar:hover {
+  background: rgba(0, 234, 255, 0.3);
+  color: #ffffff;
+  border-color: #00eaff;
+}
+
+.modal-avatar-hint {
+  font-size: 10.5px;
+  color: #718096;
+}
+
+.demo-username-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 234, 255, 0.25);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.demo-username-input:focus {
+  border-color: #00eaff;
+  box-shadow: 0 0 10px rgba(0, 234, 255, 0.3);
+}
+
+.btn-demo {
+  width: 100%;
+  padding: 11px 18px;
+  border-radius: 10px;
+  border: 1px solid rgba(141, 39, 255, 0.5);
+  background: linear-gradient(135deg, rgba(141, 39, 255, 0.25), rgba(0, 234, 255, 0.25));
+  color: #ffffff;
+  font-family: "Orbitron", sans-serif;
+  font-size: 12.5px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-demo:hover {
+  background: linear-gradient(135deg, rgba(141, 39, 255, 0.45), rgba(0, 234, 255, 0.45));
+  border-color: #00eaff;
+  transform: translateY(-2px);
+}
+
+.modal-footnote {
+  margin-top: 12px;
+  font-size: 11px;
+  color: #718096;
+}
+
+.auth-feedback {
+  margin-top: 8px;
+  font-size: 12px;
+  padding: 6px 12px;
+  border-radius: 6px;
+  display: none;
+}
+
+.auth-feedback.error {
+  display: block;
+  background: rgba(255, 71, 87, 0.15);
+  color: #ff4757;
+  border: 1px solid rgba(255, 71, 87, 0.3);
+}
+
+.auth-feedback.success {
+  display: block;
+  background: rgba(45, 255, 155, 0.15);
+  color: #2dff9b;
+  border: 1px solid rgba(45, 255, 155, 0.3);
+}
+
+/* ==========================================================================
+   LIGHT THEME OVERRIDES
+   ========================================================================== */
 body.light-theme .nav-profile-dropdown {
-  background: rgba(255, 255, 255, 0.98);
+  background: linear-gradient(160deg, #ffffff, #f4f6f8);
   border-color: rgba(0, 0, 0, 0.12);
   box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
 }
@@ -1547,15 +1362,24 @@ body.light-theme .dropdown-name {
   color: #111b21;
 }
 
+body.light-theme .nav-profile-dropdown .dropdown-channel-btn,
 body.light-theme .dropdown-channel-btn {
-  background: rgba(0, 0, 0, 0.03);
-  border-color: rgba(0, 0, 0, 0.06);
-  color: #111b21;
+  background: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+  color: #111b21 !important;
 }
 
+body.light-theme .nav-profile-dropdown .dropdown-channel-btn:hover,
 body.light-theme .dropdown-channel-btn:hover {
-  background: rgba(0, 128, 105, 0.1);
-  color: #008069;
+  background: rgba(0, 128, 105, 0.1) !important;
+  color: #008069 !important;
+}
+
+body.light-theme .nav-profile-dropdown .dropdown-channel-btn.active,
+body.light-theme .dropdown-channel-btn.active {
+  background: rgba(0, 128, 105, 0.15) !important;
+  border-color: #008069 !important;
+  color: #008069 !important;
 }
 
 body.light-theme .nav-profile-btn {
@@ -1566,4 +1390,54 @@ body.light-theme .nav-profile-btn {
 
 body.light-theme .nav-profile-name-preview {
   color: #111b21;
+}
+
+/* ==========================================================================
+   RESPONSIVE DESIGN (MOBILE & TABLET EDGE-TO-EDGE)
+   ========================================================================== */
+@media (max-width: 768px) {
+  .wa-main-fullwidth {
+    height: calc(100vh - 64px);
+    height: calc(100dvh - 64px);
+    margin-top: 64px;
+  }
+
+  .wa-chat-header {
+    height: auto;
+    min-height: 56px;
+    padding: 8px 12px;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .wa-header-tabs {
+    order: 3;
+    width: 100%;
+    justify-content: center;
+    margin-top: 2px;
+  }
+
+  .wa-channel-tab {
+    flex: 1;
+    justify-content: center;
+    padding: 5px 8px;
+    font-size: 11px;
+  }
+
+  .wa-presence-text {
+    max-width: 180px;
+    font-size: 10.5px;
+  }
+
+  .wa-chat-stream {
+    padding: 12px 10px 14px;
+  }
+
+  .wa-msg-bubble {
+    max-width: 88%;
+  }
+
+  .wa-bottom-bar {
+    padding: 8px 10px;
+  }
 }
