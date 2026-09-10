@@ -1588,7 +1588,7 @@ function initMagneticCarousel() {
 initMagneticCarousel();
 
 /* ==========================================================================
-   OUR PLAYERS — MAGNETIC CAROUSEL (ORIGINKIT EFFECT)
+   OUR PLAYERS — DUAL MODE (3D COVERFLOW ON MOBILE, MAGNETIC ON DESKTOP)
    ========================================================================== */
 
 function initPlayersMagneticCarousel() {
@@ -1603,21 +1603,88 @@ function initPlayersMagneticCarousel() {
     const count = cards.length;
     if (count === 0) return;
 
-    const getDimensions = () => {
-        const isMobile = window.innerWidth <= 768;
+    let activeMobileIndex = 0;
+    let targetFactors = new Array(count).fill(0);
+    let curFactors = new Array(count).fill(0);
+    let openIndex = null;
+    let focusedIndex = 0;
+    let animLoopId = null;
+
+    const isMobile = () => window.innerWidth <= 768;
+
+    // Create navigation dots
+    if (dotsContainer) {
+        dotsContainer.innerHTML = "";
+        cards.forEach((_, idx) => {
+            const dot = document.createElement("button");
+            dot.className = `coverflow-dot ${idx === (isMobile() ? activeMobileIndex : focusedIndex) ? "active" : ""}`;
+            dot.setAttribute("type", "button");
+            dot.setAttribute("aria-label", `Go to player ${idx + 1}`);
+            dot.addEventListener("click", () => {
+                if (isMobile()) {
+                    setMobileActive(idx);
+                } else {
+                    focusCardByIndex(idx);
+                }
+            });
+            dotsContainer.appendChild(dot);
+        });
+    }
+
+    const updateDots = (idx) => {
+        if (!dotsContainer) return;
+        const dots = dotsContainer.querySelectorAll(".coverflow-dot");
+        dots.forEach((dot, dIdx) => {
+            dot.classList.toggle("active", dIdx === idx);
+        });
+    };
+
+    /* --------------------------------------------------
+       MOBILE 3D COVERFLOW ENGINE
+       -------------------------------------------------- */
+    const updateMobileCoverflow = () => {
+        cards.forEach((card, i) => {
+            let offset = i - activeMobileIndex;
+            if (offset > count / 2) offset -= count;
+            if (offset < -count / 2) offset += count;
+
+            const isCenter = offset === 0;
+            const absOffset = Math.abs(offset);
+            const zOffset = isCenter ? 100 : -absOffset * 70;
+            const rotateY = offset * -28;
+            const scale = isCenter ? 1 : 0.82;
+            const opacity = absOffset > 2 ? 0 : (absOffset === 2 ? 0.35 : 1);
+            const zIndex = 25 - absOffset * 3;
+            const pointerEvents = absOffset > 2 ? "none" : "auto";
+
+            card.style.transform = `translateX(${offset * 120}px) translateZ(${zOffset}px) rotateY(${rotateY}deg) scale(${scale})`;
+            card.style.zIndex = zIndex;
+            card.style.opacity = opacity;
+            card.style.pointerEvents = pointerEvents;
+            card.style.width = "";
+            card.style.height = "";
+            card.style.filter = isCenter ? "none" : "brightness(0.65) contrast(0.95)";
+
+            if (isCenter) {
+                card.classList.add("active", "expanded");
+            } else {
+                card.classList.remove("active", "expanded");
+            }
+        });
+        updateDots(activeMobileIndex);
+    };
+
+    const setMobileActive = (newIndex) => {
+        activeMobileIndex = (newIndex + count) % count;
+        updateMobileCoverflow();
+    };
+
+    /* --------------------------------------------------
+       DESKTOP MAGNETIC CAROUSEL ENGINE
+       -------------------------------------------------- */
+    const getDesktopDimensions = () => {
         const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
-        if (isMobile) {
-            return {
-                collapsedWidth: 65,
-                hoverWidth: 180,
-                collapsedHeight: 320,
-                hoverHeight: 380,
-                openSize: Math.min(window.innerWidth - 32, 460),
-                gap: 8,
-                influence: 120,
-                blur: 20,
-            };
-        } else if (isTablet) {
+        if (isTablet) {
             return {
                 collapsedWidth: 100,
                 hoverWidth: 240,
@@ -1641,58 +1708,31 @@ function initPlayersMagneticCarousel() {
         };
     };
 
-    let targetFactors = new Array(count).fill(0);
-    let curFactors = new Array(count).fill(0);
-    let openIndex = null;
-    let focusedIndex = 0;
-    let animLoopId = null;
-
-    // Create navigation dots
-    if (dotsContainer) {
-        dotsContainer.innerHTML = "";
-        cards.forEach((_, idx) => {
-            const dot = document.createElement("button");
-            dot.className = `coverflow-dot ${idx === focusedIndex ? "active" : ""}`;
-            dot.setAttribute("type", "button");
-            dot.setAttribute("aria-label", `Go to player ${idx + 1}`);
-            dot.addEventListener("click", () => {
-                focusCardByIndex(idx);
-            });
-            dotsContainer.appendChild(dot);
-        });
-    }
-
-    const updateDots = (idx) => {
-        if (!dotsContainer) return;
-        const dots = dotsContainer.querySelectorAll(".coverflow-dot");
-        dots.forEach((dot, dIdx) => {
-            dot.classList.toggle("active", dIdx === idx);
-        });
-    };
-
-    const applyDimensions = () => {
-        const { collapsedWidth, collapsedHeight, gap } = getDimensions();
+    const applyDesktopDimensions = () => {
+        const { collapsedWidth, collapsedHeight, gap } = getDesktopDimensions();
         track.style.gap = `${gap}px`;
         cards.forEach((card) => {
             if (openIndex === null) {
+                card.style.transform = "";
+                card.style.zIndex = "";
+                card.style.pointerEvents = "auto";
                 card.style.width = `${collapsedWidth}px`;
                 card.style.height = `${collapsedHeight}px`;
                 card.style.filter = "none";
                 card.style.opacity = "1";
-                card.classList.remove("open", "blurred", "expanded");
+                card.classList.remove("open", "blurred", "expanded", "active");
             }
         });
     };
-    applyDimensions();
 
-    const startLoop = () => {
+    const startDesktopLoop = () => {
         if (animLoopId) return;
         const step = () => {
-            if (openIndex !== null) {
+            if (openIndex !== null || isMobile()) {
                 animLoopId = null;
                 return;
             }
-            const { collapsedWidth, hoverWidth, collapsedHeight, hoverHeight } = getDimensions();
+            const { collapsedWidth, hoverWidth, collapsedHeight, hoverHeight } = getDesktopDimensions();
             let moving = false;
             let maxFactor = 0;
             let maxFactorIdx = 0;
@@ -1739,9 +1779,10 @@ function initPlayersMagneticCarousel() {
     };
 
     const setTargetFromCursor = (clientX) => {
+        if (isMobile()) return;
         const rect = track.getBoundingClientRect();
         const cx = clientX - rect.left;
-        const { collapsedWidth, gap, influence } = getDimensions();
+        const { collapsedWidth, gap, influence } = getDesktopDimensions();
         const totalBase = count * collapsedWidth + (count - 1) * gap;
         const startX = (rect.width - totalBase) / 2;
 
@@ -1749,12 +1790,16 @@ function initPlayersMagneticCarousel() {
             const center = startX + i * (collapsedWidth + gap) + collapsedWidth / 2;
             const dist = Math.abs(cx - center);
             const f = Math.max(0, 1 - dist / influence);
-            targetFactors[i] = f * f * (3 - 2 * f); // Smoothstep falloff
+            targetFactors[i] = f * f * (3 - 2 * f);
         }
-        startLoop();
+        startDesktopLoop();
     };
 
     const focusCardByIndex = (idx) => {
+        if (isMobile()) {
+            setMobileActive(idx);
+            return;
+        }
         if (openIndex !== null) {
             openCard(idx);
             return;
@@ -1765,33 +1810,11 @@ function initPlayersMagneticCarousel() {
         if (idx < count - 1) targetFactors[idx + 1] = 0.35;
         focusedIndex = idx;
         updateDots(focusedIndex);
-        startLoop();
+        startDesktopLoop();
     };
 
-    track.addEventListener("mousemove", (e) => {
-        if (openIndex !== null) return;
-        setTargetFromCursor(e.clientX);
-    });
-
-    track.addEventListener("mouseleave", () => {
-        if (openIndex !== null) return;
-        targetFactors.fill(0);
-        startLoop();
-    });
-
-    // Touch events for mobile
-    track.addEventListener("touchmove", (e) => {
-        if (openIndex !== null || !e.touches[0]) return;
-        setTargetFromCursor(e.touches[0].clientX);
-    }, { passive: true });
-
-    track.addEventListener("touchend", () => {
-        if (openIndex !== null) return;
-        targetFactors.fill(0);
-        startLoop();
-    });
-
     const openCard = (idx) => {
+        if (isMobile()) return;
         if (animLoopId) {
             cancelAnimationFrame(animLoopId);
             animLoopId = null;
@@ -1800,7 +1823,7 @@ function initPlayersMagneticCarousel() {
         focusedIndex = idx;
         updateDots(focusedIndex);
 
-        const { collapsedWidth, collapsedHeight, openSize, blur } = getDimensions();
+        const { collapsedWidth, collapsedHeight, openSize, blur } = getDesktopDimensions();
         const dur = 0.35;
         const ease = "cubic-bezier(0.44, 0, 0.56, 1)";
         const barTransition = `width ${dur}s ${ease}, height ${dur}s ${ease}, filter ${dur}s ${ease}, opacity ${dur}s ${ease}, transform ${dur}s ${ease}`;
@@ -1831,7 +1854,7 @@ function initPlayersMagneticCarousel() {
 
     const closeCard = () => {
         if (openIndex === null) return;
-        const { collapsedWidth, collapsedHeight } = getDimensions();
+        const { collapsedWidth, collapsedHeight } = getDesktopDimensions();
         const dur = 0.35;
         const ease = "cubic-bezier(0.44, 0, 0.56, 1)";
         const barTransition = `width ${dur}s ${ease}, height ${dur}s ${ease}, filter ${dur}s ${ease}, opacity ${dur}s ${ease}`;
@@ -1854,16 +1877,61 @@ function initPlayersMagneticCarousel() {
         openIndex = null;
     };
 
+    /* --------------------------------------------------
+       EVENT LISTENERS (DESKTOP + MOBILE)
+       -------------------------------------------------- */
+    track.addEventListener("mousemove", (e) => {
+        if (isMobile() || openIndex !== null) return;
+        setTargetFromCursor(e.clientX);
+    });
+
+    track.addEventListener("mouseleave", () => {
+        if (isMobile() || openIndex !== null) return;
+        targetFactors.fill(0);
+        startDesktopLoop();
+    });
+
+    // Touch Swipe Detection (Mobile 3D Coverflow)
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    track.addEventListener("touchstart", (e) => {
+        if (!e.touches[0]) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    track.addEventListener("touchend", (e) => {
+        if (!e.changedTouches[0]) return;
+        if (!isMobile()) return;
+        const deltaX = e.changedTouches[0].clientX - touchStartX;
+        const deltaY = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX < 0) {
+                setMobileActive(activeMobileIndex + 1);
+            } else {
+                setMobileActive(activeMobileIndex - 1);
+            }
+        }
+    }, { passive: true });
+
+    // Card Clicks
     cards.forEach((card, idx) => {
         card.addEventListener("click", (e) => {
             if (e.target.closest(".coverflow-social-btn")) {
                 return;
             }
             e.stopPropagation();
-            if (openIndex === idx) {
-                closeCard();
+            if (isMobile()) {
+                if (idx !== activeMobileIndex) {
+                    setMobileActive(idx);
+                }
             } else {
-                openCard(idx);
+                if (openIndex === idx) {
+                    closeCard();
+                } else {
+                    openCard(idx);
+                }
             }
         });
 
@@ -1883,17 +1951,26 @@ function initPlayersMagneticCarousel() {
         });
     }
 
+    // Prev / Next Controls
     if (prevBtn) {
         prevBtn.addEventListener("click", () => {
-            const nextIdx = (focusedIndex - 1 + count) % count;
-            focusCardByIndex(nextIdx);
+            if (isMobile()) {
+                setMobileActive(activeMobileIndex - 1);
+            } else {
+                const nextIdx = (focusedIndex - 1 + count) % count;
+                focusCardByIndex(nextIdx);
+            }
         });
     }
 
     if (nextBtn) {
         nextBtn.addEventListener("click", () => {
-            const nextIdx = (focusedIndex + 1) % count;
-            focusCardByIndex(nextIdx);
+            if (isMobile()) {
+                setMobileActive(activeMobileIndex + 1);
+            } else {
+                const nextIdx = (focusedIndex + 1) % count;
+                focusCardByIndex(nextIdx);
+            }
         });
     }
 
@@ -1903,15 +1980,24 @@ function initPlayersMagneticCarousel() {
         }
     });
 
-    window.addEventListener("resize", () => {
-        if (openIndex === null) {
-            applyDimensions();
+    const initLayout = () => {
+        if (isMobile()) {
+            if (openIndex !== null) closeCard();
+            updateMobileCoverflow();
         } else {
-            openCard(openIndex);
+            cards.forEach(c => {
+                c.style.transform = "";
+                c.style.filter = "";
+            });
+            applyDesktopDimensions();
         }
-    });
+    };
+
+    window.addEventListener("resize", initLayout);
+    initLayout();
 }
 
 initPlayersMagneticCarousel();
+
 
 
