@@ -158,6 +158,21 @@ function renderProfile(user) {
     userGroup.appendChild(avatar);
     userGroup.appendChild(details);
 
+    const actionsGroup = document.createElement("div");
+    actionsGroup.className = "profile-action-group";
+
+    const homeBtn = document.createElement("a");
+    homeBtn.className = "profile-home-btn";
+    homeBtn.href = "index.html";
+    homeBtn.setAttribute("aria-label", "Return to Home Page");
+    homeBtn.innerHTML = `
+        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+        </svg>
+        <span>Home</span>
+    `;
+
     const logoutBtn = document.createElement("button");
     logoutBtn.className = "profile-logout-btn";
     logoutBtn.type = "button";
@@ -171,8 +186,11 @@ function renderProfile(user) {
     `;
     logoutBtn.addEventListener("click", handleLogout);
 
+    actionsGroup.appendChild(homeBtn);
+    actionsGroup.appendChild(logoutBtn);
+
     profileRoot.appendChild(userGroup);
-    profileRoot.appendChild(logoutBtn);
+    profileRoot.appendChild(actionsGroup);
 }
 
 // Render Local / Seed Post
@@ -815,15 +833,21 @@ if (menuBtn && menuPanel) {
 // Back to Top Button
 const backToTopBtn = document.getElementById("backToTopBtn");
 if (backToTopBtn) {
-    window.addEventListener("scroll", () => {
-        if (window.scrollY > 300) {
+    const handleScroll = () => {
+        const scrolled = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+        if (scrolled > 200) {
             backToTopBtn.classList.add("visible");
         } else {
             backToTopBtn.classList.remove("visible");
         }
-    }, { passive: true });
+    };
 
-    backToTopBtn.addEventListener("click", () => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    handleScroll();
+
+    backToTopBtn.addEventListener("click", (e) => {
+        e.preventDefault();
         window.scrollTo({
             top: 0,
             behavior: "smooth"

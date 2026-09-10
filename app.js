@@ -1878,15 +1878,21 @@ initPlayersCoverflow();
 ================================================== */
 const backToTopBtn = document.getElementById("backToTopBtn");
 if (backToTopBtn) {
-    window.addEventListener("scroll", () => {
-        if (window.scrollY > 300) {
+    const handleScroll = () => {
+        const scrolled = window.pageYOffset || document.documentElement.scrollTop || window.scrollY || 0;
+        if (scrolled > 200) {
             backToTopBtn.classList.add("visible");
         } else {
             backToTopBtn.classList.remove("visible");
         }
-    }, { passive: true });
+    };
 
-    backToTopBtn.addEventListener("click", () => {
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll, { passive: true });
+    handleScroll();
+
+    backToTopBtn.addEventListener("click", (e) => {
+        e.preventDefault();
         window.scrollTo({
             top: 0,
             behavior: "smooth"
