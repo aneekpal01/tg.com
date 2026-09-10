@@ -6767,7 +6767,7 @@ body.light-theme .menu-logout-btn:hover{
 
 .nav-community-cta:hover::before,
 .nav-community-cta:focus-visible::before {
-    animation-duration: 1.6s !important;
+    animation-play-state: paused !important;
 }
 
 .nav-community-cta:hover::after,
@@ -6879,7 +6879,7 @@ body.light-theme .menu-logout-btn:hover{
 }
 
 .menu-community-cta:hover::before {
-    animation-duration: 1.6s !important;
+    animation-play-state: paused !important;
 }
 
 .menu-community-cta:hover::after {
