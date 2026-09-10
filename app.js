@@ -1677,22 +1677,17 @@ function initPlayersCoverflow() {
     };
 
     // Hover & Click events for cards (Auto-center on mouse hover)
-    let hoverTimeout = null;
     cards.forEach((card, idx) => {
-        // Automatically bring card to center on mouse hover
-        card.addEventListener("mouseenter", () => {
+        const handleCardHover = () => {
+            if (window.innerWidth <= 768) return;
             if (idx !== activeIndex) {
-                if (hoverTimeout) clearTimeout(hoverTimeout);
-                hoverTimeout = setTimeout(() => {
-                    setActive(idx);
-                    resetAutoplay();
-                }, 50);
+                setActive(idx);
+                resetAutoplay();
             }
-        });
+        };
 
-        card.addEventListener("mouseleave", () => {
-            if (hoverTimeout) clearTimeout(hoverTimeout);
-        });
+        card.addEventListener("mouseenter", handleCardHover);
+        card.addEventListener("pointerover", handleCardHover);
 
         // Click event fallback & instant activation
         card.addEventListener("click", (e) => {
@@ -1702,11 +1697,61 @@ function initPlayersCoverflow() {
             }
             if (idx !== activeIndex) {
                 e.preventDefault();
-                if (hoverTimeout) clearTimeout(hoverTimeout);
                 setActive(idx);
                 resetAutoplay();
             }
         });
+    });
+
+    // Stage Cursor Tracking (Instantly brings card to center when hovering its side)
+    let lastHoveredSlot = 0;
+    let lastMoveTime = 0;
+
+    stage.addEventListener("mousemove", (e) => {
+        if (window.innerWidth <= 768) return;
+
+        // 1. Direct card element under cursor
+        const hoveredCard = e.target.closest(".coverflow-card") || document.elementFromPoint(e.clientX, e.clientY)?.closest(".coverflow-card");
+        if (hoveredCard && hoveredCard.dataset.index !== undefined) {
+            const targetIdx = parseInt(hoveredCard.dataset.index, 10);
+            if (!isNaN(targetIdx) && targetIdx !== activeIndex) {
+                setActive(targetIdx);
+                resetAutoplay();
+                lastHoveredSlot = 0;
+                return;
+            }
+        }
+
+        // 2. Zone-based stage tracking across horizontal coordinates
+        const stageRect = stage.getBoundingClientRect();
+        const centerX = stageRect.left + stageRect.width / 2;
+        const mouseOffsetX = e.clientX - centerX;
+
+        let slot = 0;
+        if (mouseOffsetX > 90 && mouseOffsetX <= 310) {
+            slot = 1;
+        } else if (mouseOffsetX > 310) {
+            slot = 2;
+        } else if (mouseOffsetX < -90 && mouseOffsetX >= -310) {
+            slot = -1;
+        } else if (mouseOffsetX < -310) {
+            slot = -2;
+        }
+
+        const now = Date.now();
+        if (slot !== 0 && slot !== lastHoveredSlot && (now - lastMoveTime > 140)) {
+            lastHoveredSlot = slot;
+            lastMoveTime = now;
+            const targetIdx = (activeIndex + slot + count) % count;
+            setActive(targetIdx);
+            resetAutoplay();
+        } else if (slot === 0) {
+            lastHoveredSlot = 0;
+        }
+    });
+
+    stage.addEventListener("mouseleave", () => {
+        lastHoveredSlot = 0;
     });
 
     // Control buttons

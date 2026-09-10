@@ -809,6 +809,12 @@ section{
     cursor:pointer;
 }
 
+.coverflow-card:not(.active):hover{
+    filter:brightness(0.92) contrast(1);
+    border-color:rgba(0,234,255,.65);
+    box-shadow:0 18px 50px rgba(0,234,255,.28);
+}
+
 .coverflow-card.active{
     filter:brightness(1) contrast(1);
     border-color:#00eaff;
