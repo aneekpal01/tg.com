@@ -1288,54 +1288,309 @@ body.light-theme .coverflow-dot.active{
    TEAM
 ========================= */
 
-.team-section{
+/* ==========================================================================
+   ABOUT TG / THE LEGACY REDESIGN
+   ========================================================================== */
 
-    position:relative;
-
+.about-container{
     max-width:1200px;
-
-    margin:auto;
-
-    text-align:center;
+    margin:0 auto;
+    display:flex;
+    flex-direction:column;
+    gap:30px;
+    padding:0 16px;
+    box-sizing:border-box;
 }
 
-.team-box{
-
-    padding:60px 8%;
-
-    border-radius:30px;
-
+/* Top Hero Story Card */
+.about-hero-card{
+    position:relative;
+    padding:45px 36px 40px;
+    border-radius:28px;
     background:
-
-    linear-gradient(
-        135deg,
-        rgba(0,234,255,.09),
-        rgba(255,0,200,.09)
-    );
-
-    border:
-    1px solid
-    rgba(255,255,255,.12);
-
-    backdrop-filter:blur(15px);
+        radial-gradient(circle at 15% 15%, rgba(0,234,255,.12), transparent 45%),
+        radial-gradient(circle at 85% 85%, rgba(255,0,200,.1), transparent 45%),
+        linear-gradient(145deg, rgba(14,18,48,.88), rgba(7,9,26,.94));
+    border:1px solid rgba(0,234,255,.24);
+    box-shadow:0 20px 50px rgba(0,0,0,.55), 0 0 30px rgba(0,234,255,.08);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    text-align:center;
+    overflow:hidden;
 }
 
-.team-box h3{
+.about-hero-card::before{
+    content:"";
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    height:2px;
+    background:linear-gradient(90deg, transparent, #00eaff, #ff00c8, transparent);
+}
 
+.about-hero-badge{
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    padding:6px 16px;
+    border-radius:999px;
+    background:rgba(0,234,255,.1);
+    border:1px solid rgba(0,234,255,.3);
+    color:#00eaff;
     font-family:"Orbitron",sans-serif;
+    font-size:11px;
+    font-weight:700;
+    letter-spacing:1.2px;
+    margin-bottom:18px;
+    box-shadow:0 0 15px rgba(0,234,255,.15);
+}
 
-    font-size:30px;
+.about-hero-heading{
+    font-family:"Orbitron",sans-serif;
+    font-size:clamp(20px, 3.2vw, 30px);
+    font-weight:800;
+    color:#ffffff;
+    letter-spacing:.8px;
+    line-height:1.25;
+    margin-bottom:22px;
+}
 
+.about-hero-heading strong{
+    background:linear-gradient(90deg, #00eaff, #ff00c8);
+    -webkit-background-clip:text;
+    -webkit-text-fill-color:transparent;
+}
+
+.about-quote-box{
+    position:relative;
+    max-width:860px;
+    margin:0 auto;
+    padding:0 24px;
+}
+
+.about-quote-mark{
+    font-family:"Orbitron",sans-serif;
+    font-size:42px;
+    color:rgba(0,234,255,.35);
+    line-height:0;
+    display:inline-block;
+}
+
+.about-quote-mark.left{
+    margin-right:6px;
+    vertical-align:-12px;
+}
+
+.about-quote-mark.right{
+    margin-left:6px;
+    vertical-align:-18px;
+}
+
+.about-quote-text{
+    display:inline;
+    font-size:clamp(14px, 1.35vw, 15.5px);
+    line-height:1.85;
+    color:#d0d7ee;
+    font-style:italic;
+}
+
+/* Pillars 3-Column Grid */
+.about-pillars-grid{
+    display:grid;
+    grid-template-columns:repeat(3, minmax(0, 1fr));
+    gap:24px;
+    width:100%;
+}
+
+.about-pillar-card{
+    position:relative;
+    padding:32px 24px 28px;
+    border-radius:24px;
+    background:linear-gradient(160deg, rgba(16,21,54,.85), rgba(7,9,26,.92));
+    border:1px solid rgba(255,255,255,.12);
+    box-shadow:0 15px 40px rgba(0,0,0,.45);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease;
+    overflow:hidden;
+}
+
+.about-pillar-card:hover{
+    transform:translateY(-6px);
+}
+
+.about-pillar-card.leader-ajjubhai:hover{
+    border-color:rgba(255,200,0,.6);
+    box-shadow:0 20px 50px rgba(0,0,0,.6), 0 0 30px rgba(255,200,0,.2);
+}
+
+.about-pillar-card.leader-fozyajay:hover{
+    border-color:rgba(0,234,255,.6);
+    box-shadow:0 20px 50px rgba(0,0,0,.6), 0 0 30px rgba(0,234,255,.2);
+}
+
+.about-pillar-card.leader-satty:hover{
+    border-color:rgba(255,0,200,.6);
+    box-shadow:0 20px 50px rgba(0,0,0,.6), 0 0 30px rgba(255,0,200,.2);
+}
+
+.pillar-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
     margin-bottom:20px;
 }
 
-.team-box p{
+.pillar-icon-badge{
+    width:44px;
+    height:44px;
+    border-radius:12px;
+    display:grid;
+    place-items:center;
+    flex-shrink:0;
+}
 
-    color:#c9c9d6;
+.crown-badge{
+    background:rgba(255,185,0,.15);
+    border:1px solid rgba(255,185,0,.4);
+    color:#ffc800;
+}
 
-    line-height:1.9;
+.brain-badge{
+    background:rgba(0,234,255,.15);
+    border:1px solid rgba(0,234,255,.4);
+    color:#00eaff;
+}
 
-    font-size:15px;
+.shield-badge{
+    background:rgba(255,0,200,.15);
+    border:1px solid rgba(255,0,200,.4);
+    color:#ff00c8;
+}
+
+.pillar-role-tag{
+    font-family:"Orbitron",sans-serif;
+    font-size:9.5px;
+    font-weight:700;
+    letter-spacing:1px;
+    padding:4px 10px;
+    border-radius:6px;
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14);
+    color:#b9c5df;
+    text-align:right;
+}
+
+.pillar-content{
+    margin-bottom:20px;
+}
+
+.pillar-name{
+    font-family:"Orbitron",sans-serif;
+    font-size:18px;
+    font-weight:800;
+    color:#ffffff;
+    letter-spacing:.8px;
+    margin:0 0 4px;
+}
+
+.pillar-alias{
+    display:inline-block;
+    font-family:"Orbitron",sans-serif;
+    font-size:11px;
+    font-weight:700;
+    color:#00eaff;
+    letter-spacing:.8px;
+    margin-bottom:12px;
+}
+
+.leader-ajjubhai .pillar-alias{
+    color:#ffc800;
+}
+
+.leader-satty .pillar-alias{
+    color:#ff00c8;
+}
+
+.pillar-desc{
+    font-size:13.5px;
+    line-height:1.65;
+    color:#a9b5d3;
+    margin:0;
+}
+
+.pillar-footer{
+    padding-top:14px;
+    border-top:1px solid rgba(255,255,255,.08);
+}
+
+.pillar-stat{
+    font-family:"Orbitron",sans-serif;
+    font-size:10.5px;
+    font-weight:600;
+    color:#d8e2ff;
+    letter-spacing:.6px;
+}
+
+/* Light Theme Overrides for About */
+body.light-theme .about-hero-card{
+    background:linear-gradient(145deg, rgba(255,255,255,.94), rgba(235,240,252,.92));
+    border-color:rgba(0,148,194,.28);
+    box-shadow:0 20px 50px rgba(54,63,112,.14);
+}
+
+body.light-theme .about-hero-heading{
+    color:#121829;
+}
+
+body.light-theme .about-quote-text{
+    color:#3a4563;
+}
+
+body.light-theme .about-pillar-card{
+    background:linear-gradient(160deg, rgba(255,255,255,.92), rgba(240,244,255,.9));
+    border-color:rgba(84,71,159,.2);
+    box-shadow:0 15px 35px rgba(64,71,120,.12);
+}
+
+body.light-theme .pillar-name{
+    color:#121829;
+}
+
+body.light-theme .pillar-desc{
+    color:#4a5573;
+}
+
+body.light-theme .pillar-role-tag{
+    background:rgba(0,0,0,.04);
+    border-color:rgba(0,0,0,.1);
+    color:#4a5573;
+}
+
+body.light-theme .pillar-stat{
+    color:#2d3748;
+}
+
+/* Mobile Responsive */
+@media(max-width:900px){
+    .about-pillars-grid{
+        grid-template-columns:1fr;
+        gap:18px;
+    }
+
+    .about-hero-card{
+        padding:32px 20px 28px;
+        border-radius:22px;
+    }
+
+    .about-quote-box{
+        padding:0;
+    }
 }
 
 
