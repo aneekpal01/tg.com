@@ -71,18 +71,26 @@ const tabAnnouncements = document.getElementById("tabAnnouncements");
 const waRibbonText = document.getElementById("waRibbonText");
 const waAnnouncementsLock = document.getElementById("waAnnouncementsLock");
 const waUserChip = document.getElementById("waUserChip");
+const navSignInBtn = document.getElementById("navSignInBtn");
 const navProfileWrap = document.getElementById("navProfileWrap");
 const navProfileBtn = document.getElementById("navProfileBtn");
+const navProfileNamePreview = document.getElementById("navProfileNamePreview");
 const navProfileDropdown = document.getElementById("navProfileDropdown");
 const navProfileAvatar = document.getElementById("navProfileAvatar");
 const dropdownAvatar = document.getElementById("dropdownAvatar");
 const dropdownName = document.getElementById("dropdownName");
 const dropdownTag = document.getElementById("dropdownTag");
+const dropChannelGeneral = document.getElementById("dropChannelGeneral");
+const dropChannelAnnouncements = document.getElementById("dropChannelAnnouncements");
 const navLogoutBtn = document.getElementById("navLogoutBtn");
+
 const menuProfileCard = document.getElementById("menuProfileCard");
 const menuProfileAvatar = document.getElementById("menuProfileAvatar");
 const menuProfileName = document.getElementById("menuProfileName");
 const menuProfileTag = document.getElementById("menuProfileTag");
+const menuLoginCta = document.getElementById("menuLoginCta");
+const menuTabGeneral = document.getElementById("menuTabGeneral");
+const menuTabAnnouncements = document.getElementById("menuTabAnnouncements");
 const menuLogoutBtn = document.getElementById("menuLogoutBtn");
 
 // State
@@ -208,56 +216,18 @@ function saveLocalMessages(msgs) {
 
 // Render Header User Chip & Sync Nav Dropdowns
 function renderUserUI(user) {
-    if (!waUserChip) return;
-    waUserChip.innerHTML = "";
-
     if (user) {
         const isUserAdmin = isAdmin(user);
         const displayName = user.displayName || (isUserAdmin ? "TG Admin" : "TG Fan");
         const avatarInitial = displayName.substring(0, 2).toUpperCase();
 
-        const chipBtn = document.createElement("button");
-        chipBtn.type = "button";
-        chipBtn.className = "wa-chip-btn";
-        chipBtn.title = `Logged in as ${displayName}`;
-
-        const avatarDiv = document.createElement("div");
-        avatarDiv.className = "wa-chip-avatar";
-        if (user.photoURL) {
-            const img = document.createElement("img");
-            img.src = user.photoURL;
-            img.alt = displayName;
-            avatarDiv.appendChild(img);
-        } else {
-            avatarDiv.textContent = avatarInitial;
-        }
-
-        const nameSpan = document.createElement("span");
-        nameSpan.textContent = displayName;
-
-        chipBtn.appendChild(avatarDiv);
-        chipBtn.appendChild(nameSpan);
-
-        if (isUserAdmin) {
-            const adminStar = document.createElement("span");
-            adminStar.className = "wa-admin-star-badge";
-            adminStar.textContent = "⭐ ADMIN";
-            chipBtn.appendChild(adminStar);
-        }
-
-        chipBtn.addEventListener("click", () => {
-            if (confirm(`Logged in as ${displayName}. Do you want to log out?`)) {
-                handleLogout();
-            }
-        });
-
-        waUserChip.appendChild(chipBtn);
-
-        // Sync Desktop Navbar Profile
+        // Navbar Profile
+        if (navSignInBtn) navSignInBtn.hidden = true;
         if (navProfileWrap) {
             navProfileWrap.removeAttribute("hidden");
             navProfileWrap.hidden = false;
         }
+        if (navProfileNamePreview) navProfileNamePreview.textContent = displayName;
         if (navProfileAvatar) {
             if (user.photoURL) navProfileAvatar.innerHTML = `<img src="${user.photoURL}" alt="${displayName}"/>`;
             else navProfileAvatar.textContent = avatarInitial;
@@ -274,6 +244,7 @@ function renderUserUI(user) {
         }
 
         // Sync Mobile Drawer
+        if (menuLoginCta) menuLoginCta.hidden = true;
         if (menuProfileCard) {
             menuProfileCard.removeAttribute("hidden");
             menuProfileCard.hidden = false;
@@ -294,17 +265,17 @@ function renderUserUI(user) {
         }
 
     } else {
-        const loginBtn = document.createElement("button");
-        loginBtn.type = "button";
-        loginBtn.className = "wa-chip-btn";
-        loginBtn.innerHTML = `<span>🎮</span> <span>Sign In to Chat</span>`;
-        loginBtn.addEventListener("click", () => {
-            showAuthModal();
-        });
-        waUserChip.appendChild(loginBtn);
-
+        if (navSignInBtn) {
+            navSignInBtn.removeAttribute("hidden");
+            navSignInBtn.hidden = false;
+        }
         if (navProfileWrap) navProfileWrap.hidden = true;
+        if (navProfileDropdown) navProfileDropdown.classList.remove("show");
         if (menuProfileCard) menuProfileCard.hidden = true;
+        if (menuLoginCta) {
+            menuLoginCta.removeAttribute("hidden");
+            menuLoginCta.hidden = false;
+        }
         if (menuLogoutBtn) menuLogoutBtn.hidden = true;
     }
 }
@@ -559,32 +530,60 @@ async function postMessage(text) {
 function switchChannel(channel) {
     currentChannel = channel;
 
-    if (channel === "general") {
-        tabGeneral.classList.add("active");
-        tabGeneral.setAttribute("aria-selected", "true");
-        tabAnnouncements.classList.remove("active");
-        tabAnnouncements.setAttribute("aria-selected", "false");
-
-        waRibbonText.innerHTML = `Messages in <strong>Fan Lounge</strong> are live for all TG fans. Respect community rules.`;
-        if (waAnnouncementsLock) waAnnouncementsLock.hidden = true;
-        if (waChatForm) waChatForm.hidden = false;
-
-    } else if (channel === "announcements") {
-        tabAnnouncements.classList.add("active");
-        tabAnnouncements.setAttribute("aria-selected", "true");
-        tabGeneral.classList.remove("active");
-        tabGeneral.setAttribute("aria-selected", "false");
-
-        const isUserAdmin = isAdmin(currentUser);
-        waRibbonText.innerHTML = `<strong>Official Announcements Channel</strong>: Verified updates direct from TG Management.`;
-
-        if (!isUserAdmin) {
-            if (waAnnouncementsLock) waAnnouncementsLock.hidden = false;
-            if (waChatForm) waChatForm.hidden = true;
+    // Header tabs
+    if (tabGeneral && tabAnnouncements) {
+        if (channel === "general") {
+            tabGeneral.classList.add("active");
+            tabGeneral.setAttribute("aria-selected", "true");
+            tabAnnouncements.classList.remove("active");
+            tabAnnouncements.setAttribute("aria-selected", "false");
         } else {
-            if (waAnnouncementsLock) waAnnouncementsLock.hidden = true;
-            if (waChatForm) waChatForm.hidden = false;
+            tabAnnouncements.classList.add("active");
+            tabAnnouncements.setAttribute("aria-selected", "true");
+            tabGeneral.classList.remove("active");
+            tabGeneral.setAttribute("aria-selected", "false");
         }
+    }
+
+    // Dropdown channels
+    if (dropChannelGeneral && dropChannelAnnouncements) {
+        dropChannelGeneral.classList.toggle("active", channel === "general");
+        dropChannelAnnouncements.classList.toggle("active", channel === "announcements");
+    }
+
+    // Menu channels
+    if (menuTabGeneral && menuTabAnnouncements) {
+        menuTabGeneral.classList.toggle("active", channel === "general");
+        menuTabAnnouncements.classList.toggle("active", channel === "announcements");
+    }
+
+    // Update Info Ribbon Text
+    if (waRibbonText) {
+        waRibbonText.innerHTML = channel === "announcements"
+            ? `📢 <strong>Official Announcements Channel</strong>. Broadcast messages from verified Total Gaming Admins.`
+            : `Messages in <strong>Fan Lounge</strong> are live for all TG fans. Respect community rules.`;
+    }
+
+    // Input Lock for non-admins on Announcements channel
+    const userIsAdmin = isAdmin(currentUser);
+    if (channel === "announcements" && !userIsAdmin) {
+        if (waAnnouncementsLock) waAnnouncementsLock.hidden = false;
+        if (waMessageInput) {
+            waMessageInput.disabled = true;
+            waMessageInput.placeholder = "🔒 Only Official TG Admins can post in Official Announcements";
+        }
+        if (waSendBtn) waSendBtn.disabled = true;
+        if (waEmojiToggle) waEmojiToggle.disabled = true;
+    } else {
+        if (waAnnouncementsLock) waAnnouncementsLock.hidden = true;
+        if (waMessageInput) {
+            waMessageInput.disabled = false;
+            waMessageInput.placeholder = channel === "announcements" 
+                ? "Type an official announcement..." 
+                : "Type a message in TG Community...";
+        }
+        if (waSendBtn) waSendBtn.disabled = false;
+        if (waEmojiToggle) waEmojiToggle.disabled = false;
     }
 
     renderChatStream();
@@ -758,7 +757,7 @@ function initEventListeners() {
         }
     });
 
-    // Modal buttons
+    // Modal buttons & Trigger Actions
     if (modalCloseBtn) {
         modalCloseBtn.addEventListener("click", hideAuthModal);
     }
@@ -767,6 +766,43 @@ function initEventListeners() {
     }
     if (demoSignInBtn) {
         demoSignInBtn.addEventListener("click", handleDemoSignIn);
+    }
+    if (navSignInBtn) {
+        navSignInBtn.addEventListener("click", showAuthModal);
+    }
+    if (menuLoginCta) {
+        menuLoginCta.addEventListener("click", () => {
+            showAuthModal();
+            if (menuPanel) menuPanel.classList.remove("show");
+        });
+    }
+
+    // Dropdown Channel Buttons
+    if (dropChannelGeneral) {
+        dropChannelGeneral.addEventListener("click", () => {
+            switchChannel("general");
+            if (navProfileDropdown) navProfileDropdown.classList.remove("show");
+        });
+    }
+    if (dropChannelAnnouncements) {
+        dropChannelAnnouncements.addEventListener("click", () => {
+            switchChannel("announcements");
+            if (navProfileDropdown) navProfileDropdown.classList.remove("show");
+        });
+    }
+
+    // Menu Panel Channel Buttons
+    if (menuTabGeneral) {
+        menuTabGeneral.addEventListener("click", () => {
+            switchChannel("general");
+            if (menuPanel) menuPanel.classList.remove("show");
+        });
+    }
+    if (menuTabAnnouncements) {
+        menuTabAnnouncements.addEventListener("click", () => {
+            switchChannel("announcements");
+            if (menuPanel) menuPanel.classList.remove("show");
+        });
     }
 
     // Navbar Profile Dropdown

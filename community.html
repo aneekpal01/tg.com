@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="style.css?v=wa1"/>
-<link rel="stylesheet" href="community.css?v=wa1"/>
+<link rel="stylesheet" href="style.css?v=wa2"/>
+<link rel="stylesheet" href="community.css?v=wa2"/>
 <link rel="icon" href="tg-logo.png" type="image/png"/>
 </head>
 <body class="tg-site community-page">
@@ -40,10 +40,17 @@
 <svg aria-hidden="true" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
 </a>
 
-<!-- Global User Profile Dropdown (visible when logged in) -->
+<!-- User Profile & Auth Actions in Nav (visible on desktop and mobile) -->
+<div class="nav-auth-actions" id="navAuthActions">
+<button class="nav-signin-btn" id="navSignInBtn" type="button" aria-label="Sign in to chat">
+<span class="nav-signin-icon">🎮</span>
+<span class="nav-signin-text">Sign In</span>
+</button>
+
 <div class="nav-profile-wrap" id="navProfileWrap" hidden>
 <button class="nav-profile-btn" id="navProfileBtn" type="button" aria-expanded="false" aria-haspopup="true" aria-label="User account menu">
 <div class="nav-profile-avatar" id="navProfileAvatar">TG</div>
+<span class="nav-profile-name-preview" id="navProfileNamePreview">TG Fan</span>
 <span class="nav-profile-caret">▼</span>
 </button>
 <div class="nav-profile-dropdown" id="navProfileDropdown">
@@ -54,15 +61,23 @@
 <span class="dropdown-tag" id="dropdownTag"><span></span> Verified Fan</span>
 </div>
 </div>
+<div class="dropdown-channels-group">
+<div class="dropdown-section-title">COMMUNITY CHANNELS</div>
+<button type="button" class="dropdown-channel-btn active" data-channel="general" id="dropChannelGeneral">
+<span>💬 Fan Lounge</span>
+<span class="tab-badge">LIVE</span>
+</button>
+<button type="button" class="dropdown-channel-btn" data-channel="announcements" id="dropChannelAnnouncements">
+<span>📢 Official Announcements</span>
+<span class="tab-badge admin-badge">ADMIN</span>
+</button>
+</div>
 <div class="dropdown-divider"></div>
-<a class="dropdown-link" href="community.html">
-<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-<span>Community Chat</span>
-</a>
 <button class="dropdown-logout-btn" id="navLogoutBtn" type="button">
 <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
 <span>Logout</span>
 </button>
+</div>
 </div>
 </div>
 
@@ -84,15 +99,28 @@
 </div>
 </div>
 
+<!-- Mobile Sign In Action (visible when logged out) -->
+<button class="menu-login-cta" id="menuLoginCta" type="button">
+<span>🎮</span>
+<span>SIGN IN TO CHAT</span>
+</button>
+
+<div class="menu-section-divider"></div>
+<div class="menu-section-title">COMMUNITY CHANNELS</div>
+<button type="button" class="menu-channel-action active" data-channel="general" id="menuTabGeneral">
+<span>💬 Fan Lounge</span>
+<span class="tab-badge">LIVE</span>
+</button>
+<button type="button" class="menu-channel-action" data-channel="announcements" id="menuTabAnnouncements">
+<span>📢 Official Announcements</span>
+<span class="tab-badge admin-badge">ADMIN</span>
+</button>
+
+<div class="menu-section-divider"></div>
 <a href="index.html#home">HOME</a>
 <a href="index.html#players">PLAYERS</a>
 <a href="index.html#gallery">ACHIEVEMENTS</a>
 <a href="index.html#about">LEGACY</a>
-<a class="menu-community-cta" href="community.html">
-  <span class="comm-pulse-dot"></span>
-  <span>COMMUNITY</span>
-  <span class="comm-hub-badge">CHAT</span>
-</a>
 <button class="menu-logout-btn" id="menuLogoutBtn" type="button" hidden>LOGOUT</button>
 </div>
 
@@ -182,7 +210,7 @@
               </svg>
             </span>
           </div>
-          <div class="wa-presence-text" id="waPresenceText">Ajay, Mafia, Delete, Fozy, Wota, Shanky, Aztec + 54,210 fans online</div>
+          <div class="wa-presence-text" id="waPresenceText">online</div>
         </div>
       </div>
 
@@ -199,13 +227,6 @@
           <span class="tab-label">Official Announcements</span>
           <span class="tab-badge admin-badge">ADMIN ONLY</span>
         </button>
-      </div>
-
-      <!-- Header Right Controls -->
-      <div class="wa-header-right">
-        <div class="wa-user-chip" id="waUserChip">
-          <!-- Populated by JS (User avatar, name, and login/logout switch) -->
-        </div>
       </div>
     </header>
 
@@ -296,39 +317,6 @@
   </div>
 </main>
 
-<!-- =========================
-     FOOTER
-========================= -->
-<footer>
-<div class="footer-content">
-<div class="footer-logo-row">
-<img alt="Total Gaming Logo" class="footer-logo-img" src="tg-logo.png"/>
-<h2>TOTAL GAMING ESPORTS</h2>
-</div>
-<p class="footer-tagline">The Official Esports Hub of Total Gaming</p>
-<div class="footer-social-links">
-<a aria-label="Official YouTube Channel" class="footer-social-btn yt-btn" href="https://www.youtube.com/@TG.Universe-07" rel="noopener noreferrer" target="_blank">
-<svg fill="currentColor" height="16" viewBox="0 0 24 24" width="16"><path d="M21.6 7.2a2.9 2.9 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.9 2.9 0 0 0-2 2A30 30 0 0 0 2 12a30 30 0 0 0 .4 4.8 2.9 2.9 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.9 2.9 0 0 0 2-2A30 30 0 0 0 22 12a30 30 0 0 0-.4-4.8ZM10 15.2V8.8l5.5 3.2-5.5 3.2Z"/></svg>
-<span>@TG.Universe-07</span>
-</a>
-<a aria-label="Instagram" class="footer-social-btn" href="https://www.instagram.com/" rel="noopener noreferrer" target="_blank">
-<svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><rect height="18" rx="5" width="18" x="3" y="3"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg>
-<span>Instagram</span>
-</a>
-</div>
-<p class="footer-copy">
-|| © Presented By <a href="https://www.youtube.com/@TG.Universe-07" rel="noopener noreferrer" target="_blank">@TG.Universe-07</a> ||
-</p>
-</div>
-</footer>
-
-<!-- =========================
-     BACK TO TOP BUTTON
-========================= -->
-<button aria-label="Scroll to top" class="back-to-top" id="backToTopBtn" title="Back to top" type="button">
-  <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" width="20"><path d="M18 15l-6-6-6 6"></path></svg>
-</button>
-
-<script type="module" src="community.js?v=wa1"></script>
+<script type="module" src="community.js?v=wa2"></script>
 </body>
 </html>
