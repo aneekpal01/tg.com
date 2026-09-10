@@ -1625,7 +1625,7 @@ function initPlayersCoverflow() {
     const updateCoverflow = () => {
         const isMobile = window.innerWidth <= 768;
         const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
-        const xSpacing = isMobile ? 120 : (isTablet ? 175 : 225);
+        const xSpacing = isMobile ? 120 : (isTablet ? 170 : 215);
 
         cards.forEach((card, i) => {
             let offset = i - activeIndex;
@@ -1634,10 +1634,10 @@ function initPlayersCoverflow() {
 
             const isCenter = offset === 0;
             const absOffset = Math.abs(offset);
-            const zOffset = isCenter ? 120 : -absOffset * 85;
-            const rotateY = offset * -32;
-            const scale = isCenter ? 1 : 0.82;
-            const opacity = absOffset > 2 ? 0 : 1;
+            const zOffset = isCenter ? 90 : -absOffset * 70;
+            const rotateY = offset * -26;
+            const scale = isCenter ? 1 : Math.max(0.78, 1 - absOffset * 0.12);
+            const opacity = absOffset > 2 ? 0 : (absOffset === 2 ? 0.35 : (absOffset === 1 ? 0.88 : 1));
             const zIndex = 25 - absOffset * 3;
             const pointerEvents = absOffset > 2 ? "none" : "auto";
 
@@ -1676,82 +1676,46 @@ function initPlayersCoverflow() {
         setActive(activeIndex - 1);
     };
 
-    // Hover & Click events for cards (Auto-center on mouse hover)
+    // Silky Smooth Hover-Intent & Click Events
+    let hoverTimer = null;
+    let isTransitioning = false;
+
+    const queueActivate = (targetIdx) => {
+        if (targetIdx === activeIndex || isTransitioning) return;
+        if (hoverTimer) clearTimeout(hoverTimer);
+        hoverTimer = setTimeout(() => {
+            isTransitioning = true;
+            setActive(targetIdx);
+            resetAutoplay();
+            setTimeout(() => {
+                isTransitioning = false;
+            }, 320);
+        }, 70);
+    };
+
     cards.forEach((card, idx) => {
-        const handleCardHover = () => {
+        card.addEventListener("mouseenter", () => {
             if (window.innerWidth <= 768) return;
-            if (idx !== activeIndex) {
-                setActive(idx);
-                resetAutoplay();
-            }
-        };
+            queueActivate(idx);
+        });
 
-        card.addEventListener("mouseenter", handleCardHover);
-        card.addEventListener("pointerover", handleCardHover);
+        card.addEventListener("mouseleave", () => {
+            if (hoverTimer) clearTimeout(hoverTimer);
+        });
 
-        // Click event fallback & instant activation
+        // Instant activation on click
         card.addEventListener("click", (e) => {
-            // Allow clicking social links directly on active center card
             if (e.target.closest(".coverflow-social-btn")) {
                 return;
             }
             if (idx !== activeIndex) {
                 e.preventDefault();
+                if (hoverTimer) clearTimeout(hoverTimer);
+                isTransitioning = false;
                 setActive(idx);
                 resetAutoplay();
             }
         });
-    });
-
-    // Stage Cursor Tracking (Instantly brings card to center when hovering its side)
-    let lastHoveredSlot = 0;
-    let lastMoveTime = 0;
-
-    stage.addEventListener("mousemove", (e) => {
-        if (window.innerWidth <= 768) return;
-
-        // 1. Direct card element under cursor
-        const hoveredCard = e.target.closest(".coverflow-card") || document.elementFromPoint(e.clientX, e.clientY)?.closest(".coverflow-card");
-        if (hoveredCard && hoveredCard.dataset.index !== undefined) {
-            const targetIdx = parseInt(hoveredCard.dataset.index, 10);
-            if (!isNaN(targetIdx) && targetIdx !== activeIndex) {
-                setActive(targetIdx);
-                resetAutoplay();
-                lastHoveredSlot = 0;
-                return;
-            }
-        }
-
-        // 2. Zone-based stage tracking across horizontal coordinates
-        const stageRect = stage.getBoundingClientRect();
-        const centerX = stageRect.left + stageRect.width / 2;
-        const mouseOffsetX = e.clientX - centerX;
-
-        let slot = 0;
-        if (mouseOffsetX > 90 && mouseOffsetX <= 310) {
-            slot = 1;
-        } else if (mouseOffsetX > 310) {
-            slot = 2;
-        } else if (mouseOffsetX < -90 && mouseOffsetX >= -310) {
-            slot = -1;
-        } else if (mouseOffsetX < -310) {
-            slot = -2;
-        }
-
-        const now = Date.now();
-        if (slot !== 0 && slot !== lastHoveredSlot && (now - lastMoveTime > 140)) {
-            lastHoveredSlot = slot;
-            lastMoveTime = now;
-            const targetIdx = (activeIndex + slot + count) % count;
-            setActive(targetIdx);
-            resetAutoplay();
-        } else if (slot === 0) {
-            lastHoveredSlot = 0;
-        }
-    });
-
-    stage.addEventListener("mouseleave", () => {
-        lastHoveredSlot = 0;
     });
 
     // Control buttons
