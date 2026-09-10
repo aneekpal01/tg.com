@@ -7,8 +7,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="style.css?v=b2top2"/>
-<link rel="stylesheet" href="community.css?v=b2top2"/>
+<link rel="stylesheet" href="style.css?v=wa1"/>
+<link rel="stylesheet" href="community.css?v=wa1"/>
 <link rel="icon" href="tg-logo.png" type="image/png"/>
 </head>
 <body class="tg-site community-page">
@@ -18,7 +18,7 @@
 <nav class="navbar">
 <a class="logo" href="index.html" aria-label="Total Gaming Esports home">
 <img class="logo-img" src="tg-logo.png" alt="Total Gaming Logo"/>
-<span>TOTAL GAMING ESPORTS</span>
+<span>TG COMMUNITY</span>
 </a>
 <div class="nav-right">
 <div class="nav-links" aria-label="Primary navigation">
@@ -29,7 +29,7 @@
 <a class="nav-community-cta active-page" href="community.html" aria-current="page">
   <span class="comm-pulse-dot"></span>
   <span>COMMUNITY</span>
-  <span class="comm-hub-badge">ACTIVE</span>
+  <span class="comm-hub-badge">CHAT</span>
 </a>
 </div>
 <div class="nav-tools">
@@ -51,19 +51,14 @@
 <div class="dropdown-avatar" id="dropdownAvatar">TG</div>
 <div class="dropdown-info">
 <strong class="dropdown-name" id="dropdownName">TG Community Member</strong>
-<span class="dropdown-tag" id="dropdownTag"><span></span> Demo Member</span>
+<span class="dropdown-tag" id="dropdownTag"><span></span> Verified Fan</span>
 </div>
 </div>
 <div class="dropdown-divider"></div>
 <a class="dropdown-link" href="community.html">
 <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
-<span>Community Hub</span>
+<span>Community Chat</span>
 </a>
-<a class="dropdown-link" href="#communityPosts">
-<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
-<span>My Activity &amp; Posts</span>
-</a>
-<div class="dropdown-divider"></div>
 <button class="dropdown-logout-btn" id="navLogoutBtn" type="button">
 <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
 <span>Logout</span>
@@ -85,7 +80,7 @@
 <div class="menu-profile-avatar" id="menuProfileAvatar">TG</div>
 <div class="menu-profile-info">
 <strong class="menu-profile-name" id="menuProfileName">TG Community Member</strong>
-<span class="menu-profile-tag" id="menuProfileTag"><span></span> Demo Member</span>
+<span class="menu-profile-tag" id="menuProfileTag"><span></span> Fan</span>
 </div>
 </div>
 
@@ -96,150 +91,209 @@
 <a class="menu-community-cta" href="community.html">
   <span class="comm-pulse-dot"></span>
   <span>COMMUNITY</span>
-  <span class="comm-hub-badge">HUB</span>
+  <span class="comm-hub-badge">CHAT</span>
 </a>
-<a class="menu-support-link" href="index.html#support" id="menuSupportLink">
-  <span class="menu-support-icon">☕</span>
-  <span>SUPPORT / CHAI QR</span>
-  <span class="menu-support-pill">UPI</span>
-</a>
-<button class="admin-update-btn" type="button">ADMIN UPDATES</button>
-<button class="menu-login-btn" type="button">ADMIN LOGIN</button>
 <button class="menu-logout-btn" id="menuLogoutBtn" type="button" hidden>LOGOUT</button>
 </div>
 
 <!-- =========================
-     COMMUNITY MAIN
+     FULL-WIDTH WHATSAPP COMMUNITY CHAT
 ========================= -->
-<main class="community-main">
-<!-- Logged-Out Hero (Only shown when not logged in) -->
-<section class="community-hero" id="communityHero">
-<div class="community-eyebrow"><span></span> TG ESPORTS COMMUNITY HUB</div>
-<h1>JOIN THE <strong>COMMUNITY</strong></h1>
-<p>Connect with the Total Gaming family, follow official esports updates, and interact with fellow fans.</p>
-<div class="community-hero-actions">
-  <a href="index.html" class="community-hero-back-btn" aria-label="Go back to main website">
-    <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
-    <span>← BACK TO HOME</span>
-  </a>
-</div>
-</section>
-
-<section class="community-shell" aria-live="polite">
-<!-- =========================
-     COMMUNITY AUTH MODAL
-========================= -->
-<div class="community-auth-modal" id="communityAuthModal" role="dialog" aria-modal="true" aria-labelledby="communityLoginTitle">
-  <div class="community-login-card" id="communityLogin">
-    <!-- Close Button -->
-    <button class="modal-close-btn" id="modalCloseBtn" type="button" aria-label="Close and return to previous page">
-      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    </button>
-
-    <!-- TG Logo & Brand -->
-    <div class="modal-logo-container">
-      <div class="modal-logo-badge">
-        <img src="tg-logo.png" alt="Total Gaming Logo" class="modal-logo-img"/>
-      </div>
-      <span class="modal-kicker">TOTAL GAMING ESPORTS</span>
-    </div>
-
-    <!-- Title & Subtitle -->
-    <h2 id="communityLoginTitle" class="modal-title">WELCOME TO TG COMMUNITY</h2>
-    <p class="modal-subtitle">Sign in to access the TG Community</p>
-
-    <!-- Google Sign-In Button -->
-    <button class="btn-google" id="googleSignIn" type="button">
-      <svg class="google-svg-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-        <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17Z"/>
-        <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24Z"/>
-        <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.16 0 9.97 0 12s.45 3.84 1.25 5.42l4.03-3.15Z"/>
-        <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/>
-      </svg>
-      <span>Continue with Google</span>
-    </button>
-
-    <!-- Divider -->
-    <div class="modal-divider">
-      <span>OR</span>
-    </div>
-
-    <!-- Demo Login Button -->
-    <button class="btn-demo" id="demoSignIn" type="button">
-      <span class="btn-demo-icon">🎮</span>
-      <span>Demo Login</span>
-    </button>
-
-    <!-- Footnote -->
-    <p class="modal-footnote">Your account is used only to access<br/>the TG Community.</p>
-
-    <!-- Auth Feedback Toast / Alert -->
-    <div class="auth-feedback" id="authMessage" role="status" aria-live="polite"></div>
-  </div>
-</div>
-
-<!-- =========================
-     COMMUNITY CONTENT (LOGGED IN)
-========================= -->
-<div class="community-content" id="communityContent" hidden>
-  <!-- Compact Logged In Profile Bar -->
-  <div class="community-profile-bar" id="communityProfile"></div>
-
-  <!-- Feed Header -->
-  <div class="community-feed-header">
-    <div class="feed-header-left">
-      <div class="feed-live-badge"><span></span> LIVE FEED</div>
-      <h2>TG <strong>COMMUNITY</strong></h2>
-    </div>
-    <div class="feed-header-right">
-      <a href="index.html" class="community-back-btn" aria-label="Go back to Home Page">
-        <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M19 12H5M12 19l-7-7 7-7"/>
+<main class="community-main wa-main-fullwidth">
+  <!-- Auth Modal (Prompt for login if user wants to post or customize) -->
+  <div class="community-auth-modal" id="communityAuthModal" role="dialog" aria-modal="true" aria-labelledby="communityLoginTitle" hidden>
+    <div class="community-login-card" id="communityLogin">
+      <!-- Close Button -->
+      <button class="modal-close-btn" id="modalCloseBtn" type="button" aria-label="Close and return to chat">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
         </svg>
-        <span>BACK TO HOME</span>
-      </a>
-      <span class="feed-tagline">Official Esports Updates &amp; Discussions</span>
+      </button>
+
+      <!-- TG Logo & Brand -->
+      <div class="modal-logo-container">
+        <div class="modal-logo-badge">
+          <img src="tg-logo.png" alt="Total Gaming Logo" class="modal-logo-img"/>
+        </div>
+        <span class="modal-kicker">TOTAL GAMING ESPORTS</span>
+      </div>
+
+      <!-- Title & Subtitle -->
+      <h2 id="communityLoginTitle" class="modal-title">JOIN TG COMMUNITY CHAT</h2>
+      <p class="modal-subtitle">Sign in with Google or continue with a custom Gamer Tag to post in real-time.</p>
+
+      <!-- Google Sign-In Button -->
+      <button class="btn-google" id="googleSignIn" type="button">
+        <svg class="google-svg-icon" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+          <path fill="#4285F4" d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17Z"/>
+          <path fill="#34A853" d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.34 24 12 24Z"/>
+          <path fill="#FBBC05" d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.16 0 9.97 0 12s.45 3.84 1.25 5.42l4.03-3.15Z"/>
+          <path fill="#EA4335" d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.34 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98Z"/>
+        </svg>
+        <span>Continue with Google</span>
+      </button>
+
+      <!-- Divider -->
+      <div class="modal-divider">
+        <span>OR QUICK FAN LOGIN</span>
+      </div>
+
+      <!-- Gamer Tag Input & Demo Button -->
+      <div class="demo-login-group">
+        <input type="text" id="demoUsernameInput" class="demo-username-input" placeholder="Enter your Gamer Tag (e.g. TG_Aman)..." maxlength="25"/>
+        <button class="btn-demo" id="demoSignIn" type="button">
+          <span class="btn-demo-icon">🎮</span>
+          <span>Enter Chat as Fan</span>
+        </button>
+      </div>
+
+      <!-- Footnote -->
+      <p class="modal-footnote">Open community for all Total Gaming fans &amp; esports enthusiasts.</p>
+
+      <!-- Auth Feedback Toast / Alert -->
+      <div class="auth-feedback" id="authMessage" role="status" aria-live="polite"></div>
     </div>
   </div>
 
-  <!-- Community Posts State & List -->
-  <div class="community-state" id="postsState">Loading community updates...</div>
-  <div class="community-posts" id="communityPosts"></div>
-</div>
+  <!-- WhatsApp Chat Application View (Edge-to-Edge) -->
+  <div class="wa-app-wrapper" id="waAppWrapper">
+    
+    <!-- WhatsApp Top Header Bar -->
+    <header class="wa-chat-header" id="waChatHeader">
+      <div class="wa-header-left">
+        <a href="index.html" class="wa-header-back-btn" title="Back to Home Website" aria-label="Back to Home">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+        </a>
+        
+        <div class="wa-avatar-container">
+          <img src="tg-logo.png" alt="TG Community" class="wa-group-img"/>
+          <span class="wa-pulse-indicator" title="Live & Active"></span>
+        </div>
 
-<!-- =========================
-     SUPPORT / 1 CUP CHAI SECTION
-========================= -->
-<div class="support-card community-support-card">
-<div class="support-badge">
-<span>☕</span> SUPPORT THE CREATOR
-</div>
-<h2 class="support-title">
-BUY 1 CUP <strong>CHAI</strong> FOR TG
-</h2>
-<p class="support-desc">
-Enjoying the TG Community Hub? Show your support and fuel future gaming events &amp; updates with a cup of chai! Scan the QR code below.
-</p>
-<div class="support-qr-wrap">
-<div class="support-qr-box">
-<img alt="Official Support QR - Total Gaming Universe" class="support-qr-img" src="tg-chai-qr.png"/>
-<div class="support-scan-hint">
-<svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><rect height="7" width="7" x="3" y="3"></rect><rect height="7" width="7" x="14" y="3"></rect><rect height="7" width="7" x="14" y="14"></rect><rect height="7" width="7" x="3" y="14"></rect></svg>
-<span>Scan via GPay / PhonePe / Paytm / UPI</span>
-</div>
-</div>
-</div>
-<div class="support-actions">
-<a class="support-yt-btn" href="https://www.youtube.com/@TG.Universe-07" rel="noopener noreferrer" target="_blank">
-<svg fill="currentColor" height="18" viewBox="0 0 24 24" width="18"><path d="M21.6 7.2a2.9 2.9 0 0 0-2-2C17.8 4.7 12 4.7 12 4.7s-5.8 0-7.6.5a2.9 2.9 0 0 0-2 2A30 30 0 0 0 2 12a30 30 0 0 0 .4 4.8 2.9 2.9 0 0 0 2 2c1.8.5 7.6.5 7.6.5s5.8 0 7.6-.5a2.9 2.9 0 0 0 2-2A30 30 0 0 0 22 12a30 30 0 0 0-.4-4.8ZM10 15.2V8.8l5.5 3.2-5.5 3.2Z"/></svg>
-<span>Subscribe @TG.Universe-07</span>
-</a>
-</div>
-</div>
-</section>
+        <div class="wa-header-titles">
+          <div class="wa-title-row">
+            <span class="wa-main-title">TG Community Hub</span>
+            <span class="wa-verified-icon" title="Official Total Gaming Hub">
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="#00eaff">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>
+            </span>
+          </div>
+          <div class="wa-presence-text" id="waPresenceText">Ajay, Mafia, Delete, Fozy, Wota, Shanky, Aztec + 54,210 fans online</div>
+        </div>
+      </div>
+
+      <!-- Channel Switcher Tabs in WhatsApp Header -->
+      <div class="wa-header-tabs" role="tablist" aria-label="Community Channels">
+        <button class="wa-channel-tab active" id="tabGeneral" role="tab" aria-selected="true" data-channel="general">
+          <span class="tab-icon">💬</span>
+          <span class="tab-label">Fan Lounge</span>
+          <span class="tab-badge" id="badgeGeneral">LIVE</span>
+        </button>
+        
+        <button class="wa-channel-tab" id="tabAnnouncements" role="tab" aria-selected="false" data-channel="announcements">
+          <span class="tab-icon">📢</span>
+          <span class="tab-label">Official Announcements</span>
+          <span class="tab-badge admin-badge">ADMIN ONLY</span>
+        </button>
+      </div>
+
+      <!-- Header Right Controls -->
+      <div class="wa-header-right">
+        <div class="wa-user-chip" id="waUserChip">
+          <!-- Populated by JS (User avatar, name, and login/logout switch) -->
+        </div>
+      </div>
+    </header>
+
+    <!-- Channel System Info Banner -->
+    <div class="wa-info-ribbon" id="waInfoRibbon">
+      <div class="wa-ribbon-content">
+        <span class="ribbon-lock-icon">🔒</span>
+        <span id="waRibbonText">Messages in <strong>Fan Lounge</strong> are live for all TG fans. Respect community rules.</span>
+      </div>
+    </div>
+
+    <!-- WhatsApp Chat Stream (Messages list with WhatsApp wallpaper pattern) -->
+    <div class="wa-chat-stream" id="communityChatStream" role="log" aria-live="polite">
+      <!-- Loading placeholder -->
+      <div class="wa-stream-loading" id="waStreamLoading">
+        <div class="wa-loading-spinner"></div>
+        <span>Connecting to TG Community live stream...</span>
+      </div>
+    </div>
+
+    <!-- Quick Emoji Reaction Drawer -->
+    <div class="wa-emoji-shelf" id="waEmojiShelf" hidden>
+      <div class="wa-emoji-shelf-header">
+        <span>Quick Reactions &amp; Gaming Emojis</span>
+        <button type="button" class="wa-emoji-close" id="waEmojiClose" aria-label="Close emoji shelf">✕</button>
+      </div>
+      <div class="wa-emoji-grid">
+        <button type="button" class="wa-emoji-item" data-emoji="🔥">🔥</button>
+        <button type="button" class="wa-emoji-item" data-emoji="❤️">❤️</button>
+        <button type="button" class="wa-emoji-item" data-emoji="🏆">🏆</button>
+        <button type="button" class="wa-emoji-item" data-emoji="👑">👑</button>
+        <button type="button" class="wa-emoji-item" data-emoji="🎮">🎮</button>
+        <button type="button" class="wa-emoji-item" data-emoji="🚀">🚀</button>
+        <button type="button" class="wa-emoji-item" data-emoji="💯">💯</button>
+        <button type="button" class="wa-emoji-item" data-emoji="👏">👏</button>
+        <button type="button" class="wa-emoji-item" data-emoji="😂">😂</button>
+        <button type="button" class="wa-emoji-item" data-emoji="🎯">🎯</button>
+        <button type="button" class="wa-emoji-item" data-emoji="⚡">⚡</button>
+        <button type="button" class="wa-emoji-item" data-emoji="💥">💥</button>
+        <button type="button" class="wa-emoji-item" data-emoji="😎">😎</button>
+        <button type="button" class="wa-emoji-item" data-emoji="🤝">🤝</button>
+        <button type="button" class="wa-emoji-item" data-emoji="🦾">🦾</button>
+        <button type="button" class="wa-emoji-item" data-emoji="✨">✨</button>
+      </div>
+    </div>
+
+    <!-- WhatsApp Pinned Bottom Input Bar -->
+    <footer class="wa-bottom-bar" id="waBottomBar">
+      <!-- Locked Banner for Regular Users on Announcements Tab -->
+      <div class="wa-announcements-lock" id="waAnnouncementsLock" hidden>
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/>
+        </svg>
+        <span>Only Official TG Admins (<strong style="color:#ffd700;">fozyajay27@gmail.com</strong>) can post in Official Announcements.</span>
+      </div>
+
+      <!-- Active Message Input Form -->
+      <form class="wa-chat-form" id="waChatForm">
+        <!-- Emoji Toggle Button -->
+        <button type="button" class="wa-btn-icon wa-emoji-toggle" id="waEmojiToggle" aria-label="Open emoji picker" title="Insert Emoji">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="currentColor">
+            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm3.5-9c.83 0 1.5-.67 1.5-1.5S16.33 8 15.5 8 14 8.67 14 9.5s.67 1.5 1.5 1.5zm-7 0c.83 0 1.5-.67 1.5-1.5S9.33 8 8.5 8 7 8.67 7 9.5 7.67 11 8.5 11zm3.5 6.5c2.33 0 4.31-1.46 5.11-3.5H6.89c.8 2.04 2.78 3.5 5.11 3.5z"/>
+          </svg>
+        </button>
+
+        <!-- Input Pill -->
+        <div class="wa-input-pill">
+          <input 
+            type="text" 
+            id="waMessageInput" 
+            class="wa-message-input" 
+            placeholder="Type a message in TG Community..." 
+            autocomplete="off" 
+            maxlength="1000"
+            aria-label="Message input"
+          />
+        </div>
+
+        <!-- WhatsApp Green Round Send Button -->
+        <button type="submit" class="wa-send-btn" id="waSendBtn" aria-label="Send message" title="Send message">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+            <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+          </svg>
+        </button>
+      </form>
+    </footer>
+
+  </div>
 </main>
 
 <!-- =========================
@@ -261,10 +315,6 @@ Enjoying the TG Community Hub? Show your support and fuel future gaming events &
 <svg fill="none" height="16" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" width="16"><rect height="18" rx="5" width="18" x="3" y="3"></rect><circle cx="12" cy="12" r="4"></circle><circle cx="17.5" cy="6.5" r="1"></circle></svg>
 <span>Instagram</span>
 </a>
-<a aria-label="Support with 1 Cup Chai" class="footer-social-btn chai-btn" href="#support">
-<span>☕</span>
-<span>Support 1 Cup Chai</span>
-</a>
 </div>
 <p class="footer-copy">
 || © Presented By <a href="https://www.youtube.com/@TG.Universe-07" rel="noopener noreferrer" target="_blank">@TG.Universe-07</a> ||
@@ -279,6 +329,6 @@ Enjoying the TG Community Hub? Show your support and fuel future gaming events &
   <svg fill="none" height="20" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" viewBox="0 0 24 24" width="20"><path d="M18 15l-6-6-6 6"></path></svg>
 </button>
 
-<script type="module" src="community.js?v=b2top2"></script>
+<script type="module" src="community.js?v=wa1"></script>
 </body>
 </html>
