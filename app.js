@@ -1676,31 +1676,27 @@ function initPlayersCoverflow() {
         setActive(activeIndex - 1);
     };
 
-    // Silky Smooth Hover-Intent & Click Events
-    let hoverTimer = null;
-    let isTransitioning = false;
-
-    const queueActivate = (targetIdx) => {
-        if (targetIdx === activeIndex || isTransitioning) return;
-        if (hoverTimer) clearTimeout(hoverTimer);
-        hoverTimer = setTimeout(() => {
-            isTransitioning = true;
-            setActive(targetIdx);
-            resetAutoplay();
-            setTimeout(() => {
-                isTransitioning = false;
-            }, 320);
-        }, 70);
-    };
-
+    // Direct Hover & Click activation on all cards and images
     cards.forEach((card, idx) => {
-        card.addEventListener("mouseenter", () => {
+        const activateThisCard = () => {
             if (window.innerWidth <= 768) return;
-            queueActivate(idx);
-        });
+            if (idx !== activeIndex) {
+                setActive(idx);
+                resetAutoplay();
+            }
+        };
 
-        card.addEventListener("mouseleave", () => {
-            if (hoverTimer) clearTimeout(hoverTimer);
+        // When mouse cursor enters any card/image
+        card.addEventListener("mouseenter", activateThisCard);
+        card.addEventListener("pointerenter", activateThisCard);
+        card.addEventListener("mouseover", activateThisCard);
+
+        // When mouse cursor moves over any card
+        card.addEventListener("pointermove", (e) => {
+            if (window.innerWidth <= 768) return;
+            if (idx !== activeIndex) {
+                activateThisCard();
+            }
         });
 
         // Instant activation on click
@@ -1710,12 +1706,23 @@ function initPlayersCoverflow() {
             }
             if (idx !== activeIndex) {
                 e.preventDefault();
-                if (hoverTimer) clearTimeout(hoverTimer);
-                isTransitioning = false;
                 setActive(idx);
                 resetAutoplay();
             }
         });
+    });
+
+    // Stage tracking: detect hovered card whenever cursor moves across the coverflow area
+    stage.addEventListener("pointermove", (e) => {
+        if (window.innerWidth <= 768) return;
+        const hoveredCard = e.target.closest(".coverflow-card") || document.elementFromPoint(e.clientX, e.clientY)?.closest(".coverflow-card");
+        if (hoveredCard) {
+            const cardIdx = cards.indexOf(hoveredCard);
+            if (cardIdx !== -1 && cardIdx !== activeIndex) {
+                setActive(cardIdx);
+                resetAutoplay();
+            }
+        }
     });
 
     // Control buttons
