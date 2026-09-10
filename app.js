@@ -1346,28 +1346,62 @@ initGlobalProfile();
 function initMagneticCarousel() {
     const track = document.getElementById("magneticCarouselTrack");
     const backdrop = document.getElementById("magneticBackdrop");
+    const hint = document.querySelector(".magnetic-hint");
     if (!track) return;
 
     const cards = Array.from(track.querySelectorAll(".magnetic-card"));
     const count = cards.length;
     if (count === 0) return;
 
-    // Config parameters based on Originkit presets
-    const getDimensions = () => {
-        const isMobile = window.innerWidth <= 768;
+    // Create pagination dots for mobile
+    let dotsContainer = document.getElementById("galleryDots");
+    if (!dotsContainer) {
+        dotsContainer = document.createElement("div");
+        dotsContainer.id = "galleryDots";
+        dotsContainer.className = "gallery-dots";
+        track.parentElement.appendChild(dotsContainer);
+    }
+    dotsContainer.innerHTML = "";
+    cards.forEach((_, i) => {
+        const dot = document.createElement("button");
+        dot.className = `gallery-dot ${i === 0 ? "active" : ""}`;
+        dot.setAttribute("type", "button");
+        dot.setAttribute("aria-label", `Go to gallery item ${i + 1}`);
+        dot.addEventListener("click", () => {
+            if (window.innerWidth <= 768) {
+                cards[i].scrollIntoView({ behavior: "smooth", inline: "center", block: "nearest" });
+            }
+        });
+        dotsContainer.appendChild(dot);
+    });
+
+    const updateDots = () => {
+        if (window.innerWidth > 768) return;
+        const trackRect = track.getBoundingClientRect();
+        const trackCenter = trackRect.left + trackRect.width / 2;
+        let closestIdx = 0;
+        let minDiff = Infinity;
+        cards.forEach((card, idx) => {
+            const rect = card.getBoundingClientRect();
+            const cardCenter = rect.left + rect.width / 2;
+            const diff = Math.abs(trackCenter - cardCenter);
+            if (diff < minDiff) {
+                minDiff = diff;
+                closestIdx = idx;
+            }
+        });
+        const dots = dotsContainer.querySelectorAll(".gallery-dot");
+        dots.forEach((dot, idx) => {
+            dot.classList.toggle("active", idx === closestIdx);
+        });
+    };
+
+    track.addEventListener("scroll", updateDots, { passive: true });
+
+    // Config parameters based on Originkit presets for desktop
+    const getDesktopDimensions = () => {
         const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
-        if (isMobile) {
-            return {
-                collapsedWidth: 70,
-                hoverWidth: 150,
-                collapsedHeight: 280,
-                hoverHeight: 330,
-                openSize: Math.min(window.innerWidth - 32, 440),
-                gap: 8,
-                influence: 110,
-                blur: 24,
-            };
-        } else if (isTablet) {
+        if (isTablet) {
             return {
                 collapsedWidth: 90,
                 hoverWidth: 180,
@@ -1398,7 +1432,30 @@ function initMagneticCarousel() {
 
     // Apply base dimensions
     const applyDimensions = () => {
-        const { collapsedWidth, collapsedHeight, gap } = getDimensions();
+        const isMobile = window.innerWidth <= 768;
+        if (hint) {
+            hint.innerHTML = isMobile
+                ? '<span>✦</span> Swipe to browse • Tap to expand'
+                : '<span>✦</span> Hover to magnify • Click to expand';
+        }
+
+        if (isMobile) {
+            track.style.gap = "";
+            cards.forEach((card) => {
+                if (openIndex === null) {
+                    card.style.width = "";
+                    card.style.height = "";
+                    card.style.filter = "";
+                    card.style.opacity = "";
+                    card.style.transition = "";
+                    card.classList.remove("open", "blurred");
+                }
+            });
+            updateDots();
+            return;
+        }
+
+        const { collapsedWidth, collapsedHeight, gap } = getDesktopDimensions();
         track.style.gap = `${gap}px`;
         cards.forEach((card) => {
             if (openIndex === null) {
@@ -1413,18 +1470,18 @@ function initMagneticCarousel() {
     applyDimensions();
 
     const startLoop = () => {
-        if (animLoopId) return;
+        if (window.innerWidth <= 768 || animLoopId) return;
         const step = () => {
-            if (openIndex !== null) {
+            if (openIndex !== null || window.innerWidth <= 768) {
                 animLoopId = null;
                 return;
             }
-            const { collapsedWidth, hoverWidth, collapsedHeight, hoverHeight } = getDimensions();
+            const { collapsedWidth, hoverWidth, collapsedHeight, hoverHeight } = getDesktopDimensions();
             let moving = false;
             for (let i = 0; i < count; i++) {
                 const diff = (targetFactors[i] ?? 0) - curFactors[i];
                 if (Math.abs(diff) > 0.001) {
-                    curFactors[i] += diff * 0.2; // Smooth continuous spring/lerp
+                    curFactors[i] += diff * 0.2;
                     moving = true;
                 } else {
                     curFactors[i] = targetFactors[i] ?? 0;
@@ -1446,9 +1503,10 @@ function initMagneticCarousel() {
     };
 
     const setTargetFromCursor = (clientX) => {
+        if (window.innerWidth <= 768) return;
         const rect = track.getBoundingClientRect();
         const cx = clientX - rect.left;
-        const { collapsedWidth, gap, influence } = getDimensions();
+        const { collapsedWidth, gap, influence } = getDesktopDimensions();
         const totalBase = count * collapsedWidth + (count - 1) * gap;
         const startX = (rect.width - totalBase) / 2;
 
@@ -1456,30 +1514,18 @@ function initMagneticCarousel() {
             const center = startX + i * (collapsedWidth + gap) + collapsedWidth / 2;
             const dist = Math.abs(cx - center);
             const f = Math.max(0, 1 - dist / influence);
-            targetFactors[i] = f * f * (3 - 2 * f); // Smoothstep falloff
+            targetFactors[i] = f * f * (3 - 2 * f);
         }
         startLoop();
     };
 
     track.addEventListener("mousemove", (e) => {
-        if (openIndex !== null) return;
+        if (openIndex !== null || window.innerWidth <= 768) return;
         setTargetFromCursor(e.clientX);
     });
 
     track.addEventListener("mouseleave", () => {
-        if (openIndex !== null) return;
-        targetFactors.fill(0);
-        startLoop();
-    });
-
-    // Touch events for mobile
-    track.addEventListener("touchmove", (e) => {
-        if (openIndex !== null || !e.touches[0]) return;
-        setTargetFromCursor(e.touches[0].clientX);
-    }, { passive: true });
-
-    track.addEventListener("touchend", () => {
-        if (openIndex !== null) return;
+        if (openIndex !== null || window.innerWidth <= 768) return;
         targetFactors.fill(0);
         startLoop();
     });
@@ -1490,7 +1536,23 @@ function initMagneticCarousel() {
             animLoopId = null;
         }
         openIndex = idx;
-        const { collapsedWidth, collapsedHeight, openSize, blur } = getDimensions();
+        const isMobile = window.innerWidth <= 768;
+
+        if (isMobile) {
+            cards.forEach((card, i) => {
+                if (i === idx) {
+                    card.classList.add("open");
+                    card.classList.remove("blurred");
+                } else {
+                    card.classList.remove("open");
+                }
+            });
+            if (backdrop) backdrop.classList.add("active");
+            document.body.style.overflow = "hidden";
+            return;
+        }
+
+        const { collapsedWidth, collapsedHeight, openSize, blur } = getDesktopDimensions();
         const dur = 0.35;
         const ease = "cubic-bezier(0.44, 0, 0.56, 1)";
         const barTransition = `width ${dur}s ${ease}, height ${dur}s ${ease}, filter ${dur}s ${ease}, opacity ${dur}s ${ease}, transform ${dur}s ${ease}`;
@@ -1521,7 +1583,19 @@ function initMagneticCarousel() {
 
     const closeCard = () => {
         if (openIndex === null) return;
-        const { collapsedWidth, collapsedHeight } = getDimensions();
+        const isMobile = window.innerWidth <= 768;
+
+        if (isMobile) {
+            cards.forEach((card) => {
+                card.classList.remove("open", "blurred");
+            });
+            if (backdrop) backdrop.classList.remove("active");
+            document.body.style.overflow = "";
+            openIndex = null;
+            return;
+        }
+
+        const { collapsedWidth, collapsedHeight } = getDesktopDimensions();
         const dur = 0.35;
         const ease = "cubic-bezier(0.44, 0, 0.56, 1)";
         const barTransition = `width ${dur}s ${ease}, height ${dur}s ${ease}, filter ${dur}s ${ease}, opacity ${dur}s ${ease}`;

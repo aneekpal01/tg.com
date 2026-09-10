@@ -1593,25 +1593,160 @@ body.light-theme .magnetic-hint{
 
 @media(max-width:768px){
     .magnetic-carousel-shell{
-        padding:20px 8px 30px;
+        padding:10px 0 25px !important;
+        width:100% !important;
+        max-width:100vw !important;
+        overflow:hidden !important;
+        box-sizing:border-box !important;
+    }
+
+    .magnetic-hint{
+        font-size:10.5px !important;
+        letter-spacing:.8px !important;
+        padding:5px 14px !important;
+        margin-bottom:14px !important;
     }
 
     .magnetic-carousel-track{
-        min-height:360px;
-        gap:8px;
+        width:100% !important;
+        min-height:auto !important;
+        display:flex !important;
+        flex-direction:row !important;
+        align-items:center !important;
+        justify-content:flex-start !important;
+        gap:14px !important;
+        overflow-x:auto !important;
+        scroll-snap-type:x mandatory !important;
+        scroll-behavior:smooth !important;
+        -webkit-overflow-scrolling:touch !important;
+        scrollbar-width:none !important;
+        padding:15px max(16px, calc(50vw - 140px)) 20px !important;
+        box-sizing:border-box !important;
+        touch-action:pan-x !important;
+    }
+
+    .magnetic-carousel-track::-webkit-scrollbar{
+        display:none !important;
+        width:0 !important;
+        height:0 !important;
     }
 
     .magnetic-card{
-        border-radius:18px;
+        flex:0 0 clamp(250px, 75vw, 300px) !important;
+        width:clamp(250px, 75vw, 300px) !important;
+        height:370px !important;
+        max-height:58vh !important;
+        scroll-snap-align:center !important;
+        border-radius:20px !important;
+        box-shadow:0 12px 32px rgba(0,0,0,.65), 0 0 20px rgba(0,234,255,.15) !important;
+        border:1px solid rgba(0,234,255,.32) !important;
+        transition:transform .3s ease, border-color .3s ease, box-shadow .3s ease !important;
+        position:relative !important;
+        overflow:hidden !important;
+        opacity:1 !important;
+        filter:none !important;
+    }
+
+    .magnetic-card:active{
+        transform:scale(.98);
+    }
+
+    .magnetic-card.open{
+        position:fixed !important;
+        top:50% !important;
+        left:50% !important;
+        transform:translate(-50%, -50%) !important;
+        width:min(90vw, 390px) !important;
+        height:min(78vh, 520px) !important;
+        max-height:85vh !important;
+        z-index:99999 !important;
+        border-radius:24px !important;
+        border:2px solid #00eaff !important;
+        box-shadow:0 25px 80px rgba(0,0,0,.95), 0 0 60px rgba(0,234,255,.5) !important;
+    }
+
+    .magnetic-card.blurred{
+        filter:none !important;
+        opacity:1 !important;
+    }
+
+    .magnetic-card-overlay{
+        opacity:1 !important;
+        transform:translateY(0) !important;
+        background:linear-gradient(180deg, rgba(0,0,0,0) 38%, rgba(5,7,20,.82) 72%, rgba(3,4,15,.96) 100%) !important;
+        padding:18px 16px !important;
     }
 
     .magnetic-card-overlay h3{
-        font-size:12px;
+        font-size:14px !important;
+        white-space:normal !important;
+        letter-spacing:.5px !important;
+        line-height:1.2 !important;
+        margin-bottom:4px !important;
     }
 
     .magnetic-card.open .magnetic-card-overlay h3{
-        font-size:16px;
+        font-size:20px !important;
+        margin-bottom:6px !important;
     }
+
+    .magnetic-card-overlay p{
+        font-size:11px !important;
+    }
+
+    .magnetic-tag{
+        font-size:9px !important;
+        padding:2.5px 8px !important;
+        margin-bottom:5px !important;
+    }
+
+    /* Close Button on Mobile Modal */
+    .magnetic-close-btn{
+        width:38px !important;
+        height:38px !important;
+        top:14px !important;
+        right:14px !important;
+        font-size:16px !important;
+        background:rgba(0,0,0,.75) !important;
+        border:1px solid rgba(255,255,255,.4) !important;
+    }
+
+    .magnetic-card.open .magnetic-close-btn{
+        opacity:1 !important;
+        visibility:visible !important;
+        transform:scale(1) !important;
+    }
+
+    /* Gallery Pagination Dots */
+    .gallery-dots{
+        display:flex !important;
+        align-items:center;
+        justify-content:center;
+        gap:8px;
+        margin-top:12px;
+    }
+
+    .gallery-dot{
+        width:8px;
+        height:8px;
+        border-radius:50%;
+        background:rgba(255,255,255,.25);
+        border:none;
+        padding:0;
+        cursor:pointer;
+        transition:all .25s ease;
+    }
+
+    .gallery-dot.active{
+        width:24px;
+        border-radius:10px;
+        background:#00eaff;
+        box-shadow:0 0 10px #00eaff88;
+    }
+}
+
+.gallery-dots{
+    display:none;
 }
 
 
