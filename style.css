@@ -6692,150 +6692,233 @@ body.light-theme .menu-logout-btn:hover{
    NAVBAR COMMUNITY CTA & BACK TO TOP BUTTON
    ========================================================================== */
 
-/* Navbar Community Highlighted CTA */
-.nav-community-cta{
-    display:inline-flex !important;
-    align-items:center !important;
-    gap:7px !important;
-    padding:5px 13px !important;
-    border-radius:999px !important;
-    background:linear-gradient(135deg, rgba(0,234,255,.16), rgba(255,0,200,.18)) !important;
-    border:1px solid rgba(0,234,255,.45) !important;
-    box-shadow:0 0 16px rgba(0,234,255,.22), inset 0 1px 0 rgba(255,255,255,.25) !important;
-    color:#ffffff !important;
-    font-family:"Orbitron",sans-serif !important;
-    font-size:10.5px !important;
-    font-weight:700 !important;
-    letter-spacing:.8px !important;
-    text-decoration:none !important;
-    transition:all .25s ease !important;
+/* ==========================================================================
+   ORIGINKIT MOVING GRADIENT BUTTON — NAVBAR & MENU COMMUNITY CTA
+   ========================================================================== */
+
+@keyframes originkitMovingBeam {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.nav-community-cta {
+    position: relative !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    padding: 6px 14px !important;
+    border-radius: 999px !important;
+    border: none !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    font-family: "Orbitron", sans-serif !important;
+    font-size: 10.5px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.8px !important;
+    text-decoration: none !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+    box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 16px rgba(0, 234, 255, 0.28) !important;
+    transition: transform 0.25s cubic-bezier(0.44, 0, 0.56, 1), box-shadow 0.25s ease !important;
+    cursor: pointer !important;
+    user-select: none !important;
+}
+
+/* Layer 1: Rotating Conic Moving Gradient Beam */
+.nav-community-cta::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: -250% !important;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        transparent 160deg,
+        #3600ff 220deg,
+        #00eaff 280deg,
+        #00ff94 360deg
+    ) !important;
+    animation: originkitMovingBeam 3.2s linear infinite !important;
+    z-index: -2 !important;
+    pointer-events: none !important;
+}
+
+/* Layer 2: Inner Pill Dark Mask creating precise 1.5px moving laser border */
+.nav-community-cta::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 1.5px !important;
+    border-radius: inherit !important;
+    background: #080c22 !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+    transition: background 0.3s ease !important;
 }
 
 .nav-community-cta:hover,
-.nav-community-cta:focus-visible{
-    background:linear-gradient(135deg, rgba(0,234,255,.28), rgba(255,0,200,.35)) !important;
-    border-color:#00eaff !important;
-    box-shadow:0 0 24px rgba(0,234,255,.5), 0 0 14px rgba(255,0,200,.35) !important;
-    transform:translateY(-2px) scale(1.03) !important;
-    color:#ffffff !important;
-    text-shadow:0 0 12px #00eaff !important;
+.nav-community-cta:focus-visible {
+    transform: translateY(-2px) scale(1.04) !important;
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.75), 0 0 26px rgba(0, 234, 255, 0.65), 0 0 38px rgba(0, 255, 148, 0.35) !important;
+    color: #ffffff !important;
 }
 
-.comm-pulse-dot{
-    width:6px;
-    height:6px;
-    border-radius:50%;
-    background:#00ff88;
-    box-shadow:0 0 8px #00ff88;
-    animation:pulseCommDot 1.8s ease-in-out infinite;
-    flex-shrink:0;
+.nav-community-cta:hover::before,
+.nav-community-cta:focus-visible::before {
+    animation-duration: 1.6s !important;
 }
 
-@keyframes pulseCommDot{
-    0%, 100%{ opacity:1; transform:scale(1); }
-    50%{ opacity:.35; transform:scale(1.4); }
+.nav-community-cta:hover::after,
+.nav-community-cta:focus-visible::after {
+    background: #0d1538 !important;
 }
 
-.comm-hub-badge{
-    font-size:8px !important;
-    font-weight:800 !important;
-    padding:2px 6px !important;
-    border-radius:4px !important;
-    background:#00eaff !important;
-    color:#050718 !important;
-    letter-spacing:.6px !important;
-    font-family:"Orbitron",sans-serif !important;
-    line-height:1 !important;
+.nav-community-cta:active {
+    transform: translateY(0px) scale(0.97) !important;
 }
 
-/* Menu Community Link Highlight */
-.menu-community-cta{
-    display:flex !important;
-    align-items:center !important;
-    justify-content:space-between !important;
-    padding:11px 13px !important;
-    margin:4px 0 !important;
-    border-radius:10px !important;
-    background:linear-gradient(135deg, rgba(0,234,255,.14), rgba(255,0,200,.16)) !important;
-    border:1px solid rgba(0,234,255,.38) !important;
-    color:#ffffff !important;
-    font-family:"Orbitron",sans-serif !important;
-    font-size:11px !important;
-    font-weight:700 !important;
-    letter-spacing:.6px !important;
-    box-shadow:0 0 15px rgba(0,234,255,.15) !important;
-    text-decoration:none !important;
-    transition:all .22s ease !important;
+.comm-pulse-dot {
+    position: relative !important;
+    z-index: 1 !important;
+    width: 7px !important;
+    height: 7px !important;
+    border-radius: 50% !important;
+    background: #00ff94 !important;
+    box-shadow: 0 0 8px #00ff94, 0 0 16px rgba(0, 255, 148, 0.8) !important;
+    animation: pulseCommDot 1.8s ease-in-out infinite !important;
+    flex-shrink: 0 !important;
 }
 
-.menu-community-cta:hover{
-    background:linear-gradient(135deg, rgba(0,234,255,.24), rgba(255,0,200,.28)) !important;
-    border-color:#00eaff !important;
-    box-shadow:0 0 22px rgba(0,234,255,.35) !important;
-    transform:translateX(2px) !important;
+@keyframes pulseCommDot {
+    0%, 100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.45;
+        transform: scale(1.4);
+    }
 }
 
-/* Back to Top Floating Button */
-.back-to-top{
-    position:fixed !important;
-    bottom:28px !important;
-    right:28px !important;
-    width:46px !important;
-    height:46px !important;
-    border-radius:14px !important;
-    background:rgba(8,12,34,.88) !important;
-    border:1.5px solid rgba(0,234,255,.45) !important;
-    color:#00eaff !important;
-    box-shadow:0 12px 30px rgba(0,0,0,.65), 0 0 20px rgba(0,234,255,.25) !important;
-    backdrop-filter:blur(14px) !important;
-    -webkit-backdrop-filter:blur(14px) !important;
-    display:grid !important;
-    place-items:center !important;
-    cursor:pointer !important;
-    z-index:999 !important;
-    opacity:0 !important;
-    visibility:hidden !important;
-    transform:translateY(16px) scale(.9) !important;
-    transition:opacity .28s ease, visibility .28s ease, transform .28s cubic-bezier(.34,1.56,.64,1), background .2s ease, border-color .2s ease, box-shadow .2s ease !important;
+.nav-community-cta span {
+    position: relative !important;
+    z-index: 1 !important;
 }
 
-.back-to-top.visible{
-    opacity:1 !important;
-    visibility:visible !important;
-    transform:translateY(0) scale(1) !important;
+.comm-hub-badge {
+    position: relative !important;
+    z-index: 1 !important;
+    font-size: 8px !important;
+    font-weight: 800 !important;
+    padding: 2.5px 7px !important;
+    border-radius: 4px !important;
+    background: linear-gradient(135deg, #00eaff 0%, #0077ff 100%) !important;
+    color: #050718 !important;
+    letter-spacing: 0.6px !important;
+    font-family: "Orbitron", sans-serif !important;
+    line-height: 1 !important;
+    box-shadow: 0 0 10px rgba(0, 234, 255, 0.5) !important;
 }
 
-.back-to-top:hover{
-    background:rgba(0,234,255,.2) !important;
-    border-color:#00eaff !important;
-    box-shadow:0 14px 35px rgba(0,0,0,.75), 0 0 30px rgba(0,234,255,.5) !important;
-    transform:translateY(-4px) scale(1.06) !important;
-    color:#ffffff !important;
+/* Menu Community CTA in Mobile Drawer */
+.menu-community-cta {
+    position: relative !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    padding: 11px 14px !important;
+    margin: 6px 0 !important;
+    border-radius: 12px !important;
+    border: none !important;
+    background: transparent !important;
+    color: #ffffff !important;
+    font-family: "Orbitron", sans-serif !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 0.6px !important;
+    overflow: hidden !important;
+    isolation: isolate !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), 0 0 14px rgba(0, 234, 255, 0.22) !important;
+    text-decoration: none !important;
+    transition: transform 0.25s ease, box-shadow 0.25s ease !important;
 }
 
-.back-to-top:active{
-    transform:translateY(-1px) scale(.96) !important;
+.menu-community-cta::before {
+    content: "" !important;
+    position: absolute !important;
+    inset: -250% !important;
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        transparent 160deg,
+        #3600ff 220deg,
+        #00eaff 280deg,
+        #00ff94 360deg
+    ) !important;
+    animation: originkitMovingBeam 3.2s linear infinite !important;
+    z-index: -2 !important;
+    pointer-events: none !important;
+}
+
+.menu-community-cta::after {
+    content: "" !important;
+    position: absolute !important;
+    inset: 1.5px !important;
+    border-radius: inherit !important;
+    background: #080c22 !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+    transition: background 0.3s ease !important;
+}
+
+.menu-community-cta:hover {
+    transform: translateX(3px) !important;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.65), 0 0 24px rgba(0, 234, 255, 0.5) !important;
+}
+
+.menu-community-cta:hover::before {
+    animation-duration: 1.6s !important;
+}
+
+.menu-community-cta:hover::after {
+    background: #0d1538 !important;
 }
 
 /* Light Theme Overrides */
-body.light-theme .nav-community-cta{
-    background:linear-gradient(135deg, rgba(0,148,194,.12), rgba(178,35,173,.14)) !important;
-    border-color:rgba(0,148,194,.4) !important;
-    color:#121829 !important;
-    box-shadow:0 0 14px rgba(0,148,194,.15) !important;
+body.light-theme .nav-community-cta::after,
+body.light-theme .menu-community-cta::after {
+    background: #ffffff !important;
 }
 
-body.light-theme .nav-community-cta:hover{
-    background:linear-gradient(135deg, rgba(0,148,194,.22), rgba(178,35,173,.24)) !important;
-    border-color:#087fbd !important;
-    color:#087fbd !important;
+body.light-theme .nav-community-cta::before,
+body.light-theme .menu-community-cta::before {
+    background: conic-gradient(
+        from 0deg,
+        transparent 0deg,
+        transparent 160deg,
+        #0055ff 220deg,
+        #00aaff 280deg,
+        #00ff94 360deg
+    ) !important;
 }
 
-body.light-theme .menu-community-cta{
-    background:linear-gradient(135deg, rgba(0,148,194,.1), rgba(178,35,173,.12)) !important;
-    border-color:rgba(0,148,194,.3) !important;
-    color:#121829 !important;
+body.light-theme .nav-community-cta {
+    color: #09122a !important;
+    box-shadow: 0 4px 16px rgba(22, 38, 86, 0.12), 0 0 16px rgba(0, 148, 194, 0.25) !important;
 }
+
+body.light-theme .nav-community-cta:hover::after,
+body.light-theme .menu-community-cta:hover::after {
+    background: #f0f7ff !important;
+}
+
+body.light-theme .menu-community-cta {
+    color: #09122a !important;
+    box-shadow: 0 4px 14px rgba(22, 38, 86, 0.1), 0 0 14px rgba(0, 148, 194, 0.2) !important;
+}
+
 
 body.light-theme .back-to-top{
     background:rgba(255,255,255,.94) !important;
