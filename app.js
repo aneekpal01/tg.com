@@ -1898,21 +1898,18 @@ if (backToTopBtn) {
    ORIGINKIT ARROW REVEAL BUTTON
 ================================================== */
 function initArrowRevealButtons() {
-    const wrappers = document.querySelectorAll(".originkit-arrow-reveal-wrapper");
-    if (!wrappers.length) return;
+    const buttons = document.querySelectorAll(".originkit-arrow-reveal-btn");
+    if (!buttons.length) return;
 
-    wrappers.forEach((wrapper) => {
-        const btn = wrapper.querySelector(".originkit-arrow-reveal-btn");
-        const badge = wrapper.querySelector(".arb-badge");
-        const arrow = wrapper.querySelector(".arb-arrow");
-        const slot = wrapper.querySelector(".arb-slot");
-        const strokeEl = wrapper.querySelector(".arb-stroke");
-        const label = wrapper.querySelector(".arb-label");
+    buttons.forEach((btn) => {
+        const badge = btn.querySelector(".arb-badge");
+        const arrow = btn.querySelector(".arb-arrow");
+        const slot = btn.querySelector(".arb-slot");
+        const label = btn.querySelector(".arb-label");
 
-        if (!btn || !badge || !arrow || !slot) return;
+        if (!badge || !arrow || !slot) return;
 
         let hoverScale = 1;
-        let hoverX = 0;
         let isHovered = false;
 
         const measure = () => {
@@ -1922,7 +1919,6 @@ function initArrowRevealButtons() {
 
             const radius = Math.min(w, h) / 2;
             btn.style.borderRadius = `${radius}px`;
-            if (strokeEl) strokeEl.style.borderRadius = `${radius + 2}px`;
 
             const badgeSize = Math.max(28, Math.min(38, h - 8));
             const rb = badgeSize / 2;
@@ -1939,7 +1935,6 @@ function initArrowRevealButtons() {
             const arrowSize = Math.min(18, Math.floor(badgeSize / Math.SQRT2));
 
             hoverScale = badgeSize > 0 ? (coverD / badgeSize) : 1;
-            hoverX = (w / 2) - cx;
 
             badge.style.width = `${badgeSize}px`;
             badge.style.height = `${badgeSize}px`;
@@ -1961,8 +1956,8 @@ function initArrowRevealButtons() {
                 if (label) label.style.transform = "translateX(0px)";
             } else {
                 badge.style.transform = `scale(${hoverScale})`;
-                arrow.style.transform = `translate(${hoverX}px, 0px) rotate(45deg)`;
-                if (label) label.style.transform = "translateX(-8px)";
+                arrow.style.transform = "translate(4px, 0px) rotate(-45deg) scale(1.15)";
+                if (label) label.style.transform = "translateX(-4px)";
             }
         };
 
@@ -1976,32 +1971,31 @@ function initArrowRevealButtons() {
             window.addEventListener("resize", measure);
         }
 
-        wrapper.addEventListener("pointerenter", () => {
+        btn.addEventListener("pointerenter", () => {
             isHovered = true;
             badge.style.transform = `scale(${hoverScale})`;
-            arrow.style.transform = `translate(${hoverX}px, 0px) rotate(45deg)`;
-            if (label) label.style.transform = "translateX(-8px)";
+            // Arrow stays on the right, rotates diagonally up-right, scales smoothly - NO text collision!
+            arrow.style.transform = "translate(4px, 0px) rotate(-45deg) scale(1.15)";
+            if (label) label.style.transform = "translateX(-4px)";
         });
 
-        wrapper.addEventListener("pointerleave", () => {
+        btn.addEventListener("pointerleave", () => {
             isHovered = false;
             badge.style.transform = "scale(1)";
             arrow.style.transform = "translate(0px, 0px) rotate(0deg)";
             if (label) label.style.transform = "translateX(0px)";
             btn.style.transform = "scale(1)";
-            if (strokeEl) strokeEl.style.transform = "scale(1)";
         });
 
-        wrapper.addEventListener("pointerdown", () => {
+        btn.addEventListener("pointerdown", () => {
             btn.style.transform = "scale(0.97)";
-            if (strokeEl) strokeEl.style.transform = "scale(0.97)";
         });
 
-        wrapper.addEventListener("pointerup", () => {
+        btn.addEventListener("pointerup", () => {
             btn.style.transform = "scale(1)";
-            if (strokeEl) strokeEl.style.transform = "scale(1)";
         });
     });
 }
 
 initArrowRevealButtons();
+
