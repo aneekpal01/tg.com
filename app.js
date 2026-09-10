@@ -1586,3 +1586,203 @@ function initMagneticCarousel() {
 }
 
 initMagneticCarousel();
+
+/* ==========================================================================
+   OUR PLAYERS — 3D COVERFLOW CAROUSEL
+   ========================================================================== */
+
+function initPlayersCoverflow() {
+    const container = document.getElementById("playersCoverflow");
+    const stage = document.getElementById("coverflowStage");
+    if (!container || !stage) return;
+
+    const cards = Array.from(stage.querySelectorAll(".coverflow-card"));
+    const prevBtn = document.getElementById("coverflowPrevBtn");
+    const nextBtn = document.getElementById("coverflowNextBtn");
+    const dotsContainer = document.getElementById("coverflowDots");
+    const count = cards.length;
+    if (count === 0) return;
+
+    let activeIndex = 0;
+    let autoplayTimer = null;
+
+    // Create navigation dots
+    if (dotsContainer) {
+        dotsContainer.innerHTML = "";
+        cards.forEach((_, idx) => {
+            const dot = document.createElement("button");
+            dot.className = `coverflow-dot ${idx === activeIndex ? "active" : ""}`;
+            dot.setAttribute("type", "button");
+            dot.setAttribute("aria-label", `Go to player ${idx + 1}`);
+            dot.addEventListener("click", () => {
+                setActive(idx);
+                resetAutoplay();
+            });
+            dotsContainer.appendChild(dot);
+        });
+    }
+
+    const updateCoverflow = () => {
+        const isMobile = window.innerWidth <= 768;
+        const isTablet = window.innerWidth <= 1024 && window.innerWidth > 768;
+        const xSpacing = isMobile ? 120 : (isTablet ? 175 : 225);
+
+        cards.forEach((card, i) => {
+            let offset = i - activeIndex;
+            if (offset > count / 2) offset -= count;
+            if (offset < -count / 2) offset += count;
+
+            const isCenter = offset === 0;
+            const absOffset = Math.abs(offset);
+            const zOffset = isCenter ? 120 : -absOffset * 85;
+            const rotateY = offset * -32;
+            const scale = isCenter ? 1 : 0.82;
+            const opacity = absOffset > 2 ? 0 : 1;
+            const zIndex = 25 - absOffset * 3;
+            const pointerEvents = absOffset > 2 ? "none" : "auto";
+
+            card.style.transform = `translateX(${offset * xSpacing}px) translateZ(${zOffset}px) rotateY(${rotateY}deg) scale(${scale})`;
+            card.style.zIndex = zIndex;
+            card.style.opacity = opacity;
+            card.style.pointerEvents = pointerEvents;
+
+            if (isCenter) {
+                card.classList.add("active");
+                card.setAttribute("aria-current", "true");
+            } else {
+                card.classList.remove("active");
+                card.removeAttribute("aria-current");
+            }
+        });
+
+        if (dotsContainer) {
+            const dots = dotsContainer.querySelectorAll(".coverflow-dot");
+            dots.forEach((dot, dotIdx) => {
+                dot.classList.toggle("active", dotIdx === activeIndex);
+            });
+        }
+    };
+
+    const setActive = (newIndex) => {
+        activeIndex = (newIndex + count) % count;
+        updateCoverflow();
+    };
+
+    const next = () => {
+        setActive(activeIndex + 1);
+    };
+
+    const prev = () => {
+        setActive(activeIndex - 1);
+    };
+
+    // Card click events
+    cards.forEach((card, idx) => {
+        card.addEventListener("click", (e) => {
+            // Allow clicking social links directly on active center card
+            if (e.target.closest(".coverflow-social-btn")) {
+                return;
+            }
+            if (idx !== activeIndex) {
+                e.preventDefault();
+                setActive(idx);
+                resetAutoplay();
+            }
+        });
+    });
+
+    // Control buttons
+    if (prevBtn) {
+        prevBtn.addEventListener("click", () => {
+            prev();
+            resetAutoplay();
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener("click", () => {
+            next();
+            resetAutoplay();
+        });
+    }
+
+    // Touch Swipe Detection
+    let touchStartX = 0;
+    let touchStartY = 0;
+    stage.addEventListener("touchstart", (e) => {
+        if (!e.touches[0]) return;
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, { passive: true });
+
+    stage.addEventListener("touchend", (e) => {
+        if (!e.changedTouches[0]) return;
+        const deltaX = e.changedTouches[0].clientX - touchStartX;
+        const deltaY = e.changedTouches[0].clientY - touchStartY;
+        if (Math.abs(deltaX) > 40 && Math.abs(deltaX) > Math.abs(deltaY)) {
+            if (deltaX < 0) {
+                next();
+            } else {
+                prev();
+            }
+            resetAutoplay();
+        }
+    }, { passive: true });
+
+    // Keyboard Navigation (Left / Right Arrow)
+    document.addEventListener("keydown", (e) => {
+        const tag = document.activeElement ? document.activeElement.tagName.toLowerCase() : "";
+        if (tag === "input" || tag === "textarea" || tag === "select") return;
+
+        // Check if players section is near viewport
+        const rect = container.getBoundingClientRect();
+        const isInView = rect.top < window.innerHeight && rect.bottom > 0;
+        if (isInView) {
+            if (e.key === "ArrowLeft") {
+                e.preventDefault();
+                prev();
+                resetAutoplay();
+            } else if (e.key === "ArrowRight") {
+                e.preventDefault();
+                next();
+                resetAutoplay();
+            }
+        }
+    });
+
+    // Window Resize Handler
+    window.addEventListener("resize", () => {
+        updateCoverflow();
+    });
+
+    // Optional subtle autoplay every 6 seconds, pauses on hover
+    const startAutoplay = () => {
+        if (autoplayTimer) clearInterval(autoplayTimer);
+        autoplayTimer = setInterval(() => {
+            next();
+        }, 6000);
+    };
+
+    const stopAutoplay = () => {
+        if (autoplayTimer) {
+            clearInterval(autoplayTimer);
+            autoplayTimer = null;
+        }
+    };
+
+    const resetAutoplay = () => {
+        stopAutoplay();
+        startAutoplay();
+    };
+
+    container.addEventListener("mouseenter", stopAutoplay);
+    container.addEventListener("mouseleave", startAutoplay);
+    container.addEventListener("touchstart", stopAutoplay, { passive: true });
+
+    // Initial render
+    updateCoverflow();
+    startAutoplay();
+}
+
+initPlayersCoverflow();
+
